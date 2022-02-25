@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
-import { Navbar} from 'react-bootstrap'
-import NavbarToggle from 'react-bootstrap/esm/NavbarToggle'
-import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse'
+import { Navbar, Nav} from 'react-bootstrap'
 
-export class header extends Component {
+export class Header extends Component {
   render() {
     return (
       <div className='header'>
@@ -12,19 +10,19 @@ export class header extends Component {
             <Navbar.Brand>
                 Logo
             </Navbar.Brand>
-            <NavbarToggle/>
-            <NavbarCollapse>
+            <Navbar.Toggle/>
+            <Navbar.Collapse>
                 <Nav>
-                    <NavLink href="explore">Explore</NavLink>
-                    <NavLink href="explore">Manage Booking</NavLink>
-                    <NavLink href="explore">Chat</NavLink>
-                    <NavLink href="explore">Profile</NavLink>
+                    <Nav.Link href="/">Explore</Nav.Link>
+                    <Nav.Link href="managebooking">Manage Booking</Nav.Link>
+                    <Nav.Link href="chat">Chat</Nav.Link>
+                    <Nav.Link href="userprofile">Profile</Nav.Link>
                 </Nav>
-            </NavbarCollapse>
+            </Navbar.Collapse>
           </Navbar>
       </div>
     )
   }
 }
 
-export default header
+export default Header

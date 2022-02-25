@@ -1,26 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
 
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.css'
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from "react-router-dom";
+
+import LandingPage from './Pages/LandingPage'
+import ArtistGallery from './Pages/ArtistGallery'
+import ArtistProfile from './Pages/ArtistProfile'
+import Login from './Pages/Login'
+import ManageBooking from './Pages/ManageBooking'
+import SignUp from './Pages/SignUp'
+import UserProfile from './Pages/UserProfile'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/managebooking" element={<ManageBooking />}/>
+        <Route path="/userprofile" element={<UserProfile />} />
+        <Route path="/artistprofile" element={<ArtistProfile />} />
+        <Route path="/artistgallery" element={<ArtistGallery />}/>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Routes>
+    </BrowserRouter>
+    
   );
 }
-
 export default App;
+

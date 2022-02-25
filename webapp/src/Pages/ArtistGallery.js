@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export class artistGallery extends Component {
+export class ArtistGallery extends Component {
   render() {
     return (
       <div>artistGallery</div>
@@ -8,4 +8,4 @@ export class artistGallery extends Component {
   }
 }
 
-export default artistGallery
+export default ArtistGallery
