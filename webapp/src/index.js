@@ -4,6 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// styles
+import "bootstrap/scss/bootstrap.scss";
+import "assets/scss/paper-kit.scss?v=1.3.0";
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
