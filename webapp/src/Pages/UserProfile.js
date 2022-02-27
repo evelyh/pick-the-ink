@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Header } from '../components/Header'
 import { Container } from 'react-bootstrap'
 import profilePic from '../assets/img/profilepic.jpg'
@@ -8,12 +8,6 @@ import { useState } from 'react'
 
 
 function UserProfile() {
-    // const userName = "SpongeBob"
-    // const email = "spongebob@gmail.com"
-    // const birthday = "1999/12/13"
-    // const phoneNum = "1234567890"
-    // const style = ["Blackwork", "Watercolor"]
-    // const image = "../images/profilepic.jpg"
 
     const [values, setValues] = useState({
       firstName: "Sponge",
@@ -39,7 +33,7 @@ function UserProfile() {
           <div class="row">
             <div class="col-3">
               <Container >
-              <img src={profilePic} id="profileCirclePic" alt='profile picture' />
+              <img src={profilePic} id="profileCirclePic" alt='profile' />
               </Container>
             </div>
             <div class="col-7">
