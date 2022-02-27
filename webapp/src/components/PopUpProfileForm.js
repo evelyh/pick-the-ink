@@ -1,18 +1,40 @@
-import React, { Component } from 'react'
+import React from 'react'
 import '../assets/css/userProfile.css'
+import { useState} from 'react';
 
 import {Form} from 'react-bootstrap'
+import { useForm} from "react-hook-form";
 
 
 function PopUpProfileForm(props) {
+    const {handleSubmit} = useForm();
+    
+    const [prev, setPrev] = useState({
+        firstName: props.info.firstName,
+        lastName: props.info.lastName,
+        userName: props.info.userName,
+        email: props.info.email,
+        birthday: props.info.birthday,
+        phoneNum : props.info.phoneNum,
+        style: props.info.style,
+        image: props.info.image,
+      });
+    
+    const onSubmit = (event) => {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        console.log(data);
+    }
+
     return (props.trigger) ? (
       <div className='popup'>
-          <div className='popupInner'>           
-            <Form>
+          <div className='popupInner'>  
+            <Form onSubmit={handleSubmit(onSubmit)} className='popupForm'>
                 <Form.Group className="mb-3" >
                     <Form.Label>First Name:</Form.Label>
                     <Form.Control type="text" 
                     value={props.info.firstName}
+                    initialValue="admin"
                     onChange={e => props.setInfo({...props.info, firstName:e.target.value})}/>
                 </Form.Group>
 
@@ -50,7 +72,11 @@ function PopUpProfileForm(props) {
                     value={props.info.phoneNum}
                     onChange={e => props.setInfo({...props.info, phoneNum:e.target.value})}/>
                 </Form.Group>
-                <button id="button-16" onClick={()=>props.setTrigger(false)}>close</button>
+                <button id="button-16" 
+                onClick={()=>{
+                    props.setInfo({...prev});
+                    props.setTrigger(false);}}>close</button>
+                <button id="button-16" type="submit" onClick={()=>props.setTrigger(false)}>confirm</button>
             </Form>
           </div>
       </div>

@@ -12,23 +12,32 @@
 
 .popup {
   position: fixed;
-  margin-top: 7%;
+  margin-top: 3%;
   margin-bottom: 10%;
-  margin-left: 20%;
+  margin-left: 25%;
   margin-right: 20%;
-  width: 60%;
-  height: 60%;
-  background-color: #dadce0;
+  width: 50%;
+  height: 80%;
+  background-color: whitesmoke;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.popup-inner {
+.popupInner {
   position: relative;
   padding: 32px;
   width: 100%;
   max-width: 640px;
+}
+
+.popupForm {
+  position: relative;
+  max-height: 500px;
+  padding: 32px;
+  width: 100%;
+  max-width: 640px;
+  overflow: scroll;
 }
 
 #button-16 {

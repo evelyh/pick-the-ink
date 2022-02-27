@@ -38,7 +38,7 @@ function UserProfile() {
         <div class="container">
           <div class="row">
             <div class="col-3">
-              <Container>
+              <Container >
               <img src={profilePic} id="profileCirclePic" alt='profile picture' />
               </Container>
             </div>
@@ -48,28 +48,38 @@ function UserProfile() {
                 
                 <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">Username:</label>
                 <div class="col-sm-7">
-                  <label for="colFormLabel" class="col-sm-2 col-form-label col-form-label">{values.userName}</label>
+                  <label for="colFormLabel" class="col-sm-6 col-form-label col-form-label">{values.userName}</label>
+                </div>
+
+                <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">First name:</label>
+                <div class="col-sm-7">
+                  <label for="colFormLabel" class="col-sm-6 col-form-label col-form-label">{values.firstName}</label>
+                </div>
+
+                <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">Last name:</label>
+                <div class="col-sm-7">
+                  <label for="colFormLabel" class="col-sm-6 col-form-label col-form-label">{values.lastName}</label>
                 </div>
                 
                 <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">Email:</label>
                 <div class="col-sm-7">
-                  <label for="colFormLabel" class="col-sm-2 col-form-label col-form-label">{values.email}</label>
+                  <label for="colFormLabel" class="col-sm-6 col-form-label col-form-label">{values.email}</label>
                 </div>
 
                 <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">Date of Birth:</label>
                 <div class="col-sm-7">
-                  <label for="colFormLabel" class="col-sm-2 col-form-label col-form-label">{values.birthday}</label>
+                  <label for="colFormLabel" class="col-sm-6 col-form-label col-form-label">{values.birthday}</label>
                 </div>
 
                 <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">Phone:</label>
                 <div class="col-sm-7">
-                  <label for="colFormLabel" class="col-sm-2 col-form-label col-form-label">{values.phoneNum}</label>
+                  <label for="colFormLabel" class="col-sm-6 col-form-label col-form-label">{values.phoneNum}</label>
                 </div>
 
                 <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">Favorite styles:</label>
                 <div class="col-sm-7">
                   {values.style.map((_, index) => (
-                    <li for="colFormLabel" class="col-5 col-form-label col-form-label">{values.style[index]}</li>
+                    <li for="colFormLabel" class="col-6 col-form-label col-form-label">{values.style[index]}</li>
                   ))}
                 </div>
               </div>
