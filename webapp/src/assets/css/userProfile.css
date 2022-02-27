@@ -69,3 +69,34 @@
   background-color: #202124;
   outline: none;
 }
+
+#button-appointment {
+  margin-top: 250px;
+  background-color: #f8f9fa;
+  border: 1px solid #f8f9fa;
+  border-radius: 4px;
+  color: #3c4043;
+  cursor: pointer;
+  font-size: 14px;
+  height: 36px;
+  line-height: 27px;
+  min-width: 54px;
+  padding: 0 16px;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: pre;
+}
+
+#button-appointment:hover {
+  border-color: #dadce0;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 1px 1px;
+  color: #202124;
+}
+
+#button-appointment:focus {
+  color: #f8f9fa;
+  background-color: #202124;
+  outline: none;
+}

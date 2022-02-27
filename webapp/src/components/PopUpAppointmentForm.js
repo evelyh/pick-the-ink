@@ -6,7 +6,7 @@ import {Form} from 'react-bootstrap'
 import { useForm} from "react-hook-form";
 
 
-function PopUpProfileForm(props) {
+function PopUpAppointmentForm(props) {
     const {handleSubmit} = useForm();
     
     const [prev] = useState({
@@ -83,4 +83,4 @@ function PopUpProfileForm(props) {
     ):"";
   }
 
-export default PopUpProfileForm
+export default PopUpAppointmentForm
