@@ -1,0 +1,62 @@
+#profileCirclePic {
+  position: absolute;
+  width: 150px;
+  margin-top: 50px;
+  border-radius: 50%;
+  border: solid white;
+}
+
+#profileContainer {
+  margin: 50px;
+}
+
+.popup {
+  position: fixed;
+  margin-top: 7%;
+  margin-bottom: 10%;
+  margin-left: 20%;
+  margin-right: 20%;
+  width: 60%;
+  height: 60%;
+  background-color: #dadce0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-inner {
+  position: relative;
+  padding: 32px;
+  width: 100%;
+  max-width: 640px;
+}
+
+#button-16 {
+  background-color: #f8f9fa;
+  border: 1px solid #f8f9fa;
+  border-radius: 4px;
+  color: #3c4043;
+  cursor: pointer;
+  font-size: 14px;
+  height: 36px;
+  line-height: 27px;
+  min-width: 54px;
+  padding: 0 16px;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: pre;
+}
+
+#button-16:hover {
+  border-color: #dadce0;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 1px 1px;
+  color: #202124;
+}
+
+#button-16:focus {
+  color: #f8f9fa;
+  background-color: #202124;
+  outline: none;
+}

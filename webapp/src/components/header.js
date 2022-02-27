@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
-import { Navbar, Nav} from 'react-bootstrap'
+import { Navbar, Nav, Container} from 'react-bootstrap'
 
 export class Header extends Component {
   render() {
     return (
       <div className='header'>
           <Navbar bg="light">
+            <Container>
             <Navbar.Brand>
                 Logo
             </Navbar.Brand>
@@ -19,6 +20,12 @@ export class Header extends Component {
                     <Nav.Link href="userprofile">Profile</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
+            <Navbar.Collapse className="justify-content-end">
+              <Navbar.Text>
+                Signed in as: <a href="userprofile">SpongeBob</a>
+              </Navbar.Text>
+            </Navbar.Collapse>
+            </Container>
           </Navbar>
       </div>
     )
