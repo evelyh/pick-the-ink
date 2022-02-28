@@ -29,52 +29,52 @@ function ArtistGallery() {
           <Header/>
         </div>
         <PopUpAppointmentForm info={values} setInfo = {setValues} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpAppointmentForm>
-        <div class="container">
-          <div class="row">
-            <div class="col-3">
+        <div className="container">
+          <div className="row">
+            <div className="col-3">
               <Container >
               <img src={profilePic} id="profileCirclePic"  alt='profile'  />
               <button id='button-appointment' onClick={()=> setButtonPopUp(true)}>Book an appointment</button>
               </Container>
             </div>
-            <div class="col-7">
+            <div className="col-7">
               <Container id="profileContainer">
-              <div class="row mb-3">
+              <div className="row mb-3">
                 
-                <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">Username:</label>
-                <div class="col-sm-7">
-                  <label for="colFormLabel" class="col-sm-6 col-form-label col-form-label">{values.userName}</label>
+                <label className="col-sm-3 col-form-label col-form-label">Username:</label>
+                <div className="col-sm-7">
+                  <label className="col-sm-6 col-form-label col-form-label">{values.userName}</label>
                 </div>
 
-                <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">First name:</label>
-                <div class="col-sm-7">
-                  <label for="colFormLabel" class="col-sm-6 col-form-label col-form-label">{values.firstName}</label>
+                <label className="col-sm-3 col-form-label col-form-label">First name:</label>
+                <div className="col-sm-7">
+                  <label className="col-sm-6 col-form-label col-form-label">{values.firstName}</label>
                 </div>
 
-                <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">Last name:</label>
-                <div class="col-sm-7">
-                  <label for="colFormLabel" class="col-sm-6 col-form-label col-form-label">{values.lastName}</label>
+                <label className="col-sm-3 col-form-label col-form-label">Last name:</label>
+                <div className="col-sm-7">
+                  <label className="col-sm-6 col-form-label col-form-label">{values.lastName}</label>
                 </div>
                 
-                <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">Email:</label>
-                <div class="col-sm-7">
-                  <label for="colFormLabel" class="col-sm-6 col-form-label col-form-label">{values.email}</label>
+                <label className="col-sm-3 col-form-label col-form-label">Email:</label>
+                <div className="col-sm-7">
+                  <label className="col-sm-6 col-form-label col-form-label">{values.email}</label>
                 </div>
 
-                <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">Date of Birth:</label>
-                <div class="col-sm-7">
-                  <label for="colFormLabel" class="col-sm-6 col-form-label col-form-label">{values.birthday}</label>
+                <label className="col-sm-3 col-form-label col-form-label">Date of Birth:</label>
+                <div className="col-sm-7">
+                  <label className="col-sm-6 col-form-label col-form-label">{values.birthday}</label>
                 </div>
 
-                <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">Phone:</label>
-                <div class="col-sm-7">
-                  <label for="colFormLabel" class="col-sm-6 col-form-label col-form-label">{values.phoneNum}</label>
+                <label className="col-sm-3 col-form-label col-form-label">Phone:</label>
+                <div className="col-sm-7">
+                  <label className="col-sm-6 col-form-label col-form-label">{values.phoneNum}</label>
                 </div>
 
-                <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">Favorite styles:</label>
-                <div class="col-sm-7">
+                <label className="col-sm-3 col-form-label col-form-label">Favorite styles:</label>
+                <div className="col-sm-7">
                   {values.style.map((_, index) => (
-                    <li for="colFormLabel" class="col-6 col-form-label col-form-label">{values.style[index]}</li>
+                    <li className="col-sm-6 col-form-label col-form-label" key={index}>{values.style[index]}</li>
                   ))}
                 </div>
               </div>
