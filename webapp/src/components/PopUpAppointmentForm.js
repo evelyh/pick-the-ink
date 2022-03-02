@@ -13,7 +13,6 @@ function PopUpAppointmentForm(props) {
     }
 
     const [ form, setForm ] = useState({})
-    const [ errors, setErrors ] = useState({})
 
     const setField = (field, value) => {
         setForm({

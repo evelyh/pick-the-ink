@@ -1,10 +1,11 @@
 import React from 'react'
 import { Header } from '../components/Header'
-import { Container } from 'react-bootstrap'
+import { Container} from 'react-bootstrap'
 import profilePic from '../assets/img/profilepic.jpg'
 import '../assets/css/userProfile.css'
 import PopUpAppointmentForm from '../components/PopUpAppointmentForm'
 import { useState } from 'react'
+import { Card } from 'reactstrap'
 
 
 function ArtistProfile() {
@@ -36,10 +37,10 @@ function ArtistProfile() {
         <div className="container">
           <div className="row">
             <div className="col-3">
-              <Container >
+              <Card >
               <img src={profilePic} id="profileCirclePic"  alt='profile'  />
+              </Card>
               <button id='button-appointment' onClick={()=> setButtonPopUp(true)}>Book an appointment</button>
-              </Container>
             </div>
             <div className="col-7">
               <Container id="profileContainer">

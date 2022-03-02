@@ -5,6 +5,7 @@ import profilePic from '../assets/img/profilepic.jpg'
 import '../assets/css/userProfile.css'
 import PopUpProfileForm from '../components/PopUpProfileForm'
 import { useState } from 'react'
+import { Card } from 'reactstrap'
 
 
 function UserProfile() {
@@ -32,9 +33,9 @@ function UserProfile() {
         <div className="container">
           <div className="row">
             <div className="col-3">
-              <Container >
+              <Card>
               <img src={profilePic} id="profileCirclePic" alt='profile' />
-              </Container>
+              </Card>
             </div>
             <div className="col-7">
               <Container id="profileContainer">

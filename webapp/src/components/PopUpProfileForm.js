@@ -1,6 +1,7 @@
 import React from 'react'
 import '../assets/css/userProfile.css'
 import { useState} from 'react';
+import { Card, CardImg, CardBody, CardTitle, CardText, Button } from 'reactstrap';
 
 import {Form} from 'react-bootstrap'
 import { useForm} from "react-hook-form";
@@ -27,7 +28,7 @@ function PopUpProfileForm(props) {
     }
 
     return (props.trigger) ? (
-      <div className='popup'>
+      <div className='popup' >
           <div className='popupInner'>  
             <Form onSubmit={handleSubmit(onSubmit)} className='popupForm'>
                 <Form.Group className="mb-3" >
