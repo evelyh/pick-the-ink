@@ -16,6 +16,7 @@ export class Header extends Component {
                 <Nav>
                     <Nav.Link href="/">Explore</Nav.Link>
                     <Nav.Link href="managebooking">Manage Booking</Nav.Link>
+                    <Nav.Link href="calendar">Calendar</Nav.Link>
                     <Nav.Link href="chat">Chat</Nav.Link>
                     <Nav.Link href="userprofile">Profile</Nav.Link>
                 </Nav>
