@@ -31,3 +31,9 @@ label {
     float: left;
     padding-right: 10px;
 }
+
+.passwordToggle {
+    cursor: pointer;
+    float: right;
+    font-size: smaller;
+}

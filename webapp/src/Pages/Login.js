@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Header from "../components/header";
-import LoginSignupToggle from "../components/LoginSignupToggle";
+import NavTabTwo from "../components/NavTabTwo";
 import { Navigate } from "react-router-dom";
 import {Alert, Button, Input, Label} from "reactstrap";
 // styles
@@ -13,6 +13,8 @@ export class Login extends Component {
     password: "",
     valid: null,
     forgotPassword: false,
+    passwordType: "password",
+    showPassword: false,
   }
 
   handleInputChange = (event) => {
@@ -65,6 +67,10 @@ export class Login extends Component {
     }
   }
 
+  togglePassword = () => {
+    this.state.showPassword = this.state.showPassword !== true;
+  }
+
   render() {
     return (
       <div>
@@ -74,7 +80,14 @@ export class Login extends Component {
 
         <div className={"login-form-container"}>
 
-          <LoginSignupToggle isLogin={true} isSignUp={false} />
+          <NavTabTwo
+            leftLink={"/login"}
+            rightLink={"/signup"}
+            leftActive={true}
+            rightActive={false}
+            leftText={"Login"}
+            rightText={"Sign Up"}
+          />
 
           <form onSubmit={ this.checkCredentials }>
             <div className={"input-container"}>
@@ -90,17 +103,23 @@ export class Login extends Component {
               <Label for={"password"}>Password</Label>
               <Input value={ this.state.password }
                      onChange={ this.handleInputChange }
-                     type="password"
+                     type={ this.state.showPassword ? "text" : "password" }
                      name="password"
                      id={"password"}
                      placeholder="Password"
                      required={true}
+                     className={"password"}
               />
+              <Button className={"btn-round btn-icon passwordToggle"}
+                      onClick={ this.togglePassword }
+                      color={"neutral"}
+                      size={"sm"}>show</Button>
             </div>
 
             <div className={"button-container"}>
               <Button type={"submit"} onClick={ this.checkCredentials }> Login </Button>
-              <Button onClick={ this.forgetPassword } className="btn-link" size={"sm"}> Forgot Password? </Button>
+              {/* todo: implement forget password*/}
+              {/*<Button onClick={ this.forgetPassword } className="btn-link" size={"sm"}> Forgot Password? </Button>*/}
             </div>
           </form>
 

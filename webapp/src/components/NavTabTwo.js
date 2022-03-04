@@ -2,21 +2,25 @@ import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import {Nav, NavItem, NavLink} from "reactstrap";
 
-export class LoginSignupToggle extends Component {
+export class NavTabTwo extends Component {
   render() {
 
-    const { isLogin,
-            isSignUp } = this.props;
+    const { leftLink,
+            rightLink,
+            leftActive,
+            rightActive,
+            leftText,
+            rightText } = this.props;
 
     return (
       <div className="nav-tabs-navigation">
         <div className="nav-tabs-wrapper">
           <Nav tabs>
             <NavItem>
-              <NavLink href="/login" active={ isLogin }>Login</NavLink>
+              <NavLink href={ leftLink } active={ leftActive }>{ leftText }</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/signup" active={ isSignUp }>Sign Up</NavLink>
+              <NavLink href={ rightLink } active={ rightActive }>{ rightText }</NavLink>
             </NavItem>
           </Nav>
         </div>
@@ -25,4 +29,4 @@ export class LoginSignupToggle extends Component {
   }
 }
 
-export default LoginSignupToggle
+export default NavTabTwo

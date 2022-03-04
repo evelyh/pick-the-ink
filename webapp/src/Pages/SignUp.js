@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Header from "../components/header";
-import LoginSignupToggle from "../components/LoginSignupToggle";
+import NavTabTwo from "../components/NavTabTwo";
 import { Navigate } from "react-router-dom";
 import {Button, Input, Label} from "reactstrap";
 
@@ -17,7 +17,8 @@ export class Login extends Component {
     dob: "",
     username: "",
     password: "",
-    success: false
+    success: false,
+    showPassword: false,
   }
 
   handleInputChange = (event) => {
@@ -31,14 +32,12 @@ export class Login extends Component {
 
   signUserUp = (event) => {
 
-    event.preventDefault();
-
     // todo: connect to backend
     // sign user up with the info given
     console.log("here");
 
     // set state if backend sends back 201
-    if (this.state.username === "user"){
+    if (this.state.username !== ""){
       this.setState({
         success: true
       });
@@ -52,6 +51,10 @@ export class Login extends Component {
     }
   }
 
+  togglePassword = () => {
+    this.state.showPassword = this.state.showPassword !== true;
+  }
+
   render() {
     return (
       <div>
@@ -61,7 +64,14 @@ export class Login extends Component {
 
         <div className={"login-form-container"}>
 
-          <LoginSignupToggle isLogin={false} isSignUp={true} />
+          <NavTabTwo
+            leftLink={"/login"}
+            rightLink={"/signup"}
+            leftActive={false}
+            rightActive={true}
+            leftText={"Login"}
+            rightText={"Sign Up"}
+          />
 
           <form onSubmit={ this.signUserUp }>
             <div className={"input-container"}>
@@ -119,6 +129,7 @@ export class Login extends Component {
                      name="dob"
                      id={"dob"}
                      required={true}
+                     min={ new Date().toISOString().split("T")[0] }
               />
 
               <Label for={"username"}>Username</Label>
@@ -133,12 +144,16 @@ export class Login extends Component {
               <Label for={"password"}>Password</Label>
               <Input value={ this.state.password }
                      onChange={ this.handleInputChange }
-                     type="password"
+                     type={ this.state.showPassword ? "text" : "password" }
                      name="password"
                      id={"password"}
                      placeholder="Password"
                      required={true}
               />
+              <Button className={"btn-round btn-icon passwordToggle"}
+                      onClick={ this.togglePassword }
+                      color={"neutral"}
+                      size={"sm"}>show</Button>
             </div>
 
             <div className={"button-container"}>
