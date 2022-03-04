@@ -76,7 +76,7 @@ function PopUpProfileForm(props) {
                 <button id="button-16" 
                 onClick={()=>{
                     props.setInfo({...prev});
-                    props.setTrigger(false);}}>close</button>
+                    props.setTrigger(false);}}>cancel</button>
                 <button id="button-16" type="submit" onClick={()=>props.setTrigger(false)}>confirm</button>
             </Form>
           </div>

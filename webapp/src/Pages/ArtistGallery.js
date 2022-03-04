@@ -1,6 +1,6 @@
 import React from 'react'
 import { Header } from '../components/header'
-import { Container } from 'react-bootstrap'
+import { Card, Container } from 'react-bootstrap'
 import profilePic from '../assets/img/profilepic.jpg'
 import pic1 from '../assets/img/gallery_pic1.jpg'
 import pic2 from '../assets/img/gallery_pic2.jpg'
@@ -43,10 +43,10 @@ function ArtistGallery() {
           <div className="row">
             <div className="col-3">
               <Container >
-              <img src={profilePic} id="profileCirclePic"  alt='profile'  />
-              <button id='button-appointment' onClick={()=> setButtonPopUp(true)}>Book an appointment</button>
-              <label className='infoLine'>Username: {values.userName}</label>
-              <label className='infoLine'>Location: {values.homeLocation}</label>
+                <img src={profilePic} id="profileCirclePic"  alt='profile'  />
+                <button id='button-appointment' onClick={()=> setButtonPopUp(true)}>Book an appointment</button>
+                <label className='infoLine'>Username: {values.userName}</label>
+                <label className='infoLine'>Location: {values.homeLocation}</label>
               </Container>
             </div>
             <div className='col-7'>

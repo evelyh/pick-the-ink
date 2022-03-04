@@ -1,8 +1,10 @@
 import React from 'react'
-import { Header } from '../components/Header'
+import { Header } from '../components/header'
 import { Container} from 'react-bootstrap'
 import profilePic from '../assets/img/profilepic.jpg'
 import '../assets/css/userProfile.css'
+import '../assets/css/artistsGallery.css'
+import PopUpProfileForm from '../components/PopUpProfileForm'
 import PopUpAppointmentForm from '../components/PopUpAppointmentForm'
 import { useState } from 'react'
 import { Card } from 'reactstrap'
@@ -33,14 +35,12 @@ function ArtistProfile() {
         <div>
           <Header/>
         </div>
-        <PopUpAppointmentForm info={values} setInfo = {setValues} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpAppointmentForm>
+        <PopUpProfileForm info={values} setInfo = {setValues} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpProfileForm>
         <div className="container">
           <div className="row">
-            <div className="col-3">
-              <Card >
-              <img src={profilePic} id="profileCirclePic"  alt='profile'  />
-              </Card>
-              <button id='button-appointment' onClick={()=> setButtonPopUp(true)}>Book an appointment</button>
+            <div className="col-3">  
+              <img src={profilePic} id="profileCirclePic"  alt='profile'/>
+              {/* <button id='button-appointment' onClick={()=> setButtonPopUp(true)}>Book an appointment</button> */}
             </div>
             <div className="col-7">
               <Container id="profileContainer">
@@ -76,16 +76,6 @@ function ArtistProfile() {
                   <label className="col-sm-6 col-form-label col-form-label">{values.phoneNum}</label>
                 </div>
 
-                <label className="col-sm-3 col-form-label col-form-label">Following:</label>
-                <div className="col-sm-7">
-                  <label className="col-sm-6 col-form-label col-form-label">{values.following}</label>
-                </div>
-
-                <label className="col-sm-3 col-form-label col-form-label">Followers:</label>
-                <div className="col-sm-7">
-                  <label className="col-sm-6 col-form-label col-form-label">{values.followers}</label>
-                </div>
-
                 <label className="col-sm-3 col-form-label col-form-label">Home Location:</label>
                 <div className="col-sm-7">
                   <label className="col-sm-6 col-form-label col-form-label">{values.homeLocation}</label>
@@ -103,6 +93,16 @@ function ArtistProfile() {
                   {values.style.map((_, index) => (
                     <li className="col-sm-6 col-form-label col-form-label" key={index}>{values.style[index]}</li>
                   ))}
+                </div>
+
+                <label className="col-sm-3 col-form-label col-form-label">Following:</label>
+                <div className="col-sm-7">
+                  <label className="col-sm-6 col-form-label col-form-label">{values.following}</label>
+                </div>
+
+                <label className="col-sm-3 col-form-label col-form-label">Followers:</label>
+                <div className="col-sm-7">
+                  <label className="col-sm-6 col-form-label col-form-label">{values.followers}</label>
                 </div>
               </div>
               <button id='button-16' onClick={()=> setButtonPopUp(true)}>Edit your profile</button>
