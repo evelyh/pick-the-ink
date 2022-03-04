@@ -14,6 +14,7 @@ import Login from './Pages/Login'
 import ManageBooking from './Pages/ManageBooking'
 import SignUp from './Pages/SignUp'
 import UserProfile from './Pages/UserProfile'
+import Calendar from 'Pages/Calendar';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/userprofile" element={<UserProfile />} />
         <Route path="/artistprofile" element={<ArtistProfile />} />
         <Route path="/artistgallery" element={<ArtistGallery />}/>
+        <Route path="/calendar" element={<Calendar />}/>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
       </Routes>

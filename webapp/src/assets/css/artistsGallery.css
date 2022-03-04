@@ -1,0 +1,38 @@
+.basicInfo{
+    position: relative;
+    width: 130px;
+}
+
+.infoLine{
+    position: relative;
+    margin-top: 20px;
+}
+
+.galleryPics{
+    position: relative;
+    margin-top: 50px;
+    margin-left: 100px;
+    width: 300px;
+    height: 300px;
+    border: 1px solid #DAD5D6;
+}
+
+.header{
+    position: relative;
+}
+
+#button-addPic{
+    position: fixed;
+    z-Index: 1;
+    bottom: 50px;
+    right: 50px;
+    background-color:rgb(160, 209, 211);
+    border: 1px solid #ffffff;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    text-align: center;
+    display: inline-block;
+    font-size: 30px;
+    color: white;
+}

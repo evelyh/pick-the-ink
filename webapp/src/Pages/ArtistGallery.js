@@ -2,7 +2,10 @@ import React from 'react'
 import { Header } from '../components/header'
 import { Container } from 'react-bootstrap'
 import profilePic from '../assets/img/profilepic.jpg'
+import pic1 from '../assets/img/gallery_pic1.jpg'
+import pic2 from '../assets/img/gallery_pic2.jpg'
 import '../assets/css/userProfile.css'
+import '../assets/css/artistsGallery.css'
 import PopUpAppointmentForm from '../components/PopUpAppointmentForm'
 import { useState } from 'react'
 
@@ -16,8 +19,13 @@ function ArtistGallery() {
       email: "spongebob@gmail.com",
       birthday: "1999-12-13",
       phoneNum : "1234567890",
+      following: 309,
+      followers: 622,
+      homeLocation: "Bikini Bottom",
+      artStyle: ["Blackwork", "Watercolor"], 
       style: ["Blackwork", "Watercolor"],
-      image: "../images/profilepic.jpg"
+      image: "../images/profilepic.jpg",
+      hasShadow: false,
     });
 
     const [buttonPopUp, setButtonPopUp] = useState(false);
@@ -28,58 +36,25 @@ function ArtistGallery() {
         <div>
           <Header/>
         </div>
+        <button id='button-addPic' onClick={()=> setButtonPopUp(true)}>+</button>
+
         <PopUpAppointmentForm info={values} setInfo = {setValues} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpAppointmentForm>
-        <div class="container">
-          <div class="row">
-            <div class="col-3">
+        <div className="container">
+          <div className="row">
+            <div className="col-3">
               <Container >
               <img src={profilePic} id="profileCirclePic"  alt='profile'  />
               <button id='button-appointment' onClick={()=> setButtonPopUp(true)}>Book an appointment</button>
+              <label className='infoLine'>Username: {values.userName}</label>
+              <label className='infoLine'>Location: {values.homeLocation}</label>
               </Container>
             </div>
-            <div class="col-7">
-              <Container id="profileContainer">
-              <div class="row mb-3">
-                
-                <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">Username:</label>
-                <div class="col-sm-7">
-                  <label for="colFormLabel" class="col-sm-6 col-form-label col-form-label">{values.userName}</label>
-                </div>
-
-                <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">First name:</label>
-                <div class="col-sm-7">
-                  <label for="colFormLabel" class="col-sm-6 col-form-label col-form-label">{values.firstName}</label>
-                </div>
-
-                <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">Last name:</label>
-                <div class="col-sm-7">
-                  <label for="colFormLabel" class="col-sm-6 col-form-label col-form-label">{values.lastName}</label>
-                </div>
-                
-                <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">Email:</label>
-                <div class="col-sm-7">
-                  <label for="colFormLabel" class="col-sm-6 col-form-label col-form-label">{values.email}</label>
-                </div>
-
-                <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">Date of Birth:</label>
-                <div class="col-sm-7">
-                  <label for="colFormLabel" class="col-sm-6 col-form-label col-form-label">{values.birthday}</label>
-                </div>
-
-                <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">Phone:</label>
-                <div class="col-sm-7">
-                  <label for="colFormLabel" class="col-sm-6 col-form-label col-form-label">{values.phoneNum}</label>
-                </div>
-
-                <label for="colFormLabel" class="col-sm-3 col-form-label col-form-label">Favorite styles:</label>
-                <div class="col-sm-7">
-                  {values.style.map((_, index) => (
-                    <li for="colFormLabel" class="col-6 col-form-label col-form-label">{values.style[index]}</li>
-                  ))}
-                </div>
+            <div className='col-7'>
+              <div className='header'>
+                <h3>My Gallery</h3>
               </div>
-              <button id='button-16' onClick={()=> setButtonPopUp(true)}>Edit your profile</button>
-              </Container>
+              <img src={pic1} className = "galleryPics"  alt='profile'  />
+              <img src={pic2} className = "galleryPics"  alt='profile'  />
             </div>
           </div>
         </div>

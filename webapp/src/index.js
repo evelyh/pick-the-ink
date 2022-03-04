@@ -8,6 +8,7 @@ import reportWebVitals from './reportWebVitals';
 import "bootstrap/scss/bootstrap.scss";
 import "assets/scss/paper-kit.scss?v=1.3.0";
 
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
