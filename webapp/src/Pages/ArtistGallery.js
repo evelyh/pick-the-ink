@@ -1,6 +1,6 @@
 import React from 'react'
-import { Header } from '../components/header'
-import { Card, Container } from 'react-bootstrap'
+import { Header } from '../components/Header'
+import { Container } from 'react-bootstrap'
 import profilePic from '../assets/img/profilepic.jpg'
 import pic1 from '../assets/img/gallery_pic1.jpg'
 import pic2 from '../assets/img/gallery_pic2.jpg'
