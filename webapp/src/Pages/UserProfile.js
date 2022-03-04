@@ -22,6 +22,7 @@ function UserProfile() {
     });
 
     const [buttonPopUp, setButtonPopUp] = useState(false);
+    const [success,setSuccess] = useState(false);
 
 
     return (
@@ -29,7 +30,7 @@ function UserProfile() {
         <div>
           <Header/>
         </div>
-        <PopUpProfileForm info={values} setInfo = {setValues} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpProfileForm>
+        <PopUpProfileForm info={values} setInfo = {setValues} success={success} setSuccess={setSuccess} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpProfileForm>
         <div className="container">
           <div className="row">
             <div className="col-3">
