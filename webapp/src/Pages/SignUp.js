@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Header from "../components/header";
+import Header from "../components/Header";
 import NavTabTwo from "../components/NavTabTwo";
 import { Navigate } from "react-router-dom";
 import {Button, Input, Label} from "reactstrap";
