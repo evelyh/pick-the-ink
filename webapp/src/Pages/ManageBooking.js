@@ -3,45 +3,107 @@ import Header from "../components/header";
 import NavTabTwo from "../components/NavTabTwo";
 import "../assets/css/managebooking.css"
 import {Alert, Button, Modal} from "reactstrap";
-import PopUpBookingDetails from "../components/PopUpBookingDetails";
-import PopUpConfirmBooking from "../components/PopUpConfirmBooking";
-import PopUpCancelBooking from "../components/PopUpCancelBooking";
+import BookingRow from "../components/BookingRow";
+import {uid} from "react-uid";
 
 export class ManageBooking extends Component {
 
   state = {
-    userType: 0, // 0 = customer; 1 = artist;
-    showBookingDetails: false,
-    showConfirmBooking: false,
+    userType: 0, // 0 = artist; 1 = customer;
     bookingConfirmed: false,
-    showCancelBooking: false,
     bookingCancelled: false,
+    durationSent: false,
+    datetimeSent: false,
+    pendingBookings: [
+      {
+        firstName: "Sailor",
+        lastName: "Moon",
+        email: "champion.of.justice@moon.com",
+        dob: "1992-6-30",
+        phone: "(645) 634-8235",
+        interestedInGetting: "Custom Design",
+        details: "On behalf of the moon, I will right wrongs and triumph over evil, and that means you!",
+        size: "3cm x 7cm",
+        referencePic: "no pic",
+        otherDetails: "n/a",
+        bookingMonth: "",
+        bookingDate: "",
+        bookingTime: "Pending",
+        pendingDuration: true,
+        pendingConfirmation: false,
+        pendingDateTime: false,
+      },
+      {
+        firstName: "Tuxedo",
+        lastName: "Mask",
+        email: "tux.mask@moon.com",
+        dob: "1992-6-30",
+        phone: "(645) 634-8235",
+        interestedInGetting: "Custom Design",
+        details: "Tuxedo La Smoking Bomber!",
+        size: "3cm x 7cm",
+        referencePic: "no pic",
+        otherDetails: "n/a",
+        bookingMonth: "Mar",
+        bookingDate: "26",
+        bookingTime: "14:00 - 16:00",
+        pendingDuration: false,
+        pendingConfirmation: true,
+        pendingDateTime: false,
+      }
+    ]
   }
 
-  confirmBooking = () => {
+  sendDateTime = () => {
     this.setState({
-      showConfirmBooking: !this.state.showConfirmBooking,
-      bookingConfirmed: true,
-    })
-
+      datetimeSent: true,
+    });
     setTimeout(() => {
       this.setState({
-        bookingConfirmed: false
+        datetimeSent: false,
       })
-    }, 2000)
+    }, 2000);
   }
 
-  cancelBooking = () => {
+  sendDuration = () => {
     this.setState({
-      showCancelBooking: !this.state.showCancelBooking,
-      bookingCancelled: true,
-    })
-
+      durationSent: true,
+    });
     setTimeout(() => {
       this.setState({
-        bookingCancelled: false
+        durationSent: false,
       })
-    }, 2000)
+    }, 2000);
+  }
+
+  removeRow = (mode, pendingBooking) => {
+
+    const filteredBookings = this.state.pendingBookings.filter((booking) => {
+      return booking !== pendingBooking;
+    });
+
+    if (mode === "confirm"){
+      this.setState({
+        bookingConfirmed: true,
+        pendingBookings: filteredBookings,
+      });
+      setTimeout(() => {
+        this.setState({
+          bookingConfirmed: false,
+        })
+      }, 2000);
+    }
+    else if (mode === "cancel"){
+      this.setState({
+        bookingCancelled: true,
+        pendingBookings: filteredBookings,
+      });
+      setTimeout(() => {
+        this.setState({
+          bookingCancelled: false,
+        })
+      }, 2000);
+    }
   }
 
   render() {
@@ -50,6 +112,8 @@ export class ManageBooking extends Component {
         <Header/>
 
         <div className={"body"}>
+          <h1 className={"page-head"}>Manage Booking</h1>
+
           <NavTabTwo
             leftLink={"/managebooking"}
             rightLink={"/managebooking-confirm"}
@@ -66,60 +130,35 @@ export class ManageBooking extends Component {
               <th>{ this.state.userType === 0 ? "Customer" : "Artist"}</th>
               <th>Actions</th>
             </tr>
-            <tr>
-              <td><span className={"month"}>Mar</span><br/><span className={"date"}>22</span></td>
-              <td><span className={"cell-details"}>Pending</span></td>
-              <td><span className={"cell-details"}>Sailor Moon</span></td>
-              <td><i className={"icons nc-icon nc-alert-circle-i"}/>
-                <i className={"icons nc-icon nc-settings"}/>
-                <i className={"icons nc-icon nc-simple-remove"}/>
-              </td>
-            </tr>
-            <tr>
-              <td><span className={"month"}>Mar</span><br/><span className={"date"}>26</span></td>
-              <td><span className={"cell-details"}>14:00 - 16:00</span></td>
-              <td><span className={"cell-details"}>Tuxedo Mask</span></td>
-              <td><i className={"icons nc-icon nc-alert-circle-i"} onClick={() => this.setState({showBookingDetails: true})}/>
-                <i className={"icons nc-icon nc-settings"}/>
-                <i className={"icons nc-icon nc-check-2"} onClick={() => this.setState({showConfirmBooking: true})}/>
-                <i className={"icons nc-icon nc-simple-remove"} onClick={() => this.setState({showCancelBooking: true})}/>
-              </td>
-            </tr>
+
+            { this.state.pendingBookings.map((pendingBooking) => {
+              return(
+                <BookingRow
+                  key={uid(pendingBooking)}
+                  confirmedBooking={pendingBooking}
+                  userType={this.state.userType}
+                  removeRow={(mode) => this.removeRow(mode, pendingBooking)}
+                  sendDuration={() => this.sendDuration()}
+                  sendDateTime={() => this.sendDateTime()}
+                />
+              )
+            }) }
           </table>
-
-          <PopUpBookingDetails
-            firstName={ "Tuxedo" }
-            lastName={ "Mask" }
-            email={ "tux.mask@email.com" }
-            dob={ "1972-8-3" }
-            phone={ "(123) 456-3554" }
-            interestedInGetting={ "Custom Design" }
-            details={ "Tuxedo La Smoking Bomber!" }
-            size={ "5cm x 5cm" }
-            referencePic={ "..some pic.." }
-            otherDetails={ "n/a" }
-            trigger={this.state.showBookingDetails}
-            setTrigger={() => this.setState({showBookingDetails: !this.state.showBookingDetails})}
-          />
-
-          <PopUpConfirmBooking
-            trigger={this.state.showConfirmBooking}
-            setTrigger={() => this.setState({showConfirmBooking: !this.state.showConfirmBooking})}
-            confirmBooking={this.confirmBooking}
-          />
 
           <Alert color={"success"} isOpen={this.state.bookingConfirmed}>
             Booking confirmed!
           </Alert>
 
-          <PopUpCancelBooking
-            trigger={this.state.showCancelBooking}
-            setTrigger={() => this.setState({showCancelBooking: !this.state.showCancelBooking})}
-            cancelBooking={this.cancelBooking}
-          />
-
           <Alert color={"danger"} isOpen={this.state.bookingCancelled}>
             Booking cancelled!
+          </Alert>
+
+          <Alert color={"success"} isOpen={this.state.durationSent}>
+            Duration Sent!
+          </Alert>
+
+          <Alert color={"success"} isOpen={this.state.datetimeSent}>
+            Date/time sent! Wait for confirmation...
           </Alert>
 
         </div>

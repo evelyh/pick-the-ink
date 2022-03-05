@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import Header from "../components/header";
 import NavTabTwo from "../components/NavTabTwo";
 import "../assets/css/managebooking.css"
-import ConfirmedBookingTable from "../components/ConfirmedBookingTable";
+import BookingRow from "../components/BookingRow";
+import {uid} from "react-uid";
+import {Alert} from "reactstrap";
 
 export class ManageBookingConfirm extends Component {
 
@@ -23,6 +25,8 @@ export class ManageBookingConfirm extends Component {
         bookingMonth: "Mar",
         bookingDate: "10",
         bookingTime: "15:00 - 18:00",
+        pendingConfirmation: false,
+        pendingDuration: false,
       },
       {
         firstName: "Patrick",
@@ -38,24 +42,40 @@ export class ManageBookingConfirm extends Component {
         bookingMonth: "Mar",
         bookingDate: "12",
         bookingTime: "10:00 - 12:00",
+        pendingConfirmation: false,
+        pendingDuration: false,
       }
-    ]
+    ],
+    bookingCancelled: false,
   }
 
-  removeRow = () => {
-    console.log("here");
+  removeRow = (confirmedBooking) => {
+
+    const filteredBookings = this.state.confirmedBookings.filter((booking) => {
+      return booking !== confirmedBooking;
+    });
+
+    this.setState({
+      bookingCancelled: true,
+      confirmedBookings: filteredBookings,
+    });
+
+    setTimeout(() => {
+      this.setState({
+        bookingCancelled: false
+      })
+    }, 2000);
   }
 
   render() {
-
-    console.log("page")
-    console.log(this.state.confirmedBookings);
 
     return (
       <div>
         <Header/>
 
         <div className={"body"}>
+          <h1 className={"page-head"}>Manage Booking</h1>
+
           <NavTabTwo
             leftLink={"/managebooking"}
             rightLink={"/managebooking-confirm"}
@@ -65,37 +85,30 @@ export class ManageBookingConfirm extends Component {
             rightText={"Confirmed"}
           />
 
-          {/*<table>*/}
-          {/*  <tr>*/}
-          {/*    <th className={"date-head"}>Date</th>*/}
-          {/*    <th className={"time-head"}>Time</th>*/}
-          {/*    <th>{ this.state.userType === 0 ? "Customer" : "Artist"}</th>*/}
-          {/*    <th>Actions</th>*/}
-          {/*  </tr>*/}
-          {/*  <tr>*/}
-          {/*    <td><span className={"month"}>Mar</span><br/><span className={"date"}>10</span></td>*/}
-          {/*    <td><span className={"cell-details"}>10:00 - 12:00</span></td>*/}
-          {/*    <td><span className={"cell-details"}>Patrick Star</span></td>*/}
-          {/*    <td><i className={"icons nc-icon nc-alert-circle-i"}/>*/}
-          {/*        <i className={"icons nc-icon nc-settings"}/>*/}
-          {/*        <i className={"icons nc-icon nc-simple-remove"}/>*/}
-          {/*    </td>*/}
-          {/*  </tr>*/}
-          {/*  <tr>*/}
-          {/*    <td><span className={"month"}>Mar</span><br/><span className={"date"}>12</span></td>*/}
-          {/*    <td><span className={"cell-details"}>15:00 - 18:00</span></td>*/}
-          {/*    <td><span className={"cell-details"}>Squidward Tentacles</span></td>*/}
-          {/*    <td><i className={"icons nc-icon nc-alert-circle-i"}/>*/}
-          {/*      <i className={"icons nc-icon nc-settings"}/>*/}
-          {/*      <i className={"icons nc-icon nc-simple-remove"}/>*/}
-          {/*    </td>*/}
-          {/*  </tr>*/}
-          {/*</table>*/}
+          <table>
+            <tr>
+              <th className={"date-head"}>Date</th>
+              <th className={"time-head"}>Time</th>
+              <th>{ this.state.userType === 0 ? "Customer" : "Artist"}</th>
+              <th>Actions</th>
+            </tr>
 
-          <ConfirmedBookingTable
-            confirmedBookings={this.state.confirmedBookings}
-            removeRow={this.removeRow}
-          />
+            { this.state.confirmedBookings.map((confirmedBooking) => {
+              return(
+                <BookingRow
+                  key={uid(confirmedBooking)}
+                  confirmedBooking={confirmedBooking}
+                  userType={this.state.userType}
+                  removeRow={() => this.removeRow(confirmedBooking)}
+                />
+              )
+            }) }
+
+          </table>
+
+          <Alert color={"danger"} isOpen={this.state.bookingCancelled}>
+            Booking cancelled!
+          </Alert>
 
         </div>
       </div>
