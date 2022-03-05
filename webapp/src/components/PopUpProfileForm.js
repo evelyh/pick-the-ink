@@ -18,6 +18,10 @@ function PopUpProfileForm(props) {
         phoneNum : props.info.phoneNum,
         style: props.info.style,
         image: props.info.image,
+        isArtist: props.info.isArtist,
+        followers:props.info.followers,
+        following:props.info.following,
+        comment:props.info.comment
       });
 
 
@@ -80,9 +84,13 @@ function PopUpProfileForm(props) {
 
                 <Form.Group className="mb-3" >
                     <Form.Label>Username:</Form.Label>
+                    <Form.Text id="formUsername">(cannot have empty spaces in username)</Form.Text>
                     <Form.Control type="text" 
                     value={props.info.userName}
-                    onChange={e => props.setInfo({...props.info, userName:e.target.value})}
+                    onChange={e => {
+                        props.setInfo({...props.info, userName:e.target.value.replace(/\s/g, '')});
+                    }
+                        }
                     required/>
                     <Form.Control.Feedback type="invalid">
                     Please enter a username.
@@ -129,6 +137,14 @@ function PopUpProfileForm(props) {
                     <Multiselect options={option} displayValue="name"
                         onSelect={e => props.setInfo({...props.info, style:e})}
                         onRemove={e => props.setInfo({...props.info, style:e})}></Multiselect>
+                </Form.Group>
+
+                <Form.Group className="mb-3" >
+                    <Form.Label>Comment:</Form.Label>
+                    <Form.Control type="text" 
+                    value={props.info.comment}
+                    onChange={e => props.setInfo({...props.info, comment:e.target.value})}/>
+                    
                 </Form.Group>
                 
                 <button id="button-16" 
