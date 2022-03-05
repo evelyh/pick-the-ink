@@ -31,7 +31,8 @@ function PopUpAppointmentForm(props) {
               
                   <Form.Group className="mb-3" >
                       <Form.Label>First Name:</Form.Label>
-                      <Form.Control type="text" onChange={ e => setField('userName', e.target.value) }/>
+                      <Form.Control type="text"
+                      onChange={ e => setField('firstName', e.target.value) }/>
                   </Form.Group>
   
                   <Form.Group className="mb-3" >

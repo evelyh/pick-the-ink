@@ -16,25 +16,28 @@ import { Card, CardBody, CardImg,CardText,
   UncontrolledDropdown} from 'reactstrap'
 
 
-function UserProfile() {
+function UserProfileGary() {
 
     const [values, setValues] = useState({
-      firstName: "Patrick",
-      lastName: "Sea-Star",
-      userName: "PatrickYahhh",
-      email: "patrick@gmail.com",
+      firstName: "Gray",
+      lastName: "The Snail",
+      userName: "Gary",
+      email: "garythesnail@gmail.com",
       birthday: "1999-12-13",
       phoneNum : "1234567890",
-      style: [{name: 'Blackwork', id: 1},{name: 'Watercolor', id: 2}],
-      image: "../images/patrick.jpg",
+      style: [{name: 'Watercolor', id: 9},
+      {name:'Lettering',id: 10},
+      {name:'Geometric',id: 11},
+      {name:'Surrealism',id: 12}],
+      image: "../images/gary.jpg",
       isArtist: false,
-      followers:1,
-      following:2,
-      comment:"I can't see my forehead!"
+      followers:0,
+      following:1,
+      comment:"I want food!"
     });
     const [buttonPopUp, setButtonPopUp] = useState(false);
     const [success,setSuccess] = useState(false);
-    const [isUser,_] = useState(true);
+    const [isUser,_] = useState(false);
 
     const onDismiss = ()=>{
       setSuccess(false);
@@ -51,7 +54,7 @@ function UserProfile() {
             <div className="col-3">
             <Card id="profileCard" style={{width: '20rem'}}>
               <CardBody>
-              <CardImg src={patrick} id="profileCirclePic" alt='profile' />  
+              <CardImg src={gary} id="profileCirclePic" alt='profile' />  
               <h5>{values.userName}</h5>
               <CardText>{values.comment}</CardText>
             <UncontrolledDropdown className="btn-group" id="profileDropdown">
@@ -64,10 +67,6 @@ function UserProfile() {
               <img id="profileDropdownPic" src={krabs}></img>
               Mr.krab
               </DropdownItem>
-              <DropdownItem  tag="a" href="/artistprofile">
-              <img id="profileDropdownPic" src={profilepic}></img>
-              Spongebob
-              </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
             <UncontrolledDropdown className="btn-group">
@@ -76,10 +75,6 @@ function UserProfile() {
               Followers: {values.followers}
               </DropdownToggle>
               <DropdownMenu >
-              <DropdownItem tag="a" href="/userprofile/gary" >
-              <img id="profileDropdownPic" src={gary}></img>
-              Gary
-              </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
 
@@ -148,4 +143,4 @@ function UserProfile() {
     )
   }
 
-export default UserProfile
+export default UserProfileGary

@@ -23,7 +23,7 @@ export class Header extends Component {
             </Navbar.Collapse>
             <Navbar.Collapse className="justify-content-end">
               <Navbar.Text>
-                Signed in as: <a href="userprofile">SpongeBob</a>
+                Signed in as: <a href="userprofile">PatrickYahhh</a>
               </Navbar.Text>
             </Navbar.Collapse>
             </Container>
