@@ -1,3 +1,56 @@
 .body {
-    margin: 50px;
+    /*margin: 50px;*/
+    margin: 3%;
+}
+
+.month {
+    font-size: 16px;
+}
+
+.date {
+    font-size: 28px;
+    /*font-weight: bold;*/
+}
+
+.cell-details {
+    font-size: 20px;
+}
+
+.icons {
+    padding: 5px;
+}
+
+.icons:hover {
+    cursor: pointer;
+}
+
+.date-head, .time-head {
+    width: fit-content;
+}
+
+table, th, td {
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    table-layout: auto !important;
+}
+
+th, td {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: auto !important;
+}
+
+tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.confirmation-button {
+    width: fit-content;
+}
+
+.modal-body, .modal-footer {
+    text-align: center;
 }
