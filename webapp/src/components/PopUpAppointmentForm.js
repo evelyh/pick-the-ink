@@ -24,8 +24,9 @@ function PopUpAppointmentForm(props) {
     return (props.trigger) ? (
       <div className='popup'>
           <div className='popupInner'>  
-            <h3>{props.info.userName}'s Booking Form:</h3>
+          <h4 id="bookingFormTitle">{props.info.userName}'s Booking Form:</h4>
             <Form className='popupForm' onSubmit={handleSubmit}>
+            
                 <Form.Group className="mb-3" >
                     <Form.Label>First Name:</Form.Label>
                     <Form.Control type="text" onChange={ e => setField('userName', e.target.value) }/>
@@ -91,8 +92,8 @@ function PopUpAppointmentForm(props) {
                 </Form.Group>
 
 
-                <Button id="button-16" type="button" onClick={()=>{props.setTrigger(false);}}>close</Button>
-                <Button id="button-16" type="submit" >confirm</Button>
+                <button id="button-16" type="button" onClick={()=>{props.setTrigger(false);}}>cancel</button>
+                <button id="button-16" type="submit" >confirm</button>
             </Form>
           </div>
       </div>

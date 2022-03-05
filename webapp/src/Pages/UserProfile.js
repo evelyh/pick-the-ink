@@ -1,11 +1,11 @@
 import React from 'react'
 import { Header } from '../components/Header'
-import { Container } from 'react-bootstrap'
+import { Container, Alert, CloseButton} from 'react-bootstrap'
 import profilePic from '../assets/img/profilepic.jpg'
 import '../assets/css/userProfile.css'
 import PopUpProfileForm from '../components/PopUpProfileForm'
 import { useState } from 'react'
-import { Card } from 'reactstrap'
+import { Card} from 'reactstrap'
 
 
 function UserProfile() {
@@ -17,13 +17,17 @@ function UserProfile() {
       email: "spongebob@gmail.com",
       birthday: "1999-12-13",
       phoneNum : "1234567890",
-      style: ["Blackwork", "Watercolor"],
-      image: "../images/profilepic.jpg"
+      style: [{name: 'Blackwork', id: 1},{name: 'Watercolor', id: 2}],
+      image: "../images/profilepic.jpg",
+      isArtist: false
     });
 
     const [buttonPopUp, setButtonPopUp] = useState(false);
     const [success,setSuccess] = useState(false);
 
+    const onDismiss = ()=>{
+      setSuccess(false);
+    };
 
     return (
       <div>
@@ -39,6 +43,9 @@ function UserProfile() {
               </Card>
             </div>
             <div className="col-7">
+            <Alert variant="success" show={success}>
+              <p>Profile Update successfully <CloseButton id = "closeButton" variant="white" onClick={onDismiss}/> </p>
+            </Alert>
               <Container id="profileContainer">
               <div className="row mb-3">
                 
@@ -75,11 +82,11 @@ function UserProfile() {
                 <label className="col-sm-3 col-form-label col-form-label">Favorite styles:</label>
                 <div className="col-sm-7">
                   {values.style.map((_, index) => (
-                    <li className="col-6 col-form-label col-form-label" key={index}>{values.style[index]}</li>
+                    <li className="col-6 col-form-label col-form-label" key={index}>{values.style[index]["name"]}</li>
                   ))}
                 </div>
               </div>
-              <button id='button-16' onClick={()=> setButtonPopUp(true)}>Edit your profile</button>
+              { values.isArtist ? null : <button id='button-16' onClick={()=> setButtonPopUp(true)}>Edit your profile</button> }
               </Container>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import React from 'react'
 import '../assets/css/userProfile.css'
 import { useState} from 'react';
+import {Multiselect} from 'multiselect-react-dropdown';
 
 import {Form} from 'react-bootstrap'
 
@@ -18,12 +19,8 @@ function PopUpProfileForm(props) {
         style: props.info.style,
         image: props.info.image,
       });
-    
-    // const onSubmit = (event) => {
-    //     event.preventDefault();
-    //     const data = new FormData(event.target);
-    //     console.log(data);
-    // }
+
+
     const onSubmit = (event) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
@@ -36,8 +33,18 @@ function PopUpProfileForm(props) {
             props.setTrigger(false);
             props.setSuccess(true);
             setValidated(true);}
-
       };
+
+    const handleChangeStyle = (e) => {
+        // const v = [...e.target.selectedOptions].map(o => o.value)
+        // let value = Array.from(e.target.selectedOptions, option => option.value);
+        // props.setInfo({...props.info, style:v});
+        console.log(e.target.value)
+        props.setInfo({...props.info, style:e.target.value});
+      }
+
+    const optionData = [{name: 'Blackwork', id: 1},{name: 'Watercolor', id: 2},{name:'script',id: 3}];
+    const [option]=useState(optionData);
 
     return (props.trigger) ? (
       <div className='popup' >
@@ -90,7 +97,7 @@ function PopUpProfileForm(props) {
 
                 <Form.Group className="mb-3" >
                     <Form.Label>Date of Birth:</Form.Label>
-                    <Form.Control type="date" 
+                    <Form.Control type="date"
                     value={props.info.birthday}
                     onChange={e => props.setInfo({...props.info, birthday:e.target.value})}
                     required/>
@@ -110,6 +117,33 @@ function PopUpProfileForm(props) {
                     Please enter a valid phone number.
                     </Form.Control.Feedback>
                 </Form.Group>
+                
+                <Multiselect options={option} displayValue="name"
+                onSelect={e => props.setInfo({...props.info, style:e})}
+                onRemove={e => props.setInfo({...props.info, style:e})}></Multiselect>
+
+
+
+{/* 
+
+                <Form.Group className="mb-3" >
+                    <Form.Label>Favorite styles:</Form.Label>
+                    <div>
+                    {props.info.style.map((_, index) => (
+                    <Form.Control  type="text" 
+                    value = {props.info.style[index]}
+                    onChange={e => 
+                        {   const styleval = props.info.style;
+                            styleval[index] = e.target.value;
+                            props.setInfo({...props.info, style:styleval});}}/>
+                  ))}
+                    </div>
+                    
+                    <Form.Control.Feedback type="invalid">
+                    Please enter a valid phone number.
+                    </Form.Control.Feedback>
+                </Form.Group> */}
+                
                 <button id="button-16" 
                 onClick={()=>{
                     props.setInfo({...prev});
