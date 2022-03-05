@@ -3,6 +3,9 @@ import Header from "../components/header";
 import NavTabTwo from "../components/NavTabTwo";
 import "../assets/css/managebooking.css"
 import {Alert, Button, Modal} from "reactstrap";
+import PopUpBookingDetails from "../components/PopUpBookingDetails";
+import PopUpConfirmBooking from "../components/PopUpConfirmBooking";
+import PopUpCancelBooking from "../components/PopUpCancelBooking";
 
 export class ManageBooking extends Component {
 
@@ -11,6 +14,34 @@ export class ManageBooking extends Component {
     showBookingDetails: false,
     showConfirmBooking: false,
     bookingConfirmed: false,
+    showCancelBooking: false,
+    bookingCancelled: false,
+  }
+
+  confirmBooking = () => {
+    this.setState({
+      showConfirmBooking: !this.state.showConfirmBooking,
+      bookingConfirmed: true,
+    })
+
+    setTimeout(() => {
+      this.setState({
+        bookingConfirmed: false
+      })
+    }, 2000)
+  }
+
+  cancelBooking = () => {
+    this.setState({
+      showCancelBooking: !this.state.showCancelBooking,
+      bookingCancelled: true,
+    })
+
+    setTimeout(() => {
+      this.setState({
+        bookingCancelled: false
+      })
+    }, 2000)
   }
 
   render() {
@@ -51,71 +82,44 @@ export class ManageBooking extends Component {
               <td><i className={"icons nc-icon nc-alert-circle-i"} onClick={() => this.setState({showBookingDetails: true})}/>
                 <i className={"icons nc-icon nc-settings"}/>
                 <i className={"icons nc-icon nc-check-2"} onClick={() => this.setState({showConfirmBooking: true})}/>
-                <i className={"icons nc-icon nc-simple-remove"}/>
+                <i className={"icons nc-icon nc-simple-remove"} onClick={() => this.setState({showCancelBooking: true})}/>
               </td>
             </tr>
           </table>
 
-          <Modal isOpen={this.state.showBookingDetails} toggle={() => this.setState({showBookingDetails: false})}>
-            <div className={"modal-header"}>
-              <h5 className={"modal-title"}>
-                Booking Details
-              </h5>
-            </div>
-            <div className={"modal-body"}>
-              Name: Tuxedo Mask <br/>
-              Email: tux.mask@email.com <br/>
-              Date of Birth: 1972-8-3 <br/>
-              Phone: (123) 456-3554 <br/>
-              Interested in getting: Custom Design <br/>
-              Details: I don't know what I want. <br/>
-              Size: 5cm x 5cm <br/>
-              Reference picture: ////some pic//// <br/>
-              Other details: n/a <br/>
-            </div>
-            <div className={"modal-footer"}>
-              <Button
-                className={"btn-link"}
-                color={"default"}
-                data-dismiss={"modal"}
-                type={"button"}
-                onClick={() => this.setState({showBookingDetails: false})}>
-                Close
-              </Button>
-            </div>
-          </Modal>
+          <PopUpBookingDetails
+            firstName={ "Tuxedo" }
+            lastName={ "Mask" }
+            email={ "tux.mask@email.com" }
+            dob={ "1972-8-3" }
+            phone={ "(123) 456-3554" }
+            interestedInGetting={ "Custom Design" }
+            details={ "Tuxedo La Smoking Bomber!" }
+            size={ "5cm x 5cm" }
+            referencePic={ "..some pic.." }
+            otherDetails={ "n/a" }
+            trigger={this.state.showBookingDetails}
+            setTrigger={() => this.setState({showBookingDetails: !this.state.showBookingDetails})}
+          />
 
-          <Modal isOpen={this.state.showConfirmBooking} toggle={() => this.setState({showConfirmBooking: false})}>
-            <div className={"modal-header"}>
-              <h5 className={"modal-title"}>
-                Booking Details
-              </h5>
-            </div>
-            <div className={"modal-body"}>
-              Do you want to finalize this booking?
-            </div>
-            <div className={"modal-footer"}>
-              <Button
-                className={"confirmation-button btn-round"}
-                color={"default"}
-                data-dismiss={"modal"}
-                type={"button"}
-                onClick={() => this.setState({showConfirmBooking: false, bookingConfirmed: true})}>
-                YES
-              </Button>
-              <Button
-                className={"confirmation-button btn-round"}
-                color={"default"}
-                data-dismiss={"modal"}
-                type={"button"}
-                onClick={() => this.setState({showConfirmBooking: false})}>
-                CANCEL
-              </Button>
-            </div>
-          </Modal>
-          <Alert color={"success"} isOpen={this.state.bookingConfirmed}
-                 toggle={() => this.setState({bookingConfirmed: false})}>
+          <PopUpConfirmBooking
+            trigger={this.state.showConfirmBooking}
+            setTrigger={() => this.setState({showConfirmBooking: !this.state.showConfirmBooking})}
+            confirmBooking={this.confirmBooking}
+          />
+
+          <Alert color={"success"} isOpen={this.state.bookingConfirmed}>
             Booking confirmed!
+          </Alert>
+
+          <PopUpCancelBooking
+            trigger={this.state.showCancelBooking}
+            setTrigger={() => this.setState({showCancelBooking: !this.state.showCancelBooking})}
+            cancelBooking={this.cancelBooking}
+          />
+
+          <Alert color={"danger"} isOpen={this.state.bookingCancelled}>
+            Booking cancelled!
           </Alert>
 
         </div>

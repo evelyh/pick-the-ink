@@ -52,5 +52,5 @@ tr:nth-child(even) {
 }
 
 .modal-body, .modal-footer {
-    text-align: center;
+    text-align: left;
 }
