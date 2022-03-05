@@ -35,15 +35,21 @@ function PopUpProfileForm(props) {
             setValidated(true);}
       };
 
-    const handleChangeStyle = (e) => {
-        // const v = [...e.target.selectedOptions].map(o => o.value)
-        // let value = Array.from(e.target.selectedOptions, option => option.value);
-        // props.setInfo({...props.info, style:v});
-        console.log(e.target.value)
-        props.setInfo({...props.info, style:e.target.value});
-      }
-
-    const optionData = [{name: 'Blackwork', id: 1},{name: 'Watercolor', id: 2},{name:'script',id: 3}];
+    const optionData = [{name:'Traditional', id: 1}, 
+    {name:'Japanese', id: 2}, 
+    {name:'New School', id: 3},
+    {name:'Realism', id: 5}, 
+    {name:'Illustrative', id: 6}, 
+    {name: 'Portraiture', id: 7}, 
+    {name: 'Blackwork', id: 8},
+    {name: 'Watercolor', id: 9},
+    {name:'Lettering',id: 10},
+    {name:'Geometric',id: 11},
+    {name:'Surrealism',id: 12},
+    {name:'Microrealism',id: 13},
+    {name:'Minimalism',id: 14},
+    {name:'Single Line',id: 14},
+    {name:'Dot Work',id: 14},];
     const [option]=useState(optionData);
 
     return (props.trigger) ? (
@@ -117,32 +123,13 @@ function PopUpProfileForm(props) {
                     Please enter a valid phone number.
                     </Form.Control.Feedback>
                 </Form.Group>
-                
-                <Multiselect options={option} displayValue="name"
-                onSelect={e => props.setInfo({...props.info, style:e})}
-                onRemove={e => props.setInfo({...props.info, style:e})}></Multiselect>
-
-
-
-{/* 
 
                 <Form.Group className="mb-3" >
                     <Form.Label>Favorite styles:</Form.Label>
-                    <div>
-                    {props.info.style.map((_, index) => (
-                    <Form.Control  type="text" 
-                    value = {props.info.style[index]}
-                    onChange={e => 
-                        {   const styleval = props.info.style;
-                            styleval[index] = e.target.value;
-                            props.setInfo({...props.info, style:styleval});}}/>
-                  ))}
-                    </div>
-                    
-                    <Form.Control.Feedback type="invalid">
-                    Please enter a valid phone number.
-                    </Form.Control.Feedback>
-                </Form.Group> */}
+                    <Multiselect options={option} displayValue="name"
+                        onSelect={e => props.setInfo({...props.info, style:e})}
+                        onRemove={e => props.setInfo({...props.info, style:e})}></Multiselect>
+                </Form.Group>
                 
                 <button id="button-16" 
                 onClick={()=>{
