@@ -18,6 +18,7 @@ import { Card, CardBody, CardImg,CardText,
 
 function UserProfile() {
 
+    // Should get this data from the server
     const [values, setValues] = useState({
       firstName: "Patrick",
       lastName: "Sea-Star",
