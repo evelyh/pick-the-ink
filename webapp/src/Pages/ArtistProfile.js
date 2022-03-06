@@ -4,7 +4,7 @@ import { Container, Alert, CloseButton} from 'react-bootstrap'
 import patrick from '../assets/img/patrick.jpg'
 import profilepic from '../assets/img/profilepic.jpg'
 import '../assets/css/userProfile.css'
-import PopUpProfileForm from '../components/PopUpProfileForm'
+import PopUpArtistProfileForm from '../components/PopUpArtistProfileForm'
 import PopUpAppointmentForm from 'components/PopUpAppointmentForm'
 import { useState } from 'react'
 import { Card, CardBody, CardImg,CardText,
@@ -47,7 +47,7 @@ function ArtistProfile() {
         <div>
           <Header/>
         </div>
-        <PopUpProfileForm info={values} setInfo = {setValues} success={success} setSuccess={setSuccess} trigger={buttonPopUp} setTrigger={setButtonPopUp} isUser={isUser}>My Popup</PopUpProfileForm>
+        <PopUpArtistProfileForm info={values} setInfo = {setValues} success={success} setSuccess={setSuccess} trigger={buttonPopUp} setTrigger={setButtonPopUp} isUser={isUser}>My Popup</PopUpArtistProfileForm>
         <PopUpAppointmentForm info={values} setInfo = {setValues} trigger={buttonPopUpBook} setTrigger={setButtonPopUpBook}>My Popup</PopUpAppointmentForm>
         <div className="container">
           <div className="row">
