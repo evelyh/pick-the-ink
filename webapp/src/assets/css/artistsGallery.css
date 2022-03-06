@@ -19,6 +19,10 @@
     border: 1px solid #DAD5D6;
 }
 
+.cardItem{
+    display: inline;
+}
+
 .cardTitle{
     margin-top: 20px;
     size: 10px;
@@ -30,8 +34,15 @@
     color: rgba(128, 128, 128, 0.37);
 }
 
-.header{
+.headerM{
     position: relative;
+    margin-left: 10%;
+}
+
+.renderItemList{
+    position: relative;
+    margin-top: 10%;
+    flex-direction: row;
 }
 
 #popupEdit, #popupDel, #popupAdd{
@@ -80,7 +91,6 @@
     height: 40px;
     margin: 5px;
 }
-
 
 
 #button-addPic{

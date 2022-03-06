@@ -14,14 +14,21 @@ import PopUpAddGallery from "../components/PopUpAddGallery"
 import { useState } from 'react'
 import { Card, CardImg, CardBody, CardTitle, CardText, Button } from 'reactstrap';
 import FlatList from 'flatlist-react';
+import patrick from '../assets/img/patrick.jpg'
+import { 
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown} from 'reactstrap'
 
 function ArtistGallery() {
 
   const [values, setValues] = useState({
     userName: "Spongebob",
     email: "spongebob@gmail.com",
-    following: 309,
-    followers: 622,
+    following: 0,
+    followers: 1,
+    comment:"hahahaha",
     homeLocation: "Bikini Bottom",
     image: "../images/profilepic.jpg",
     gallery:[
@@ -29,9 +36,12 @@ function ArtistGallery() {
       {id:1, title: "Great time", description: "Patrick and me", img: pic2}],
   });
 
+  const [buttonPopUp, setButtonPopUp] = useState(false);
   const [buttonPopUpEdit, setButtonPopUpEdit] = useState(undefined);
   const [buttonPopUpDel, setButtonPopUpDel] = useState(undefined);
   const [buttonPopUpAdd, setButtonPopUpAdd] = useState(false);
+
+  const [isAritist] = useState(false);
 
   const deleteById = (id) => {
     setValues({gallery:values.gallery.filter((item)=>{
@@ -47,6 +57,7 @@ function ArtistGallery() {
   const renderItem = (galleryPic, index) => {
 
     return(
+      <div className="cardItem">
       <Card key={galleryPic.id} style={{width: '20rem'}}>
         <CardImg className='galleryPics' top src={galleryPic.img} alt="..."/>
         <CardBody>
@@ -74,10 +85,13 @@ function ArtistGallery() {
             >
               Del
           </PopUpDelGallery> 
-            <Button id="edit" className="btn-round btn-icon" color="primary" size='sm' onClick={()=> setButtonPopUpEdit(index)}>Edit</Button>
-            <Button id="del" className="btn-round btn-icon" color="danger" size='sm' onClick={()=> setButtonPopUpDel(index)}>Delete</Button>
+            {isAritist &&
+              <Button id="edit" className="btn-round btn-icon" color="primary" size='sm' onClick={()=> setButtonPopUpEdit(index)}>Edit</Button>}
+            {isAritist &&
+              <Button id="del" className="btn-round btn-icon" color="danger" size='sm' onClick={()=> setButtonPopUpDel(index)}>Delete</Button>}
         </CardBody>
       </Card>
+      </div>
     );
   }
 
@@ -86,38 +100,68 @@ function ArtistGallery() {
         <div>
           <Header/>
         </div>
-        {/* <button id='button-addPic' onClick={()=> setButtonPopUp(true)}>+</button> */}
-  
-        {/* <PopUpAppointmentForm info={values} setInfo = {setValues} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpAppointmentForm> */}
+        {!isAritist &&
+        <PopUpAppointmentForm info={values} setInfo = {setValues} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpAppointmentForm>}
+
         <div className="container">
-          <PopUpAddGallery
+          {isAritist &&<PopUpAddGallery
             values={values}
             setValues = {setValues}
             id = {values.gallery.length+1}
             onAdd = {addNewPic}
             trigger={buttonPopUpAdd} 
             setTrigger={setButtonPopUpAdd}
-          >Add</PopUpAddGallery>
+          >Add</PopUpAddGallery>}
+          {isAritist &&
           <Button id="button-addPic" className="btn-round btn-icon" color="primary" onClick={()=> setButtonPopUpAdd(true)}>
             <IconContext.Provider value={{ color: 'white', size: '15px' }}><VscAdd/> Add </IconContext.Provider>
-          </Button>
+          </Button>}
           <div className="row">
             <div className="col-3">
-              <Container >
-                <img src={profilePic} id="profileCirclePic"  alt='profile'  />
-                {/* <button id='button-appointment' onClick={()=> setButtonPopUp(true)}>Book an appointment</button> */}
+              <Container>
+              <Card id="profileCard" style={{width: '20rem'}}>
+              <CardBody>
+                <CardImg src={profilePic} id="profileCirclePic" alt='profile' />  
+                <h5>{values.userName}</h5>
+                <CardText>{values.comment}</CardText>
+                <UncontrolledDropdown className="btn-group" id="profileDropdown">
+                  <DropdownToggle tag="a"
+                    data-toggle="dropdown">
+                    Following: {values.following}
+                  </DropdownToggle>
+                  <DropdownMenu >
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+                <UncontrolledDropdown className="btn-group">
+                  <DropdownToggle tag="a"
+                    data-toggle="dropdown">
+                    Followers: {values.followers}
+                  </DropdownToggle>
+                  <DropdownMenu >
+                    <DropdownItem tag="a" href="/userprofile/" >
+                      <img id="profileDropdownPic" src={patrick} alt='patrick' ></img>
+                      patrick
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+              </CardBody>
+            </Card>
+            {!isAritist &&
+                <Button className='btn-round btn-icon' onClick={()=> setButtonPopUp(true)}>Book an appointment</Button>}
               </Container>
             </div>
-            <div className='col-7'>
-              <div className='header'>
+            <div className='col-6'>
+              <div className='headerM'>
                 <h3>My Gallery</h3>
+                <div className='renderItemList'>
+                    <FlatList
+                      numColumns={2}
+                      horizontal={false}
+                      list={values.gallery}
+                      renderItem={renderItem}
+                    />
+                </div>
               </div>
-              <ul>
-              <FlatList
-                list={values.gallery}
-                renderItem={renderItem}
-              />
-              </ul>
             </div>
           </div>
         </div>
