@@ -1,0 +1,15 @@
+.card{
+    margin: '15px 10px';
+    padding: 10px;
+    border-radius: '16px';
+    background-color: rgb(217, 237, 235);
+    width: 300px;
+    grid-row-end: auto;
+}
+
+.carousel{
+    width: 280px;
+    padding: 10;
+    justify-content: center;
+    border-radius: 16px;
+}
