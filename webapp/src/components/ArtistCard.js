@@ -10,11 +10,10 @@ import "../assets/css/artistCard.css";
 export class ArtistCard extends Component{
   render(){
     return(
-        <div className='card'>
-                <h5 href="/"> @Spongebob </h5>
-                <h7 class='mb-3'> Hi This is a tattooist based in Toronto </h7>
-            <div className='carousel'>
-                <Carousel>
+        <div class="card">
+            <a href="/artistprofile" style={{fontSize: "18px"}}> @Spongebob </a>
+            <p class='mb-3'> Hi This is a tattooist based in Toronto </p>
+            <Carousel class='carousel'>
                 <div>
                         <img src={pic1} />
                 </div>
@@ -24,9 +23,7 @@ export class ArtistCard extends Component{
                 <div>
                         <img src={pic3} />
                 </div>
-                </Carousel>
-            </div>
-
+            </Carousel>
         </div>
   )
 }

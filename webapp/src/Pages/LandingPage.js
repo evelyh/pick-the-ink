@@ -42,38 +42,38 @@ export class LandingPage extends Component {
       <div>
         <div><Header/> </div>
         <Container>
-              <h4 className="mb-4">Welcome to PickInk! Get started by finding the right Artist. </h4>
+              <h4 className="mb-4"><a id='title'> Welcome to PickINK! Get started by finding the right Artist. </a></h4>
             <Form>
               <div className='row'>
-                <Form.Group className='col-5 mb-2' >                 
+                <Form.Group className='col-4 mb-3' >                 
                 <Form.Label> Country: </Form.Label>
                 <CountryDropdown
-                        className='countrySelector'
+                        class='countrySelector'
                         value={this.state.country}
                         onChange={(val) => this.setState({country: val})}></CountryDropdown> 
                 </Form.Group>
-                <Form.Group className='col-5 mb-2'>
+                <Form.Group className='col-4 mb-3'>
                  <Form.Label> Region: </Form.Label>
                 <RegionDropdown
-                      className='countrySelector'
+                      class='countrySelector'
                       country={this.state.country}
                       value={this.state.region}
                       onChange={(val) => this.setState({region: val})}/>
                 </Form.Group>
               </div>
                 <div className = 'row'>
-                  <Form.Group className="mb-2 col-3" >
+                  <Form.Group className="col-3 formField" >
                       <Form.Label>Start:</Form.Label>
                       <Form.Control type="date"/>
                   </Form.Group>
 
-                  <Form.Group className="mb-2 col-3" >
+                  <Form.Group className="col-3 formField" >
                       <Form.Label>End:</Form.Label>
                       <Form.Control type="date"/>
                   </Form.Group>
                   </div>
 
-                  <Form.Group className="mb-2 col-5" >
+                  <Form.Group className="col-4 formField" >
                       <Form.Label>Styles:</Form.Label>
                       <Multiselect options={this.optionData} displayValue="name"
                         onSelect={(val) => this.setState({styles: this.state.styles.concat(val)})}
@@ -81,9 +81,9 @@ export class LandingPage extends Component {
                       </Multiselect>
                   </Form.Group>
 
-                  <Button className="mt-3 mb-3" id="button-14" type="submit" >Apply</Button>
+                  <Button className="mt-3 mb-3 button" id="button-14" type="submit" >Apply</Button>
               </Form>
-            <div className='cardContainer'> 
+            <div class='cardContainer'> 
               <ArtistCard/>
               <ArtistCard/>
               <ArtistCard/>
