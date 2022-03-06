@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Header from "../components/header";
+import Header from "../components/Header";
 import NavTabTwo from "../components/NavTabTwo";
 import "../assets/css/managebooking.css"
 import BookingRow from "../components/BookingRow";

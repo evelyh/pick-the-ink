@@ -28,7 +28,7 @@ export default function PopUpAddGallery(props){
     }
 
     return (props.trigger) ? (
-        <div className='popup'>
+        <div id="popupAdd" className='popup'>
             <div className='popupInner'>
                 <form>
                     <FormGroup>
