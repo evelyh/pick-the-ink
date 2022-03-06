@@ -14,6 +14,7 @@ import PopUpAddGallery from "../components/PopUpAddGallery"
 import { useState } from 'react'
 import { Card, CardImg, CardBody, CardTitle, CardText, Button } from 'reactstrap';
 import FlatList from 'flatlist-react';
+import _ from "lodash"
 import patrick from '../assets/img/patrick.jpg'
 import { 
   DropdownToggle,
@@ -29,7 +30,7 @@ function ArtistGallery() {
     following: 0,
     followers: 1,
     comment:"hahahaha",
-    homeLocation: "Bikini Bottom",
+    homeLocation: "Toronto",
     image: "../images/profilepic.jpg",
     gallery:[
       {id:0, title: "My BF", description: "Patrick and me", img: pic1},
@@ -41,12 +42,17 @@ function ArtistGallery() {
   const [buttonPopUpDel, setButtonPopUpDel] = useState(undefined);
   const [buttonPopUpAdd, setButtonPopUpAdd] = useState(false);
 
-  const [isAritist] = useState(false);
+  const [isAritist] = useState(true);
 
-  const deleteById = (id) => {
-    setValues({gallery:values.gallery.filter((item)=>{
+  const deleteById = (id, event) => {
+    event.preventDefault();
+    setValues({...values, gallery:_.cloneDeep(values.gallery.filter((item)=>{
         return item.id !== id
-    })})
+    }))})
+    console.log(_.cloneDeep(values.gallery.filter((item)=>{
+      return item.id !== id
+  })))
+    console.log(values.gallery)
   }
 
   const addNewPic = (newPic) => {
@@ -57,8 +63,8 @@ function ArtistGallery() {
   const renderItem = (galleryPic, index) => {
 
     return(
-      <div className="cardItem">
-      <Card key={galleryPic.id} style={{width: '20rem'}}>
+      <div key={galleryPic.id} className="cardItem">
+      <Card style={{width: '20rem'}}>
         <CardImg className='galleryPics' top src={galleryPic.img} alt="..."/>
         <CardBody>
         <CardTitle className='cardTitle'>{galleryPic.title}</CardTitle>
@@ -138,7 +144,7 @@ function ArtistGallery() {
                     Followers: {values.followers}
                   </DropdownToggle>
                   <DropdownMenu >
-                    <DropdownItem tag="a" href="/userprofile/" >
+                    <DropdownItem tag="a" href="/userprofile/">
                       <img id="profileDropdownPic" src={patrick} alt='patrick' ></img>
                       patrick
                     </DropdownItem>
@@ -147,7 +153,17 @@ function ArtistGallery() {
               </CardBody>
             </Card>
             {!isAritist &&
-                <Button className='btn-round btn-icon' onClick={()=> setButtonPopUp(true)}>Book an appointment</Button>}
+                <Button id="bt-book"className='btn-round btn-icon' size='sm' onClick={()=> setButtonPopUp(true)}>Book an appointment</Button>}
+            <Button
+                id="bt-pro"
+                className='btn-round btn-icon'
+                size='sm'
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href='http://localhost:3000/artistprofile';
+                  }}
+            > profile</Button>
               </Container>
             </div>
             <div className='col-6'>
