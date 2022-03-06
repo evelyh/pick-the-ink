@@ -27,7 +27,7 @@ function ArtistProfile() {
       style: [{name: 'Blackwork', id: 1},{name: 'Watercolor', id: 2}],
       artStyle: [{name: 'Blackwork', id: 1},{name: 'Watercolor', id: 2}],
       image: profilepic,
-      homeLocation: "Bikini Bottom",
+      homeLocation: "Toronto",
       isArtist: false,
       followers:1,
       following:0,
@@ -36,7 +36,7 @@ function ArtistProfile() {
     const [buttonPopUp, setButtonPopUp] = useState(false);
     const [buttonPopUpBook, setButtonPopUpBook] = useState(false);
     const [success,setSuccess] = useState(false);
-    const [isUser] = useState(true);
+    const [isUser] = useState(false);
 
     const onDismiss = ()=>{
       setSuccess(false);
@@ -79,7 +79,7 @@ function ArtistProfile() {
                 </UncontrolledDropdown>
               </CardBody>
             </Card>
-            <button id='button-16' onClick={()=> setButtonPopUpBook(true)}>Book an appointment</button>
+            {isUser && <button id='button-16' onClick={()=> setButtonPopUpBook(true)}>Book an appointment</button>}
             {isUser &&
                 <button
                 id='button-16'

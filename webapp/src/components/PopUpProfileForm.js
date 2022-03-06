@@ -26,7 +26,7 @@ function PopUpProfileForm(props) {
 
     const isUser = props.isUser;
 
-    const homeLocation = undefined;
+    let homeLocation = undefined;
 
     if (isUser){
         homeLocation = props.info.homeLocation
