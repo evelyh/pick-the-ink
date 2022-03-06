@@ -24,7 +24,7 @@ function UserProfileGary() {
       userName: "Gary",
       email: "garythesnail@gmail.com",
       birthday: "1999-12-13",
-      phoneNum : "1234567890",
+      phoneNum : "123-456-7890",
       style: [{name: 'Watercolor', id: 9},
       {name:'Lettering',id: 10},
       {name:'Geometric',id: 11},

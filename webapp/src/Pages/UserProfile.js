@@ -4,7 +4,6 @@ import { Container, Alert, CloseButton} from 'react-bootstrap'
 import patrick from '../assets/img/patrick.jpg'
 import gary from '../assets/img/gary.jpg'
 import krabs from '../assets/img/krabs.jpg'
-import squidward from '../assets/img/squidward.jpg'
 import profilepic from '../assets/img/profilepic.jpg'
 import '../assets/css/userProfile.css'
 import PopUpProfileForm from '../components/PopUpProfileForm'
@@ -18,13 +17,14 @@ import { Card, CardBody, CardImg,CardText,
 
 function UserProfile() {
 
+    // Should get this data from the server
     const [values, setValues] = useState({
       firstName: "Patrick",
       lastName: "Sea-Star",
       userName: "PatrickYahhh",
       email: "patrick@gmail.com",
       birthday: "1999-12-13",
-      phoneNum : "1234567890",
+      phoneNum : "123-456-7890",
       style: [{name: 'Blackwork', id: 1},{name: 'Watercolor', id: 2}],
       image: "../images/patrick.jpg",
       isArtist: false,
@@ -34,7 +34,7 @@ function UserProfile() {
     });
     const [buttonPopUp, setButtonPopUp] = useState(false);
     const [success,setSuccess] = useState(false);
-    const [isUser,_] = useState(true);
+    const [isUser] = useState(true);
 
     const onDismiss = ()=>{
       setSuccess(false);
@@ -61,11 +61,11 @@ function UserProfile() {
               </DropdownToggle>
               <DropdownMenu >
               <DropdownItem tag="a" href="/userprofile/krab" >
-              <img id="profileDropdownPic" src={krabs}></img>
+              <img id="profileDropdownPic" src={krabs} alt='krabs' ></img>
               Mr.krab
               </DropdownItem>
               <DropdownItem  tag="a" href="/artistprofile">
-              <img id="profileDropdownPic" src={profilepic}></img>
+              <img id="profileDropdownPic" src={profilepic} alt='profilepic' ></img>
               Spongebob
               </DropdownItem>
               </DropdownMenu>
@@ -77,7 +77,7 @@ function UserProfile() {
               </DropdownToggle>
               <DropdownMenu >
               <DropdownItem tag="a" href="/userprofile/gary" >
-              <img id="profileDropdownPic" src={gary}></img>
+              <img id="profileDropdownPic" src={gary} alt='gary' ></img>
               Gary
               </DropdownItem>
               </DropdownMenu>
@@ -145,7 +145,7 @@ function UserProfile() {
           </div>
         </div>
       </div>
-    )
+      )
   }
 
 export default UserProfile

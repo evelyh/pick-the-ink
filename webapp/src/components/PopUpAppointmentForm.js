@@ -1,13 +1,13 @@
 import {React, useState }  from 'react'
 import '../assets/css/userProfile.css'
 
-import {Form, Button} from 'react-bootstrap'
+import {Form} from 'react-bootstrap'
 
 
 function PopUpAppointmentForm(props) {
 
     const handleSubmit = (data) => {
-        data.preventDefault();
+        data.preventDefault(); 
         console.log(form)
         props.setTrigger(false);
     }

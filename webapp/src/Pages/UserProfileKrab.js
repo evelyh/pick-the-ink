@@ -1,11 +1,8 @@
 import React from 'react'
 import { Header } from '../components/Header'
 import { Container, Alert, CloseButton} from 'react-bootstrap'
-import patrick from '../assets/img/patrick.jpg'
 import gary from '../assets/img/gary.jpg'
 import krabs from '../assets/img/krabs.jpg'
-import squidward from '../assets/img/squidward.jpg'
-import profilepic from '../assets/img/profilepic.jpg'
 import '../assets/css/userProfile.css'
 import PopUpProfileForm from '../components/PopUpProfileForm'
 import { useState } from 'react'
@@ -24,7 +21,7 @@ function UserProfileKrab() {
       userName: "Mr.Krab",
       email: "eugenekrab@gmail.com",
       birthday: "1999-12-13",
-      phoneNum : "1234567890",
+      phoneNum : "123-456-7890",
       style: [{name:'Traditional', id: 1},{name:'Lettering',id: 10},{name:'Minimalism',id: 14}],
       image: "../images/patrick.jpg",
       isArtist: false,
@@ -34,7 +31,7 @@ function UserProfileKrab() {
     });
     const [buttonPopUp, setButtonPopUp] = useState(false);
     const [success,setSuccess] = useState(false);
-    const [isUser,_] = useState(false);
+    const [isUser] = useState(false);
 
     const onDismiss = ()=>{
       setSuccess(false);
@@ -61,7 +58,7 @@ function UserProfileKrab() {
               </DropdownToggle>
               <DropdownMenu >
               <DropdownItem tag="a" href="/userprofile/gary">
-              <img id="profileDropdownPic" src={gary}></img>
+              <img id="profileDropdownPic" src={gary} alt="gary"></img>
               Gary
               </DropdownItem>
               </DropdownMenu>
@@ -73,7 +70,7 @@ function UserProfileKrab() {
               </DropdownToggle>
               <DropdownMenu >
               <DropdownItem tag="a" href="/userprofile/gary" >
-              <img id="profileDropdownPic" src={gary}></img>
+              <img id="profileDropdownPic" src={gary} alt="gary"></img>
               Gary
               </DropdownItem>
               </DropdownMenu>
