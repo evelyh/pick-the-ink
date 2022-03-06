@@ -80,6 +80,15 @@ function ArtistProfile() {
               </CardBody>
             </Card>
             <button id='button-16' onClick={()=> setButtonPopUpBook(true)}>Book an appointment</button>
+            {isUser &&
+                <button
+                id='button-16'
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href='http://localhost:3000/artistgallery';
+                  }}
+            > Gallery</button>}
             </div>
             <div className="col-7">
             <Alert variant="success" show={success}>
