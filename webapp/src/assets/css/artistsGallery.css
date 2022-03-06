@@ -34,7 +34,7 @@
     position: relative;
 }
 
-.popup{
+#popupEdit, #popupDel, #popupAdd{
     position: center;
     z-Index: 100;
     height: 300px;
@@ -42,6 +42,8 @@
     margin: 10px;
     top:20%;
 }
+
+
 
 #del{
     text-align: center;

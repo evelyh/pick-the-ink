@@ -5,7 +5,6 @@ import profilePic from '../assets/img/profilepic.jpg'
 import pic1 from '../assets/img/gallery_pic1.jpg'
 import pic2 from '../assets/img/gallery_pic2.jpg'
 import '../assets/css/userProfile.css'
-import '../assets/css/artistsGallery.css'
 import { VscAdd } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 import PopUpAppointmentForm from '../components/PopUpAppointmentForm'

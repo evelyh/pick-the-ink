@@ -38,7 +38,7 @@ function PopUpEditGallery(props) {
 
     return (props.trigger != undefined) ? (
         props.trigger == props.index && 
-        <div className='popup'>
+        <div id="popupEdit" className='popup'>
             <div className='popupInner'>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <FormGroup>

@@ -8,7 +8,7 @@ export default function PopUpDelGallery(props){
     console.log("Deleting");
     return (props.trigger !== undefined) ? (
         props.trigger === props.index && 
-        <div className="popup">
+        <div id="popupDel" className="popup">
             <div className='popupInner'>
                 <h5>Delete Picture</h5>
                 <p>Do you want to delete this picture?</p>
