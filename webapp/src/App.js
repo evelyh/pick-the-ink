@@ -20,6 +20,7 @@ import Calendar from 'Pages/Calendar';
 import ManageBookingConfirm from "./Pages/ManageBookingConfirm";
 import ManageBookingClient from "./Pages/ManageBookingClient";
 import ManageBookingClientConfirm from "./Pages/ManageBookingClientConfirm";
+import Admin from 'Pages/admin/Admin';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
         <Route path="/calendar" element={<Calendar />}/>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </BrowserRouter>
     
