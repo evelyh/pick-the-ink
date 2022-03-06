@@ -5,8 +5,7 @@ import {
     FormGroup,
     Label,
     Input,
-    Button,
-    Modal
+    Button
   } from "reactstrap";
 
 
@@ -36,8 +35,8 @@ function PopUpEditGallery(props) {
         props.setValues({gallery: copy})
     } 
 
-    return (props.trigger != undefined) ? (
-        props.trigger == props.index && 
+    return (props.trigger !== undefined) ? (
+        props.trigger === props.index && 
         <div id="popupEdit" className='popup'>
             <div className='popupInner'>
                 <form onSubmit={handleSubmit(onSubmit)}>
