@@ -36,7 +36,7 @@ function ArtistProfile() {
     const [buttonPopUp, setButtonPopUp] = useState(false);
     const [buttonPopUpBook, setButtonPopUpBook] = useState(false);
     const [success,setSuccess] = useState(false);
-    const [isUser] = useState(false);
+    const [isUser] = useState(true);
 
     const onDismiss = ()=>{
       setSuccess(false);
