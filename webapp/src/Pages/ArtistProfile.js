@@ -28,7 +28,7 @@ function ArtistProfile() {
       artStyle: [{name: 'Blackwork', id: 1},{name: 'Watercolor', id: 2}],
       image: profilepic,
       homeLocation: "Toronto",
-      isArtist: false,
+      isArtist: true,
       followers:1,
       following:0,
       comment:"hahahaha"
@@ -103,15 +103,15 @@ function ArtistProfile() {
                   <label className="col-sm-6 col-form-label col-form-label">{values.userName}</label>
                 </div>
                 
-                {!isUser ? <label className="col-sm-3 col-form-label col-form-label">First Name:</label> : null}
-                {!isUser ? 
+                {isUser ? <label className="col-sm-3 col-form-label col-form-label">First Name:</label> : null}
+                {isUser ? 
                 <div className="col-sm-7">
                   <label className="col-sm-6 col-form-label col-form-label">{values.firstName}</label>
                 </div>
                 : null}
 
-                {!isUser ? <label className="col-sm-3 col-form-label col-form-label">Last Name:</label>:null}
-                {!isUser ? 
+                {isUser ? <label className="col-sm-3 col-form-label col-form-label">Last Name:</label>:null}
+                {isUser ? 
                 <div className="col-sm-7">
                   <label className="col-sm-6 col-form-label col-form-label">{values.lastName}</label>
                 </div>
@@ -127,15 +127,15 @@ function ArtistProfile() {
                   <label className="col-sm-6 col-form-label col-form-label">{values.homeLocation}</label>
                 </div>
 
-                {!isUser ? <label className="col-sm-3 col-form-label col-form-label">Date of Birth:</label>:null}
-                {!isUser ? 
+                {isUser ? <label className="col-sm-3 col-form-label col-form-label">Date of Birth:</label>:null}
+                {isUser ? 
                 <div className="col-sm-7">
                   <label className="col-sm-6 col-form-label col-form-label">{values.birthday}</label>
                 </div>
                 :null}
                 
-                {!isUser ? <label className="col-sm-3 col-form-label col-form-label">Phone:</label>:null}
-                {!isUser ? 
+                {isUser ? <label className="col-sm-3 col-form-label col-form-label">Phone:</label>:null}
+                {isUser ? 
                 <div className="col-sm-7">
                   <label className="col-sm-6 col-form-label col-form-label">{values.phoneNum}</label>
                 </div>
@@ -155,7 +155,7 @@ function ArtistProfile() {
                   ))}
                 </div>
               </div>
-              { !isUser ? <button id='button-16' onClick={()=> setButtonPopUp(true)}>Edit your profile</button> :null }
+              { isUser ? <button id='button-16' onClick={()=> setButtonPopUp(true)}>Edit your profile</button> :null }
               </Container>
             </div>
           </div>
