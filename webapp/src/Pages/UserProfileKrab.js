@@ -16,25 +16,25 @@ import { Card, CardBody, CardImg,CardText,
   UncontrolledDropdown} from 'reactstrap'
 
 
-function UserProfile() {
+function UserProfileKrab() {
 
     const [values, setValues] = useState({
-      firstName: "Patrick",
-      lastName: "Sea-Star",
-      userName: "PatrickYahhh",
-      email: "patrick@gmail.com",
+      firstName: "Eugene",
+      lastName: "Krab",
+      userName: "Mr.Krab",
+      email: "eugenekrab@gmail.com",
       birthday: "1999-12-13",
       phoneNum : "1234567890",
-      style: [{name: 'Blackwork', id: 1},{name: 'Watercolor', id: 2}],
+      style: [{name:'Traditional', id: 1},{name:'Lettering',id: 10},{name:'Minimalism',id: 14}],
       image: "../images/patrick.jpg",
       isArtist: false,
       followers:1,
-      following:2,
+      following:1,
       comment:"I can't see my forehead!"
     });
     const [buttonPopUp, setButtonPopUp] = useState(false);
     const [success,setSuccess] = useState(false);
-    const [isUser,_] = useState(true);
+    const [isUser,_] = useState(false);
 
     const onDismiss = ()=>{
       setSuccess(false);
@@ -51,7 +51,7 @@ function UserProfile() {
             <div className="col-3">
             <Card id="profileCard" style={{width: '20rem'}}>
               <CardBody>
-              <CardImg src={patrick} id="profileCirclePic" alt='profile' />  
+              <CardImg src={krabs} id="profileCirclePic" alt='profile' />  
               <h5>{values.userName}</h5>
               <CardText>{values.comment}</CardText>
             <UncontrolledDropdown className="btn-group" id="profileDropdown">
@@ -60,13 +60,9 @@ function UserProfile() {
               Following: {values.following}
               </DropdownToggle>
               <DropdownMenu >
-              <DropdownItem tag="a" href="/userprofile/krab" >
-              <img id="profileDropdownPic" src={krabs}></img>
-              Mr.krab
-              </DropdownItem>
-              <DropdownItem  tag="a" href="/artistprofile">
-              <img id="profileDropdownPic" src={profilepic}></img>
-              Spongebob
+              <DropdownItem tag="a" href="/userprofile/gary">
+              <img id="profileDropdownPic" src={gary}></img>
+              Gary
               </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
@@ -148,4 +144,4 @@ function UserProfile() {
     )
   }
 
-export default UserProfile
+export default UserProfileKrab

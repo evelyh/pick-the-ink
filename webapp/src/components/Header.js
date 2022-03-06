@@ -15,15 +15,15 @@ export class Header extends Component {
             <Navbar.Collapse>
                 <Nav>
                     <Nav.Link href="/">Explore</Nav.Link>
-                    <Nav.Link href="managebooking">Manage Booking</Nav.Link>
-                    <Nav.Link href="calendar">Calendar</Nav.Link>
-                    <Nav.Link href="chat">Chat</Nav.Link>
-                    <Nav.Link href="userprofile">Profile</Nav.Link>
+                    <Nav.Link href="/managebooking">Manage Booking</Nav.Link>
+                    <Nav.Link href="/calendar">Calendar</Nav.Link>
+                    <Nav.Link href="/chat">Chat</Nav.Link>
+                    <Nav.Link href="/userprofile">Profile</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
             <Navbar.Collapse className="justify-content-end">
               <Navbar.Text>
-                Signed in as: <a href="userprofile">SpongeBob</a>
+                Signed in as: <a href="/userprofile">PatrickYahhh</a>
               </Navbar.Text>
             </Navbar.Collapse>
             </Container>
