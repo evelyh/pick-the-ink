@@ -11,7 +11,7 @@ export class ArtistCard extends Component{
   render(){
     return(
         <div class="card">
-            <a href="/artistprofile" style={{fontSize: "18px"}}> @Spongebob </a>
+            <a href="/artistprofile" style={{fontSize: "16px", fontWeight: "bold"}}> @Spongebob </a>
             <p class='mb-3'> Hi This is a tattooist based in Toronto </p>
             <Carousel class='carousel'>
                 <div>

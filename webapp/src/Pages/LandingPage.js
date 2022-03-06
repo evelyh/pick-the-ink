@@ -42,7 +42,7 @@ export class LandingPage extends Component {
       <div>
         <div><Header/> </div>
         <Container>
-              <h4 className="mb-4"><a id='title'> Welcome to PickINK! Get started by finding the right Artist. </a></h4>
+              <h4 className="mb-4"><a id='title'> Welcome to PickINK! Get started by finding the right Artists for you. </a></h4>
             <Form>
               <div className='row'>
                 <Form.Group className='col-4 mb-3' >                 
