@@ -15,11 +15,22 @@ function PopUpProfileForm(props) {
         lastName: props.info.lastName,
         userName: props.info.userName,
         email: props.info.email,
+        comment: props.info.comment,
+        followers: props.info.followers,
+        following: props.info.following,
         birthday: props.info.birthday,
         phoneNum : props.info.phoneNum,
         style: props.info.style,
         image: props.info.image,
       });
+
+    const isUser = props.isUser;
+
+    const homeLocation = undefined;
+
+    if (isUser){
+        homeLocation = props.info.homeLocation
+    }
     
     const onSubmit = (event) => {
         event.preventDefault();
@@ -73,6 +84,15 @@ function PopUpProfileForm(props) {
                     value={props.info.phoneNum}
                     onChange={e => props.setInfo({...props.info, phoneNum:e.target.value})}/>
                 </Form.Group>
+
+                {!isUser &&
+                <Form.Group className="mb-3" >
+                    <Form.Label>Home Locaiton:</Form.Label>
+                    <Form.Control type="text" 
+                    value={props.info.homeLocation}
+                    onChange={e => props.setInfo({...props.info, homeLocation:e.target.value})}/>
+                </Form.Group>}
+
                 <button id="button-16" 
                 onClick={()=>{
                     props.setInfo({...prev});
