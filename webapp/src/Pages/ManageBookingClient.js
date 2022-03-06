@@ -6,24 +6,25 @@ import {Alert, Button, Modal} from "reactstrap";
 import BookingRow from "../components/BookingRow";
 import {uid} from "react-uid";
 
-export class ManageBooking extends Component {
+export class ManageBookingClient extends Component {
 
   state = {
-    userType: 0, // 0 = artist; 1 = customer;
+    userType: 1, // 0 = artist; 1 = customer;
     bookingConfirmed: false,
     bookingCancelled: false,
     durationSent: false,
     datetimeSent: false,
     pendingBookings: [
       {
-        firstName: "Sailor",
-        lastName: "Moon",
-        email: "champion.of.justice@moon.com",
-        dob: "1992-6-30",
-        phone: "(645) 634-8235",
+        artistName: "SpongeBob",
+        firstName: "Homer",
+        lastName: "Simpson",
+        email: "homer@simpsonfam.com",
+        dob: "1986-5-12",
+        phone: "(672) 609-5463",
         interestedInGetting: "Custom Design",
-        details: "On behalf of the moon, I will right wrongs and triumph over evil, and that means you!",
-        size: "3cm x 7cm",
+        details: "I am so smart! S-M-R-T!",
+        size: "4cm x 8cm",
         referencePic: "no pic",
         otherDetails: "n/a",
         bookingMonth: "",
@@ -34,22 +35,23 @@ export class ManageBooking extends Component {
         pendingDateTime: false,
       },
       {
-        firstName: "Tuxedo",
-        lastName: "Mask",
-        email: "tux.mask@moon.com",
-        dob: "1992-6-30",
-        phone: "(645) 634-8235",
+        artistName: "Tuxedo Mask",
+        firstName: "Homer",
+        lastName: "Simpson",
+        email: "homer@simpsonfam.com",
+        dob: "1986-5-12",
+        phone: "(672) 609-5463",
         interestedInGetting: "Custom Design",
         details: "Tuxedo La Smoking Bomber!",
-        size: "3cm x 7cm",
+        size: "3cm x 1cm",
         referencePic: "no pic",
         otherDetails: "n/a",
-        bookingMonth: "Mar",
-        bookingDate: "26",
-        bookingTime: "14:00 - 16:00",
+        bookingMonth: "",
+        bookingDate: "",
+        bookingTime: "Pending",
         pendingDuration: false,
-        pendingConfirmation: true,
-        pendingDateTime: false,
+        pendingConfirmation: false,
+        pendingDateTime: true,
       }
     ]
   }
@@ -115,8 +117,8 @@ export class ManageBooking extends Component {
           <h1 className={"page-head"}>Manage Booking</h1>
 
           <NavTabTwo
-            leftLink={"/managebooking"}
-            rightLink={"/managebooking-confirm"}
+            leftLink={"/client-managebooking"}
+            rightLink={"/client-managebooking-confirm"}
             leftActive={true}
             rightActive={false}
             leftText={"Pending"}
@@ -167,4 +169,4 @@ export class ManageBooking extends Component {
   }
 }
 
-export default ManageBooking
+export default ManageBookingClient
