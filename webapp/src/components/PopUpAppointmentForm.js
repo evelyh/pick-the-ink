@@ -7,7 +7,7 @@ import {Form} from 'react-bootstrap'
 function PopUpAppointmentForm(props) {
 
     const handleSubmit = (data) => {
-        data.preventDefault();
+        data.preventDefault(); 
         console.log(form)
         props.setTrigger(false);
     }
