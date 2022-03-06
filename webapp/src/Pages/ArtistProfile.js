@@ -1,6 +1,6 @@
 import React from 'react'
-import { Header } from '../components/Header'
-import { Container } from 'react-bootstrap'
+import { Header } from '../components/header'
+import { Container} from 'react-bootstrap'
 import profilePic from '../assets/img/profilepic.jpg'
 import '../assets/css/userProfile.css'
 import '../assets/css/artistsGallery.css'
