@@ -16,7 +16,7 @@ export class Header extends Component {
           <Navbar bg="light">
             <Container>
             <Navbar.Brand style={this.styles} href="/">
-                PickInk
+                PickINK
             </Navbar.Brand>
             <Navbar.Toggle/>
             <Navbar.Collapse>
@@ -24,7 +24,6 @@ export class Header extends Component {
                     <Nav.Link href="/">Explore</Nav.Link>
                     <Nav.Link href="/managebooking">Manage Booking</Nav.Link>
                     <Nav.Link href="/calendar">Calendar</Nav.Link>
-                    <Nav.Link href="/chat">Chat</Nav.Link>
                     <Nav.Link href="/userprofile">Profile</Nav.Link>
                 </Nav>
             </Navbar.Collapse>

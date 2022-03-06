@@ -4,14 +4,19 @@
     border-radius: 5%;
 }
 
-Form.Group{
-    display: inline-block;
+.formField{
+    display: inline-flex;
     flex-direction: row;
 }
 
+.button{
+    position:relative;
+    left: 10%;
+}
+
 .cardContainer {
-    margin: 0;
-    padding: 10px;
+    justify-content: center;
+    padding: 20px;
     border-radius: 12px;
     width: 90vw;
     position: absolute;
@@ -19,5 +24,9 @@ Form.Group{
     background-color: rgb(241, 247, 247);
     display: grid;
     transform: translateX(-50%);
-    grid-template-columns: 'repeat(auto-fill, 300px)';
+    grid-template-columns: auto auto auto;
+}
+
+#title{
+    font-weight: bold;
 }
