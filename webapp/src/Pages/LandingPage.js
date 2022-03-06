@@ -38,7 +38,7 @@ export class LandingPage extends Component {
       <div>
         <div><Header/> </div>
         <Container>
-              <h4 className="mb-4">Welcome! Get started by finding the right Artist. </h4>
+              <h4 className="mb-4">Welcome to PickInk! Get started by finding the right Artist. </h4>
             <Form>
               <div className='row'>
                 <Form.Group className='col-5 mb-2' >                 

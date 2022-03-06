@@ -12,11 +12,11 @@ Form.Group{
 .cardContainer {
     margin: 0;
     padding: 10px;
-    background-color: rgb(198, 198, 222);
-    border-radius: 15px;
+    border-radius: 12px;
     position: 'absolute';
     left: 50%;
-    display: inline-flexbox;
-    grid-template-columns: auto;
+    background-color: rgb(217, 237, 235);
+    display: grid;
+    grid-template-columns: 'repeat(auto-fill, 300px)';
     grid-auto-rows: auto;
 }

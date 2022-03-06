@@ -5,13 +5,18 @@ import {Form} from 'react-bootstrap'
 import { useForm} from "react-hook-form";
 
 export class Header extends Component {
+  styles={
+    color: "black",
+    fontSize: "22px",
+    textTransform: "none",
+  }
   render() {
     return (
       <div className='header'>
           <Navbar bg="light">
             <Container>
-            <Navbar.Brand>
-                Logo
+            <Navbar.Brand style={this.styles}>
+                PickInk
             </Navbar.Brand>
             <Navbar.Toggle/>
             <Navbar.Collapse>

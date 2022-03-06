@@ -3,11 +3,12 @@
     margin: '15px 10px';
     padding: 10px;
     border-radius: '16px';
-    background-color: 'white';
+    background-color: rgb(221, 221, 233);
 }
 
 .carousel{
     width: 280px;
     padding: 10;
     justify-content: center;
+    border-radius: 16px;
 }
