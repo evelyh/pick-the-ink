@@ -1,0 +1,23 @@
+.countrySelector{
+    padding: 8px;
+    border-color: rgb(213, 206, 206);
+    border-radius: 5%;
+}
+
+Form.Group{
+    display: inline-block;
+    flex-direction: row;
+}
+
+.cardContainer {
+    margin: 0;
+    padding: 10px;
+    border-radius: 12px;
+    width: 90vw;
+    position: absolute;
+    left: 50%;
+    background-color: rgb(241, 247, 247);
+    display: grid;
+    transform: translateX(-50%);
+    grid-template-columns: 'repeat(auto-fill, 300px)';
+}

@@ -1,15 +1,22 @@
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import { Navbar, Nav, Container} from 'react-bootstrap'
+import {Form} from 'react-bootstrap'
+import { useForm} from "react-hook-form";
 
 export class Header extends Component {
+  styles={
+    color: "black",
+    fontSize: "22px",
+    textTransform: "none",
+  }
   render() {
     return (
       <div className='header'>
           <Navbar bg="light">
             <Container>
-            <Navbar.Brand>
-                Logo
+            <Navbar.Brand style={this.styles} href="/">
+                PickInk
             </Navbar.Brand>
             <Navbar.Toggle/>
             <Navbar.Collapse>
