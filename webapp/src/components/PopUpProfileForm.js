@@ -122,11 +122,12 @@ function PopUpProfileForm(props) {
 
                 <Form.Group className="mb-3" >
                     <Form.Label>Phone:</Form.Label>
-                    <Form.Control type="phone" 
+                    <Form.Control 
+                    type="text"
+                    placeholder="xxx-xxx-xxxx (optional)"
+                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                     value={props.info.phoneNum}
-                    onChange={e => props.setInfo({...props.info, phoneNum:e.target.value})}
-                    type="tel"
-                    required/>
+                    onChange={e => props.setInfo({...props.info, phoneNum:e.target.value})}/>
                     <Form.Control.Feedback type="invalid">
                     Please enter a valid phone number.
                     </Form.Control.Feedback>
