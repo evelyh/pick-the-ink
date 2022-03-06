@@ -15,7 +15,7 @@ export class Header extends Component {
       <div className='header'>
           <Navbar bg="light">
             <Container>
-            <Navbar.Brand style={this.styles}>
+            <Navbar.Brand style={this.styles} href="/">
                 PickInk
             </Navbar.Brand>
             <Navbar.Toggle/>

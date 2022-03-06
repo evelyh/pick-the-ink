@@ -13,10 +13,11 @@ Form.Group{
     margin: 0;
     padding: 10px;
     border-radius: 12px;
-    position: 'absolute';
+    width: 90vw;
+    position: absolute;
     left: 50%;
-    background-color: rgb(217, 237, 235);
+    background-color: rgb(241, 247, 247);
     display: grid;
+    transform: translateX(-50%);
     grid-template-columns: 'repeat(auto-fill, 300px)';
-    grid-auto-rows: auto;
 }

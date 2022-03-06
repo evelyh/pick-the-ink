@@ -17,6 +17,10 @@ export class LandingPage extends Component {
     styles: [],
     }
 
+  // useEffect(() => {
+  //   validateDates();
+  // })
+
   optionData = [{name:'Traditional', id: 1}, 
     {name:'Japanese', id: 2}, 
     {name:'New School', id: 3},
@@ -79,8 +83,6 @@ export class LandingPage extends Component {
 
                   <Button className="mt-3 mb-3" id="button-14" type="submit" >Apply</Button>
               </Form>
-          </Container>
-          <Container>
             <div className='cardContainer'> 
               <ArtistCard/>
               <ArtistCard/>

@@ -1,6 +1,5 @@
-import React, { Component, useState } from 'react'
+import React, { Component} from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
-import ReactDOM from 'react-dom';
 import pic1 from '../assets/img/gallery_pic1.jpg'
 import pic2 from '../assets/img/gallery_pic2.jpg'
 import pic3 from '../assets/img/squidward.jpg'
@@ -12,8 +11,8 @@ export class ArtistCard extends Component{
   render(){
     return(
         <div className='card'>
-                <h5> @PatrickYahh </h5>
-                <h7> Hi This is a tattooist based in Toronto </h7>
+                <h5 href="/"> @Spongebob </h5>
+                <h7 class='mb-3'> Hi This is a tattooist based in Toronto </h7>
             <div className='carousel'>
                 <Carousel>
                 <div>
