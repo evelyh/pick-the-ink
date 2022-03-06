@@ -58,6 +58,7 @@
   justify-content: center;
   align-items: center;
   box-shadow: 0 5px 15px #95bae35b;
+  z-index: 100;
 }
 .popup:hover {
   transform: scale(

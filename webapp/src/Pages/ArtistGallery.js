@@ -36,9 +36,12 @@ function ArtistGallery() {
       {id:1, title: "Great time", description: "Patrick and me", img: pic2}],
   });
 
+  const [buttonPopUp, setButtonPopUp] = useState(false);
   const [buttonPopUpEdit, setButtonPopUpEdit] = useState(undefined);
   const [buttonPopUpDel, setButtonPopUpDel] = useState(undefined);
   const [buttonPopUpAdd, setButtonPopUpAdd] = useState(false);
+
+  const [isAritist] = useState(false);
 
   const deleteById = (id) => {
     setValues({gallery:values.gallery.filter((item)=>{
@@ -82,8 +85,10 @@ function ArtistGallery() {
             >
               Del
           </PopUpDelGallery> 
-            <Button id="edit" className="btn-round btn-icon" color="primary" size='sm' onClick={()=> setButtonPopUpEdit(index)}>Edit</Button>
-            <Button id="del" className="btn-round btn-icon" color="danger" size='sm' onClick={()=> setButtonPopUpDel(index)}>Delete</Button>
+            {isAritist &&
+              <Button id="edit" className="btn-round btn-icon" color="primary" size='sm' onClick={()=> setButtonPopUpEdit(index)}>Edit</Button>}
+            {isAritist &&
+              <Button id="del" className="btn-round btn-icon" color="danger" size='sm' onClick={()=> setButtonPopUpDel(index)}>Delete</Button>}
         </CardBody>
       </Card>
       </div>
@@ -95,24 +100,25 @@ function ArtistGallery() {
         <div>
           <Header/>
         </div>
-        {/* <button id='button-addPic' onClick={()=> setButtonPopUp(true)}>+</button> */}
-  
-        {/* <PopUpAppointmentForm info={values} setInfo = {setValues} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpAppointmentForm> */}
+        {!isAritist &&
+        <PopUpAppointmentForm info={values} setInfo = {setValues} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpAppointmentForm>}
+
         <div className="container">
-          <PopUpAddGallery
+          {isAritist &&<PopUpAddGallery
             values={values}
             setValues = {setValues}
             id = {values.gallery.length+1}
             onAdd = {addNewPic}
             trigger={buttonPopUpAdd} 
             setTrigger={setButtonPopUpAdd}
-          >Add</PopUpAddGallery>
+          >Add</PopUpAddGallery>}
+          {isAritist &&
           <Button id="button-addPic" className="btn-round btn-icon" color="primary" onClick={()=> setButtonPopUpAdd(true)}>
             <IconContext.Provider value={{ color: 'white', size: '15px' }}><VscAdd/> Add </IconContext.Provider>
-          </Button>
+          </Button>}
           <div className="row">
             <div className="col-3">
-              <Container >
+              <Container>
               <Card id="profileCard" style={{width: '20rem'}}>
               <CardBody>
                 <CardImg src={profilePic} id="profileCirclePic" alt='profile' />  
@@ -140,7 +146,8 @@ function ArtistGallery() {
                 </UncontrolledDropdown>
               </CardBody>
             </Card>
-                {/* <button id='button-appointment' onClick={()=> setButtonPopUp(true)}>Book an appointment</button> */}
+            {!isAritist &&
+                <Button className='btn-round btn-icon' onClick={()=> setButtonPopUp(true)}>Book an appointment</Button>}
               </Container>
             </div>
             <div className='col-6'>
