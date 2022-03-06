@@ -59,7 +59,7 @@ export class BookingRow extends Component {
         <tr>
           <td><span className={"month"}>{confirmedBooking.bookingMonth}</span><br/><span className={"date"}>{confirmedBooking.bookingDate}</span></td>
           <td><span className={"cell-details"}>{confirmedBooking.bookingTime}</span></td>
-          <td><span className={"cell-details"}>{confirmedBooking.firstName} {confirmedBooking.lastName}</span></td>
+          <td><span className={"cell-details"}>{confirmedBooking.artistName ? confirmedBooking.artistName : confirmedBooking.firstName + " " + confirmedBooking.lastName}</span></td>
           <td>
             <i className={"icons nc-icon nc-alert-circle-i"} onClick={() => this.setState({showBookingDetails: true})}/>
             {/*<i className={"icons nc-icon nc-settings"}/> todo: implement booking toggles */}
@@ -70,13 +70,13 @@ export class BookingRow extends Component {
                  onClick={() => this.setState({showSendDuration: true})}
               /> : null
             }
-            {(confirmedBooking.pendingDateTime && userType === 1) || (confirmedBooking.pendingConfirmation && userType === 0) ?
+            {(confirmedBooking.pendingDateTime && userType === 1) || (confirmedBooking.pendingConfirmation) ?
               <i title={"Suggest Date/time"}
                  className={"icons nc-icon nc-calendar-60"}
                  onClick={() => this.setState({showSendDateTime: true})}
               /> : null
             }
-            {confirmedBooking.pendingConfirmation ?
+            {confirmedBooking.pendingConfirmation && !confirmedBooking.pendingDuration ?
               <i title={"Confirm Booking"}
                  className={"icons nc-icon nc-check-2"}
                  onClick={() => this.setState({showConfirmBooking: true})}
@@ -92,6 +92,7 @@ export class BookingRow extends Component {
 
           <PopUpBookingDetails
             booking={confirmedBooking}
+            userType={userType}
             trigger={this.state.showBookingDetails}
             setTrigger={() => this.setState({showBookingDetails: !this.state.showBookingDetails})}
           />

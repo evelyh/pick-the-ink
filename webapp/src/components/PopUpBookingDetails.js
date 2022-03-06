@@ -10,6 +10,7 @@ export class PopUpBookingDetails extends Component {
       booking,
       trigger,
       setTrigger,
+      userType
     } = this.props;
 
     return (trigger) ? (
@@ -20,6 +21,7 @@ export class PopUpBookingDetails extends Component {
           </h5>
         </div>
         <div className={"modal-body"}>
+          <h4>{userType === 1 ? `Information sent to ${booking.artistName}:` : "Client information:"}</h4> <br/>
           Name: {booking.firstName} {booking.lastName} <br/>
           Email: {booking.email} <br/>
           Date of Birth: {booking.dob} <br/>

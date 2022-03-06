@@ -16,6 +16,8 @@ import SignUp from './Pages/SignUp'
 import UserProfile from './Pages/UserProfile'
 import Calendar from 'Pages/Calendar';
 import ManageBookingConfirm from "./Pages/ManageBookingConfirm";
+import ManageBookingClient from "./Pages/ManageBookingClient";
+import ManageBookingClientConfirm from "./Pages/ManageBookingClientConfirm";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/managebooking" element={<ManageBooking />}/>
         <Route path="/managebooking-confirm" element={<ManageBookingConfirm />}/>
+        <Route path="/client-managebooking" element={<ManageBookingClient />}/>
+        <Route path="/client-managebooking-confirm" element={<ManageBookingClientConfirm />}/>
         <Route path="/userprofile" element={<UserProfile />} />
         <Route path="/artistprofile" element={<ArtistProfile />} />
         <Route path="/artistgallery" element={<ArtistGallery />}/>
