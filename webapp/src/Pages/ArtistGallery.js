@@ -65,7 +65,7 @@ function ArtistGallery() {
     return(
       <div key={galleryPic.id} className="cardItem">
       <Card style={{width: '20rem'}}>
-        <CardImg className='galleryPics' top src={galleryPic.img} alt="..."/>
+        <CardImg id="cardImg" className='galleryPics' top src={galleryPic.img} alt="..."/>
         <CardBody>
         <CardTitle className='cardTitle'>{galleryPic.title}</CardTitle>
         <CardText className='cardText'>{galleryPic.description}</CardText>
@@ -174,10 +174,13 @@ function ArtistGallery() {
                 <h3>My Gallery</h3>
                 <div className='renderItemList'>
                     <FlatList
-                      numColumns={2}
-                      horizontal={false}
                       list={values.gallery}
                       renderItem={renderItem}
+                      display={{
+                        grid: true,
+                        minColumnWidth: "400px",
+                        gridGap: "120px"
+                      }}
                     />
                 </div>
               </div>
