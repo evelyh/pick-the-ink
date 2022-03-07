@@ -11,7 +11,7 @@
 
 ## Pages
 
-### *Explore* `\`
+### *Explore* `/`
 - Landing home page where allows users to browse artists and their selected work based on the filters including artists' locations, available dates, and styles they chose. 
 
 ### Manage Booking* `/managebooking`
