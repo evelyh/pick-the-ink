@@ -67,18 +67,18 @@
         - Delete images from your gallery
         - By clicking the `delete` button in the popup, you are confirming the deletion, otherwise, the image will stay. 
   
-  **Note (Important!):** 
-  - For each user, he/she can only edit their own profile page (and gallery page, for artists), and view limited profile info on other users' profile page. 
-  - Both customers and artists can book appoinments on and only on other artists
-  - For each artist, he/she cannot book an appoinment on their own profile/gallery page. 
-  - The default logged in user is a customer, thus, all the pages are showing the views of that customer. To switch to the artists' view for testing the features, please follow the steps:
-    - Navigate to `\webapp\Pages\AritistProfile.js`
-    - Go to `Line 39`, change `const [isUser] = useState(true);` to `const [isUser] = useState(false);`
-    - Navigate to `\webapp\Pages\ArtistGallery.js`
-    - Go to `Line 45`, change `const [isUser] = useState(true);` to `const [isUser] = useState(false);`
-    - Go to the page `\artistprofile`, to check the artist's view of their own profile
-    - Go to the page `\artistGallery`, to check the artist's view of their own gallery
-  - Our web app does not have any database in this stage, the two images on the artist's gallery page is hard coded for now to show a better and expected appearance of a normal gallery. Thus, these two images will show everytime you reload the page. All the bugs regrading to the hard coded will be fixed when we implement the databases in the following weeks. 
+    **Notes for Profile (Important!):** 
+    - For each user, he/she can only edit their own profile page (and gallery page, for artists), and view limited profile info on other users' profile page. 
+    - Both customers and artists can book appoinments on and only on other artists
+    - For each artist, he/she cannot book an appoinment on their own profile/gallery page. 
+    - The default logged in user is a customer, thus, all the pages are showing the views of that customer. To switch to the artists' view for testing the features, please follow the steps:
+      - Navigate to `\webapp\Pages\AritistProfile.js`
+      - Go to `Line 39`, change `const [isUser] = useState(true);` to `const [isUser] = useState(false);`
+      - Navigate to `\webapp\Pages\ArtistGallery.js`
+      - Go to `Line 45`, change `const [isUser] = useState(true);` to `const [isUser] = useState(false);`
+      - Go to the page `\artistprofile`, to check the artist's view of their own profile
+      - Go to the page `\artistGallery`, to check the artist's view of their own gallery
+    - Our web app does not have any database in this stage, the two images on the artist's gallery page is hard coded for now to show a better and expected appearance of a normal gallery. Thus, these two images will show everytime you reload the page. All the bugs regrading to the hard coded will be fixed when we implement the databases in the following weeks. 
 
 ### *Admin Dashboard* "/admin"
 - Admin can manage user accounts by suspending them or activating them.
