@@ -40,7 +40,7 @@ export class LandingPage extends Component {
   render(){
     return (
       <div>
-        <div><Header/> </div>
+        <div><Header loggedIn={true}/> </div>
         <Container>
               <h4 className="mb-4"><a id='title'> Welcome to PickINK! Get started by finding the right Artists for you. </a></h4>
             <Form>

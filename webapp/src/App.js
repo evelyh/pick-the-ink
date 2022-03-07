@@ -26,11 +26,12 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/managebooking" element={<ManageBooking />}/>
-        <Route path="/managebooking-confirm" element={<ManageBookingConfirm />}/>
-        <Route path="/client-managebooking" element={<ManageBookingClient />}/>
-        <Route path="/client-managebooking-confirm" element={<ManageBookingClientConfirm />}/>
+        <Route path="/" element={<SignUp />} />
+        <Route path={"/explore"} element={<LandingPage/>} />
+        <Route path="/managebooking" element={<ManageBookingClient />}/>
+        <Route path="/managebooking-confirm" element={<ManageBookingClientConfirm />}/>
+        <Route path="/artist-managebooking" element={<ManageBooking />}/>
+        <Route path="/artist-managebooking-confirm" element={<ManageBookingConfirm />}/>
         <Route path="/userprofile" element={<UserProfile />} />
         <Route path="/userprofile/krab" element={<UserProfileKrab />} />
         <Route path="/userprofile/gary" element={<UserProfileGary />} />

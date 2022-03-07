@@ -109,14 +109,14 @@ export class ManageBooking extends Component {
   render() {
     return (
       <div>
-        <Header/>
+        <Header loggedIn={true}/>
 
         <div className={"body"}>
           <h1 className={"page-head"}>Manage Booking</h1>
 
           <NavTabTwo
-            leftLink={"/managebooking"}
-            rightLink={"/managebooking-confirm"}
+            leftLink={"/artist-managebooking"}
+            rightLink={"/artist-managebooking-confirm"}
             leftActive={true}
             rightActive={false}
             leftText={"Pending"}
