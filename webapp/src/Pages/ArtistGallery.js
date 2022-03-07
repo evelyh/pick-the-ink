@@ -14,7 +14,8 @@ import PopUpAddGallery from "../components/PopUpAddGallery"
 import { useState } from 'react'
 import { Card, CardImg, CardBody, CardTitle, CardText, Button } from 'reactstrap';
 import FlatList from 'flatlist-react';
-import _ from "lodash"
+import _ from "lodash";
+import {v4 as uuidv4} from "uuid";
 import patrick from '../assets/img/patrick.jpg'
 import { 
   DropdownToggle,
@@ -100,7 +101,7 @@ function ArtistGallery() {
       </div>
     );
   }
-
+    const newid = uuidv4();
     return (
       <div>
         <div>
@@ -113,7 +114,7 @@ function ArtistGallery() {
           {isUser &&<PopUpAddGallery
             values={values}
             setValues = {setValues}
-            id = {values.gallery.length+1}
+            id = {newid}
             onAdd = {addNewPic}
             trigger={buttonPopUpAdd} 
             setTrigger={setButtonPopUpAdd}
