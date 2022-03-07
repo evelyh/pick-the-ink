@@ -110,3 +110,5 @@
   - Link: https://github.com/ecorreiadev/flatlist-react/
 - react-icons 
   - Link: https://react-icons.github.io/react-icons/
+- Lists of countries and region used to browse artists
+  - Link: https://github.com/country-regions/react-country-region-selector
