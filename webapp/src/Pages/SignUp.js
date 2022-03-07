@@ -19,6 +19,7 @@ export class Login extends Component {
     password: "",
     success: false,
     showPassword: false,
+    artist: false,
   }
 
   handleInputChange = (event) => {
@@ -47,12 +48,12 @@ export class Login extends Component {
 
   checkRedirection = () => {
     if (this.state.success){
-      return <Navigate to={"/"} />;
+      return <Navigate to={"/explore"} />;
     }
   }
 
   togglePassword = () => {
-    this.state.showPassword = this.state.showPassword !== true;
+    this.state.showPassword = !this.state.showPassword;
   }
 
   render() {
@@ -129,7 +130,7 @@ export class Login extends Component {
                      name="dob"
                      id={"dob"}
                      required={true}
-                     min={ new Date().toISOString().split("T")[0] }
+                     max={ new Date().toISOString().split("T")[0] }
               />
 
               <Label for={"username"}>Username</Label>
@@ -154,6 +155,32 @@ export class Login extends Component {
                       onClick={ this.togglePassword }
                       color={"neutral"}
                       size={"sm"}>show</Button>
+              <br/>
+              Are you signing up for an artist account?<br/>
+              <Label for={"artist"}>Yes</Label>
+              <Input type={"checkbox"}
+                     onChange={this.handleInputChange}
+                     name={"artist"}
+                     id={"artist"}
+                     required={false}
+              />
+              <br/>
+              <span>
+                To ensure the safety of clients, we require all our artists to provide us with a piece of ID and license.<br/>
+                <em>Collected personal information will be deleted after we confirm you are legit, and only be used for the above stated purpose.</em><br/>
+              </span>
+              <Label for={"license"}>License: </Label>
+              <Input type={"file"}
+                     name={"license"}
+                     id={"license"}
+                     required={this.state.artist}
+              />
+              <Label for={"id"}>ID: </Label>
+              <Input type={"file"}
+                     name={"id"}
+                     id={"id"}
+                     required={this.state.artist}
+              />
             </div>
 
             <div className={"button-container"}>
