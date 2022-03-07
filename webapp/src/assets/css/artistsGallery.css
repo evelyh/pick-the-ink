@@ -1,105 +1,104 @@
-#ProfilePicandinfo{
-    text-align: justify; 
-    width: 150px;
+#ProfilePicandinfo {
+  text-align: justify;
+  width: 150px;
 }
 
-.basicInfo{
-    position: relative;
-    width: 130px;
+.basicInfo {
+  position: relative;
+  width: 130px;
 }
 
-.infoLine{
-    text-align: center;
-    display: block;
-    position: relative;
-    margin-top: 20px;
+.infoLine {
+  text-align: center;
+  display: block;
+  position: relative;
+  margin-top: 20px;
 }
 
-.galleryPics{
-    border: 1px solid #DAD5D6;
+.galleryPics {
+  border: 1px solid #dad5d6;
 }
 
-.cardItem{
-    display: inline;
+.cardItem {
+  display: inline;
 }
 
-.cardTitle{
-    margin-top: 20px;
-    size: 10px;
-    color: black;
+.cardTitle {
+  margin-top: 20px;
+  size: 10px;
+  color: black;
 }
 
-.cardText{
-    margin-top: 20px;
-    color: rgba(128, 128, 128, 0.37);
+.cardText {
+  margin-top: 20px;
+  color: rgba(128, 128, 128, 0.37);
 }
 
-.headerM{
-    position: relative;
-    margin-left: 10%;
+.headerM {
+  position: relative;
+  margin-left: 10%;
 }
 
-.renderItemList{
-    position: relative;
-    margin-top: 10%;
-    flex-direction: row;
+.renderItemList {
+  position: relative;
+  margin-top: 10%;
+  flex-direction: row;
 }
 
-#popupEdit, #popupDel, #popupAdd{
-    position: center;
-    z-Index: 100;
-    height: 300px;
-    width: 500px;
-    margin: 10px;
-    top:20%;
-}
-
-
-
-#del{
-    text-align: center;
-    position: center;
-    z-Index: 1;
-    height: 200px;
-    width: 350px;
-    margin: 10px;
-    top:20%;
-}
-
-#del_but{
-    margin-left: 10px;
-}
-
-#canl_bt{
-    margin: 10px;
-    margin-left: 10px;
-}
-
-.textArea{
-    width: 436px;
-    border: 1px solid #DAD5D6;
-}
-
-#edit{
-    width: 75px;
-    height: 40px;
-    margin: 5px;
+#popupEdit,
+#popupDel,
+#popupAdd {
+  position: center;
+  z-index: 100;
+  height: 300px;
+  width: 500px;
+  margin: 10px;
+  top: 20%;
 }
 
 #del {
-    width: 75px;
-    height: 40px;
-    margin: 5px;
+  text-align: center;
+  position: center;
+  z-index: 1;
+  height: 200px;
+  width: 350px;
+  margin: 10px;
+  top: 20%;
 }
 
-
-#button-addPic{
-    position: fixed;
-    z-Index: 1;
-    bottom: 50px;
-    right: 50px;
+#del_but {
+  margin-left: 10px;
 }
 
-#bt-pro{
-    margin: 5px;
+#canl_bt {
+  margin: 10px;
+  margin-left: 10px;
+}
+
+.textArea {
+  width: 436px;
+  border: 1px solid #dad5d6;
+}
+
+#edit {
+  width: 75px;
+  height: 40px;
+  margin: 5px;
+}
+
+#del {
+  width: 75px;
+  height: 40px;
+  margin: 5px;
+}
+
+#button-addPic {
+  position: fixed;
+  z-index: 1;
+  bottom: 50px;
+  right: 50px;
+}
+
+#bt-pro {
+  margin: 5px;
 }

@@ -46,7 +46,7 @@
 
 .popup {
   position: fixed;
-  margin-top: 3%;
+  margin-top: 1.5%;
   margin-bottom: 10%;
   margin-left: 30%;
   margin-right: 20%;
@@ -68,7 +68,7 @@
 
 .popupSuccess {
   position: fixed;
-  margin-top: 3%;
+  margin-top: 1.5%;
   margin-bottom: 10%;
   margin-left: 30%;
   margin-right: 20%;
@@ -79,6 +79,7 @@
   display: flex;
   justify-content: center;
   box-shadow: 0 5px 15px #95bae35b;
+  z-index: 100;
 }
 .popupSuccess:hover {
   transform: scale(

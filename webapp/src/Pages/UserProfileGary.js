@@ -13,7 +13,7 @@ import { Card, CardBody, CardImg,CardText,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  UncontrolledDropdown} from 'reactstrap'
+  UncontrolledDropdown,Button} from 'reactstrap'
 
 
 function UserProfileGary() {
@@ -134,7 +134,7 @@ function UserProfileGary() {
                   ))}
                 </div>
               </div>
-              { isUser ? <button id='button-16' onClick={()=> setButtonPopUp(true)}>Edit your profile</button> :null }
+              { isUser ? <Button size='sm' onClick={()=> setButtonPopUp(true)}>Edit your profile</Button> :null }
               </Container>
             </div>
           </div>
