@@ -60,6 +60,7 @@ export default function PopUpAddGallery(props){
                     </FormGroup>
                     <Button className="btn-round btn-icon" color="success" size='sm' 
                     onClick={()=>{
+                        console.log(newPic)
                         setNewPic({...newPic, id: props.id});
                         props.onAdd(newPic);
                         console.log(newPic)
