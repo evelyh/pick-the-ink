@@ -11,7 +11,13 @@
 
 ## Pages
 
-### *Explore* `/`
+### *Sign Up* `/signup`
+  - Sign up for the webapp
+
+### *Login* `/login`
+  - Logging in to the webapp
+
+### *Explore* `/explore`
 - Landing home page where allows users to browse artists and their selected work based on the filters including artists' locations, available dates, and styles they chose. 
 
 ### *Manage Booking* `/managebooking`
