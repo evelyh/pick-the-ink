@@ -77,7 +77,7 @@
       - Navigate to `\webapp\Pages\ArtistGallery.js`
       - Go to `Line 45`, change `const [isUser] = useState(true);` to `const [isUser] = useState(false);`
       - Go to the page `\artistprofile`, to check the artist's view of their own profile
-      - Go to the page `\artistGallery`, to check the artist's view of their own gallery
+      - Go to the page `\artistgallery`, to check the artist's view of their own gallery
     - Our web app does not have any database in this stage, the two images on the artist's gallery page is hard coded for now to show a better and expected appearance of a normal gallery. Thus, these two images will show everytime you reload the page. All the bugs regrading to the hard coded will be fixed when we implement the databases in the following weeks. 
 
 ### *Admin Dashboard* "/admin"
