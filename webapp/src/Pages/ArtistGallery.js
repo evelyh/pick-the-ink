@@ -104,7 +104,7 @@ function ArtistGallery() {
     return (
       <div>
         <div>
-          <Header/>
+          <Header loggedIn={true}/>
         </div>
         {!isUser &&
         <PopUpAppointmentForm info={values} setInfo = {setValues} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpAppointmentForm>}

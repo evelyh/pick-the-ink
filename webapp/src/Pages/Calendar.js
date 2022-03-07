@@ -25,7 +25,7 @@ export class Calendar extends Component {
 
     return (
       <div>
-        <Header></Header>
+        <Header loggedIn={true}></Header>
         <ScheduleComponent selectedDate={new Date(2022, 3, 10)} eventSettings={{ dataSource: data }}>
           <Inject services={[Day, Week, WorkWeek, Month, Agenda]} />
         </ScheduleComponent>
