@@ -63,3 +63,7 @@
 .modal-footer {
   text-align: left;
 }
+
+.duration-needed {
+    color: orangered;
+}

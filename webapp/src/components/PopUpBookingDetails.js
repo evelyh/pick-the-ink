@@ -31,6 +31,7 @@ export class PopUpBookingDetails extends Component {
           Size: {booking.size} <br/>
           Reference picture: {booking.referencePic} <br/>
           Other details: {booking.otherDetails} <br/>
+          {booking.pendingDateTime ? <span className={"duration-needed"}>Duration needed: {booking.duration}</span> : null}
         </div>
         <div className={"modal-footer"}>
           <Button

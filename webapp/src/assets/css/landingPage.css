@@ -21,7 +21,7 @@
     width: 90vw;
     position: absolute;
     left: 50%;
-    background-color: rgb(241, 247, 247);
+    background-color: rgb(217, 237, 235);
     display: grid;
     transform: translateX(-50%);
     grid-template-columns: auto auto auto;

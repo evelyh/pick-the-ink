@@ -52,6 +52,7 @@ export class ManageBookingClient extends Component {
         pendingDuration: false,
         pendingConfirmation: false,
         pendingDateTime: true,
+        duration: 1,
       }
     ]
   }
