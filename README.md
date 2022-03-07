@@ -1,7 +1,7 @@
 # team09
 
 ## Introduction
-  - Website name: ** PickInk **
+  - Website name: **PickInk**
   - Description: a platform for tattoo artists and lovers
 
 ## Steps to run the app

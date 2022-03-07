@@ -51,6 +51,8 @@ export class Login extends Component {
 
     if (isAdmin){
       this.setState({
+        username: "",
+        password: "",
         admin: true,
       })
     }

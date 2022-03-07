@@ -9,12 +9,12 @@ import {uid} from "react-uid";
 export class ManageBooking extends Component {
 
   state = {
-    userType: 0, // 0 = artist; 1 = customer;
+    userType: 0, // 0 = artist; 1 = customer; // todo: implement when connected to backend
     bookingConfirmed: false,
     bookingCancelled: false,
     durationSent: false,
     datetimeSent: false,
-    pendingBookings: [
+    pendingBookings: [ // todo: integrate with backend to get from database
       {
         firstName: "Sailor",
         lastName: "Moon",
@@ -53,6 +53,8 @@ export class ManageBooking extends Component {
       }
     ]
   }
+
+  // todo: "send functions" should all connect to backend
 
   sendDateTime = () => {
     this.setState({
