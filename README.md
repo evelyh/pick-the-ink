@@ -1,7 +1,7 @@
 # team09
 
 ## Introduction
-  - Website name: ** *PickInk* **
+  - Website name: ** PickInk **
   - Description: a platform for tattoo artists and lovers
 
 ## Steps to run the app
@@ -19,8 +19,12 @@
   - Logging in to the webapp
   - Fill in the username and passwords to login
   - Credential:
-    - username: `user`
-    - password: `user` 
+    - User:
+      - username: `user`
+      - password: `user`
+    - Admin:
+      - username: `admin`
+      - password: `admin`  
 
 ### *Explore* `/explore`
 - Landing home page where allows users to browse artists and their selected work based on the filters including artists' locations, available dates, and styles they chose.
