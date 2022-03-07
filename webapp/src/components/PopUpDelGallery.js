@@ -6,14 +6,6 @@ import _ from "lodash"
 
 export default function PopUpDelGallery(props){
 
-    const onDelete = (id, e) => {
-        e.preventDefault();
-        let deletedGallery = _.cloneDeep((props.values.gallery).filter((item)=>{return item.id != id}))
-        console.log(deletedGallery);
-        props.setValues({...props.values, gallery: deletedGallery});
-        console.log(props.values)
-    }
-
     return (props.trigger !== undefined) ? (
         props.trigger === props.index && 
         <div id="popupDel" className="popup">
