@@ -30,7 +30,7 @@ export class Header extends Component {
             <Navbar.Toggle/>
             <Navbar.Collapse>
                 <Nav>
-                    <Nav.Link style={this.nav} href="/">Explore</Nav.Link>
+                    <Nav.Link style={this.nav} href="/explore">Explore</Nav.Link>
                     <Nav.Link style={this.nav} href="/managebooking">Manage Booking</Nav.Link>
                     <Nav.Link style={this.nav} href="/calendar">Calendar</Nav.Link>
                     <Nav.Link style={this.nav} href="/userprofile">Profile</Nav.Link>
