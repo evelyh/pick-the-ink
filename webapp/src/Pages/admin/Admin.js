@@ -42,19 +42,22 @@ function Admin () {
       <div>
         <div><HeaderAdmin/></div>        
         <Container>
-          <h4 classname='mb-4'>Accounts Overview</h4>
+          <h4>Accounts Overview</h4>
           <div className="App">
-      <table>
+      <table class="table mt-3">
+        <thead>
         <tr>
-          <th>Username</th>
-          <th>Account Status</th>
-          <th>Actions</th>
-          <th>Artist Status</th>
-          <th>Actions</th>
+          <th scope="col">Username</th>
+          <th scope="col">Account Status</th>
+          <th scope="col">Actions</th>
+          <th scope="col">Artist Status</th>
+          <th scope="col">Actions</th>
         </tr>
+        </thead>
+      <tbody>
         {data.map((_, index) => {
           return (
-            <tr key={index}>
+            <tr key={index} scope="row">
               <td>{data[index].username}</td>
               <td>{data[index].accountStatus}</td>
               <td>
@@ -73,7 +76,7 @@ function Admin () {
               </td>
             </tr>
           )
-        })}
+        })}</tbody>
       </table>
     </div>
         </Container>

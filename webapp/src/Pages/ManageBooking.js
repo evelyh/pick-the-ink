@@ -111,7 +111,7 @@ export class ManageBooking extends Component {
       <div>
         <Header loggedIn={true}/>
 
-        <div className={"body"}>
+        <div className={"managebooking-body"}>
           <h1 className={"page-head"}>Manage Booking</h1>
 
           <NavTabTwo
@@ -123,12 +123,12 @@ export class ManageBooking extends Component {
             rightText={"Confirmed"}
           />
 
-          <table id="table">
-            <tr id="tr">
-              <th id="th" className={"date-head"}>Date</th>
-              <th id="th" className={"time-head"}>Time</th>
-              <th id="th">{ this.state.userType === 0 ? "Customer" : "Artist"}</th>
-              <th id="th">Actions</th>
+          <table>
+            <tr>
+              <th className={"date-head"}>Date</th>
+              <th className={"time-head"}>Time</th>
+              <th>{ this.state.userType === 0 ? "Customer" : "Artist"}</th>
+              <th>Actions</th>
             </tr>
 
             { this.state.pendingBookings.map((pendingBooking) => {

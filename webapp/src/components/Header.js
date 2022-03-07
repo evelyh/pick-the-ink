@@ -22,16 +22,23 @@ export class Header extends Component {
 
     return (
       <div className='header'>
-          <Navbar>
+          <Navbar bg="light">
             <Container>
-            <Navbar.Brand style={this.brand} href="/">
-                PickINK
-            </Navbar.Brand>
+              {
+                loggedIn ?
+                  <Navbar.Brand style={this.brand} href="/explore">
+                    PickINK
+                  </Navbar.Brand>
+                  :
+                  <Navbar.Brand style={this.brand} href="/">
+                    PickINK
+                  </Navbar.Brand>
+              }
             <Navbar.Toggle/>
             <Navbar.Collapse>
                 <Nav>
-                    <Nav.Link style={this.nav} href="/">Explore</Nav.Link>
-                    <Nav.Link style={this.nav} href="/managebooking">Manage Booking</Nav.Link>
+                    {loggedIn ? <Nav.Link style={this.nav} href="/explore">Explore</Nav.Link> : <Nav.Link style={this.nav} href="/">Explore</Nav.Link>}
+                    <Nav.Link style={this.nav} href="/managebooking">Bookings</Nav.Link>
                     <Nav.Link style={this.nav} href="/calendar">Calendar</Nav.Link>
                     <Nav.Link style={this.nav} href="/userprofile">Profile</Nav.Link>
                 </Nav>

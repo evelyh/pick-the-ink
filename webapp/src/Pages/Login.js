@@ -12,6 +12,7 @@ export class Login extends Component {
     username: "",
     password: "",
     valid: null,
+    admin: null,
     forgotPassword: false,
     passwordType: "password",
     showPassword: false,
@@ -35,6 +36,7 @@ export class Login extends Component {
     // by setting valid = true
 
     const userFound = this.state.username === "user" && this.state.password === "user";
+    const isAdmin = this.state.username === "admin" && this.state.password === "admin";
     if (userFound){
       this.setState({
         username: "",
@@ -44,6 +46,12 @@ export class Login extends Component {
     } else{
       this.setState({
         valid: false
+      })
+    }
+
+    if (isAdmin){
+      this.setState({
+        admin: true,
       })
     }
   }
@@ -56,7 +64,10 @@ export class Login extends Component {
   }
 
   checkRedirection = () => {
-    if (this.state.valid){
+    if (this.state.admin){
+      return <Navigate to={"/admin"}/>;
+    }
+    else if (this.state.valid){
       return <Navigate to={"/"} />;
     } else if (this.state.valid != null){
       return <Alert color={"danger"}> Incorrect username / password. Try again! </Alert>;
