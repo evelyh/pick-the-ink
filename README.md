@@ -89,3 +89,5 @@
   - Link: https://demos.creative-tim.com/paper-kit-react/#/index
 - Canlendar used to keep track of their available datetimes
   - Link: http://cdn.syncfusion.com/ej2/material.css
+- Flatlist in react (react-flatlist)
+  - Link: https://github.com/ecorreiadev/flatlist-react/
