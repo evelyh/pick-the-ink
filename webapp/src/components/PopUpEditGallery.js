@@ -12,7 +12,7 @@ import {
 
 function PopUpEditGallery(props) {
 
-    const [prev, setprev] = useState({
+    const [prev] = useState({
         userName: props.values.userName,
         email: props.values.email,
         comment:props.values.comment,
