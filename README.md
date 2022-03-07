@@ -108,3 +108,5 @@
   - Link: http://cdn.syncfusion.com/ej2/material.css
 - Flatlist in react (react-flatlist)
   - Link: https://github.com/ecorreiadev/flatlist-react/
+- react-icons 
+  - Link: https://react-icons.github.io/react-icons/
