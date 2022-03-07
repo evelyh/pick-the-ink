@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Header from "../components/Header";
 import NavTabTwo from "../components/NavTabTwo";
 import "../assets/css/managebooking.css"
-import {Alert, Button, Modal} from "reactstrap";
+import {Alert} from "reactstrap";
 import BookingRow from "../components/BookingRow";
 import {uid} from "react-uid";
 

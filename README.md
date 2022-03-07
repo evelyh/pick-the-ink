@@ -27,7 +27,24 @@
 - In the results of the filter, you can go to the artists' profile pages by clicking their username. 
 
 ### *Manage Booking* `/managebooking`
-- Page where allows user to manage their booking. They can delete or edit the information of their bookings.
+- Page that allows user to manage their booking.
+
+- For customers,
+  - view all booking requests (pending bookings)
+  - cancel a booking that is yet to be heard back from artist
+  - pick a time for the appointment after artist get back with the time needed for the specified tattoo
+  - view confirmed bookings
+  
+- For artists,
+  - view new booking requests
+  - send an estimated duration needed for the specified tattoo
+  - suggest an alternate time for an appointment
+  - confirm an appointment with the client after the client picked a time
+  - view confirmed bookings
+  - cancel bookings
+
+> Note: Default is the client's view. To redirect to the artist's view, go to the url `/artist-managebooking`. Clicking 
+> on the `Manage Booking` tab on the navigation bar will take you back to default view.
 
 ### *Calendar* `/calendar`
 - Page where allow users to keep track of their available data and time.
@@ -35,7 +52,7 @@
 - Click the edit/delete button on the upper-right popup of each appoitment to edit/delete the appointment
 
 ### *Profile*  
-  - For cutomers, `/userprofile`
+  - For customers, `/userprofile`
     - Regular profile pages containing basic info, i.e. username, full name, contact info, favourite styles, etc.. 
     - Features on the pages:
       - Profile Card
