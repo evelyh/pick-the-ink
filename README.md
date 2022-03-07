@@ -18,6 +18,9 @@
 ### *Login* `/login`
   - Logging in to the webapp
   - Fill in the username and passwords to login
+  - Credential:
+    - username: `user`
+    - password: `user` 
 
 ### *Explore* `/explore`
 - Landing home page where allows users to browse artists and their selected work based on the filters including artists' locations, available dates, and styles they chose. 
