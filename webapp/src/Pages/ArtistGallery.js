@@ -42,7 +42,7 @@ function ArtistGallery() {
   const [buttonPopUpDel, setButtonPopUpDel] = useState(undefined);
   const [buttonPopUpAdd, setButtonPopUpAdd] = useState(false);
 
-  const [isAritist] = useState(false);
+  const [isUser] = useState(false);
 
   const deleteById = (id, event) => {
     event.preventDefault();
@@ -91,9 +91,9 @@ function ArtistGallery() {
             >
               Del
           </PopUpDelGallery> 
-            {isAritist &&
+            {isUser &&
               <Button id="edit" className="btn-round btn-icon" color="primary" size='sm' onClick={()=> setButtonPopUpEdit(index)}>Edit</Button>}
-            {isAritist &&
+            {isUser &&
               <Button id="del" className="btn-round btn-icon" color="danger" size='sm' onClick={()=> setButtonPopUpDel(index)}>Delete</Button>}
         </CardBody>
       </Card>
@@ -106,11 +106,11 @@ function ArtistGallery() {
         <div>
           <Header/>
         </div>
-        {!isAritist &&
+        {!isUser &&
         <PopUpAppointmentForm info={values} setInfo = {setValues} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpAppointmentForm>}
 
         <div className="container">
-          {isAritist &&<PopUpAddGallery
+          {isUser &&<PopUpAddGallery
             values={values}
             setValues = {setValues}
             id = {values.gallery.length+1}
@@ -118,7 +118,7 @@ function ArtistGallery() {
             trigger={buttonPopUpAdd} 
             setTrigger={setButtonPopUpAdd}
           >Add</PopUpAddGallery>}
-          {isAritist &&
+          {isUser &&
           <Button id="button-addPic" className="btn-round btn-icon" color="primary" onClick={()=> setButtonPopUpAdd(true)}>
             <IconContext.Provider value={{ color: 'white', size: '15px' }}><VscAdd/> Add </IconContext.Provider>
           </Button>}
@@ -152,11 +152,14 @@ function ArtistGallery() {
                 </UncontrolledDropdown>
               </CardBody>
             </Card>
-            {!isAritist &&
-                <Button id="bt-book"className='btn-round btn-icon' size='sm' onClick={()=> setButtonPopUp(true)}>Book an appointment</Button>}
+            {!isUser &&
+                <Button id="bt-book"
+                size='sm'
+                type="button"
+                onClick={()=> setButtonPopUp(true)}>Book an appointment</Button>}
+
             <Button
                 id="bt-pro"
-                className='btn-round btn-icon'
                 size='sm'
                 type="button"
                 onClick={(e) => {
