@@ -68,7 +68,7 @@ export class Login extends Component {
       return <Navigate to={"/admin"}/>;
     }
     else if (this.state.valid){
-      return <Navigate to={"/"} />;
+      return <Navigate to={"/explore"} />;
     } else if (this.state.valid != null){
       return <Alert color={"danger"}> Incorrect username / password. Try again! </Alert>;
     }
