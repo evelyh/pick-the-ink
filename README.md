@@ -1,7 +1,7 @@
 # team09
 
 ## Introduction
-  - Website name: PickInk 
+  - Website name: ** *PickInk* **
   - Description: a platform for tattoo artists and lovers
 
 ## Steps to run the app
@@ -108,3 +108,7 @@
   - Link: http://cdn.syncfusion.com/ej2/material.css
 - Flatlist in react (react-flatlist)
   - Link: https://github.com/ecorreiadev/flatlist-react/
+- react-icons 
+  - Link: https://react-icons.github.io/react-icons/
+- Lists of countries and region used to browse artists
+  - Link: https://github.com/country-regions/react-country-region-selector
