@@ -52,8 +52,8 @@ function PopUpProfileForm(props) {
     {name:'Surrealism',id: 12},
     {name:'Microrealism',id: 13},
     {name:'Minimalism',id: 14},
-    {name:'Single Line',id: 14},
-    {name:'Dot Work',id: 14},];
+    {name:'Single Line',id: 15},
+    {name:'Dot Work',id: 16},];
     const [option]=useState(optionData);
 
     return (props.trigger) ? (
