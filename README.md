@@ -11,8 +11,20 @@
 
 ## Pages
 
-### *Explore* `/`
-- Landing home page where allows users to browse artists and their selected work based on the filters including artists' locations, available dates, and styles they chose. 
+### *Sign Up* `/signup`
+  - Sign up for the webapp
+  - Click on the signup on the Navbar, and signup by filling the form
+
+### *Login* `/login`
+  - Logging in to the webapp
+  - Fill in the username and passwords to login
+  - Credential:
+    - username: `user`
+    - password: `user` 
+
+### *Explore* `/explore`
+- Landing home page where allows users to browse artists and their selected work based on the filters including artists' locations, available dates, and styles they chose.
+- In the results of the filter, you can go to the artists' profile pages by clicking their username. 
 
 ### *Manage Booking* `/managebooking`
 - Page where allows user to manage their booking. They can delete or edit the information of their bookings.
@@ -55,18 +67,18 @@
         - Delete images from your gallery
         - By clicking the `delete` button in the popup, you are confirming the deletion, otherwise, the image will stay. 
   
-  **Note (Important!):** 
-  - For each user, he/she can only edit their own profile page (and gallery page, for artists), and view limited profile info on other users' profile page. 
-  - Both customers and artists can book appoinments on and only on other artists
-  - For each artist, he/she cannot book an appoinment on their own profile/gallery page. 
-  - The default logged in user is a customer, thus, all the pages are showing the views of that customer. To switch to the artists' view for testing the features, please follow the steps:
-    - Navigate to `\webapp\Pages\AritistProfile.js`
-    - Go to `Line 39`, change `const [isUser] = useState(true);` to `const [isUser] = useState(false);`
-    - Navigate to `\webapp\Pages\ArtistGallery.js`
-    - Go to `Line 45`, change `const [isUser] = useState(true);` to `const [isUser] = useState(false);`
-    - Go to the page `\artistprofile`, to check the artist's view of their own profile
-    - Go to the page `\artistGallery`, to check the artist's view of their own gallery
-  - Our web app does not have any database in this stage, the two images on the artist's gallery page is hard coded for now to show a better and expected appearance of a normal gallery. Thus, these two images will show everytime you reload the page. All the bugs regrading to the hard coded will be fixed when we implement the databases in the following weeks. 
+    **Notes for Profile (Important!):** 
+    - For each user, he/she can only edit their own profile page (and gallery page, for artists), and view limited profile info on other users' profile page. 
+    - Both customers and artists can book appoinments on and only on other artists
+    - For each artist, he/she cannot book an appoinment on their own profile/gallery page. 
+    - The default logged in user is a customer, thus, all the pages are showing the views of that customer. To switch to the artists' view for testing the features, please follow the steps:
+      - Navigate to `\webapp\Pages\AritistProfile.js`
+      - Go to `Line 39`, change `const [isUser] = useState(true);` to `const [isUser] = useState(false);`
+      - Navigate to `\webapp\Pages\ArtistGallery.js`
+      - Go to `Line 45`, change `const [isUser] = useState(true);` to `const [isUser] = useState(false);`
+      - Go to the page `\artistprofile`, to check the artist's view of their own profile
+      - Go to the page `\artistgallery`, to check the artist's view of their own gallery
+    - Our web app does not have any database in this stage, the two images on the artist's gallery page is hard coded for now to show a better and expected appearance of a normal gallery. Thus, these two images will show everytime you reload the page. All the bugs regrading to the hard coded will be fixed when we implement the databases in the following weeks. 
 
 ### *Admin Dashboard* "/admin"
 - Admin can manage user accounts by suspending them or activating them.

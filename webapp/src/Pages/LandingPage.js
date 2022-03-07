@@ -34,13 +34,13 @@ export class LandingPage extends Component {
     {name:'Surrealism',id: 12},
     {name:'Microrealism',id: 13},
     {name:'Minimalism',id: 14},
-    {name:'Single Line',id: 14},
-    {name:'Dot Work',id: 14},];
+    {name:'Single Line',id: 15},
+    {name:'Dot Work',id: 16},];
 
   render(){
     return (
       <div>
-        <div><Header/> </div>
+        <div><Header loggedIn={true}/> </div>
         <Container>
               <h4 className="mb-4"><a id='title'> Welcome to PickINK! Get started by finding the right Artists for you. </a></h4>
             <Form>

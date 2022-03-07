@@ -52,6 +52,7 @@ export class ManageBookingClient extends Component {
         pendingDuration: false,
         pendingConfirmation: false,
         pendingDateTime: true,
+        duration: 1,
       }
     ]
   }
@@ -111,26 +112,26 @@ export class ManageBookingClient extends Component {
   render() {
     return (
       <div>
-        <Header/>
+        <Header loggedIn={true}/>
 
         <div className={"body"}>
           <h1 className={"page-head"}>Manage Booking</h1>
 
           <NavTabTwo
-            leftLink={"/client-managebooking"}
-            rightLink={"/client-managebooking-confirm"}
+            leftLink={"/managebooking"}
+            rightLink={"/managebooking-confirm"}
             leftActive={true}
             rightActive={false}
             leftText={"Pending"}
             rightText={"Confirmed"}
           />
 
-          <table>
-            <tr>
-              <th className={"date-head"}>Date</th>
-              <th className={"time-head"}>Time</th>
-              <th>{ this.state.userType === 0 ? "Customer" : "Artist"}</th>
-              <th>Actions</th>
+          <table id="table">
+            <tr id="tr">
+              <th id="th" className={"date-head"}>Date</th>
+              <th id="th" className={"time-head"}>Time</th>
+              <th id="th" >{ this.state.userType === 0 ? "Customer" : "Artist"}</th>
+              <th id="th" >Actions</th>
             </tr>
 
             { this.state.pendingBookings.map((pendingBooking) => {

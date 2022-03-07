@@ -60,7 +60,7 @@ export class Login extends Component {
       <div>
         {this.checkRedirection()}
 
-        <Header />
+        <Header loggedIn={false}/>
 
         <div className={"login-form-container"}>
 

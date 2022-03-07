@@ -17,6 +17,9 @@ export class Header extends Component {
     fontWeight: "normal",
   }
   render() {
+
+    const {loggedIn} = this.props;
+
     return (
       <div className='header'>
           <Navbar>
@@ -35,7 +38,7 @@ export class Header extends Component {
             </Navbar.Collapse>
             <Navbar.Collapse className="justify-content-end">
               <Navbar.Text>
-                Signed in as: <a href="/userprofile">PatrickYahhh</a>
+                {loggedIn ? <span>Signed in as: <a href="/userprofile">PatrickYahhh</a></span> : <span><a href={"/login"}>Login</a> / <a href={"/"}>Sign In</a> </span>}
               </Navbar.Text>
             </Navbar.Collapse>
             </Container>

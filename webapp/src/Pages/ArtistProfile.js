@@ -45,7 +45,7 @@ function ArtistProfile() {
     return (
       <div>
         <div>
-          <Header/>
+          <Header loggedIn={true}/>
         </div>
         <PopUpArtistProfileForm info={values} setInfo = {setValues} success={success} setSuccess={setSuccess} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpArtistProfileForm>
         {isUser ? null : <PopUpAppointmentForm info={values} setInfo = {setValues} trigger={buttonPopUpBook} setTrigger={setButtonPopUpBook}>My Popup</PopUpAppointmentForm>}
