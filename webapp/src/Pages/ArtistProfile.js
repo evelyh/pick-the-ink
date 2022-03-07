@@ -36,7 +36,7 @@ function ArtistProfile() {
     const [buttonPopUp, setButtonPopUp] = useState(false);
     const [buttonPopUpBook, setButtonPopUpBook] = useState(false);
     const [success,setSuccess] = useState(false);
-    const [isUser] = useState(true);
+    const [isUser] = useState(false);
 
     const onDismiss = ()=>{
       setSuccess(false);
@@ -53,7 +53,6 @@ function ArtistProfile() {
         <div className="container">
           <div className="row">
             <div className="col-3">
-            <Container>
             <Card id="profileCard" style={{width: '20rem'}}>
               <CardBody>
               <CardImg src={profilepic} id="profileCirclePic" alt='profile' />  
@@ -93,7 +92,6 @@ function ArtistProfile() {
                   window.location.href='http://localhost:3000/artistgallery';
                   }}
             > Gallery</Button>
-            </Container>
             </div>
             <div className="col-7">
             <Alert variant="success" show={success}>
