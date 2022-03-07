@@ -1,30 +1,36 @@
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import { Navbar, Nav, Container} from 'react-bootstrap'
-import {Form} from 'react-bootstrap'
-import { useForm} from "react-hook-form";
+
 
 export class Header extends Component {
-  styles={
+  brand={
     color: "black",
     fontSize: "22px",
     textTransform: "none",
   }
+  bar={
+    backgroundColor: "rgb(163, 232, 220)",
+  }
+  nav={
+    fontSize:"18px",
+    fontWeight: "normal",
+  }
   render() {
     return (
       <div className='header'>
-          <Navbar bg="light">
+          <Navbar>
             <Container>
-            <Navbar.Brand style={this.styles} href="/">
+            <Navbar.Brand style={this.brand} href="/">
                 PickINK
             </Navbar.Brand>
             <Navbar.Toggle/>
             <Navbar.Collapse>
                 <Nav>
-                    <Nav.Link href="/">Explore</Nav.Link>
-                    <Nav.Link href="/managebooking">Manage Booking</Nav.Link>
-                    <Nav.Link href="/calendar">Calendar</Nav.Link>
-                    <Nav.Link href="/userprofile">Profile</Nav.Link>
+                    <Nav.Link style={this.nav} href="/">Explore</Nav.Link>
+                    <Nav.Link style={this.nav} href="/managebooking">Manage Booking</Nav.Link>
+                    <Nav.Link style={this.nav} href="/calendar">Calendar</Nav.Link>
+                    <Nav.Link style={this.nav} href="/userprofile">Profile</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
             <Navbar.Collapse className="justify-content-end">
