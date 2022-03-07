@@ -25,6 +25,7 @@ export class PopUpSendDateTime extends Component {
       trigger,
       setTrigger,
       sendDateTime,
+      userType
     } = this.props;
 
     return (trigger) ? (
@@ -32,12 +33,20 @@ export class PopUpSendDateTime extends Component {
         <Modal isOpen={trigger} toggle={setTrigger}>
           <div className={"modal-header"}>
             <h5 className={"modal-title"}>
-              Suggest/Alternate a date/time
+              Suggest/Alternate appointment time
             </h5>
           </div>
           <div className={"modal-body"}>
-            Pick a/an suitable/alternate datetime for this appointment<br/>
-            You can send selected datetime multiple times, only the last time will be recorded.
+            {userType === 0 ?
+              <span>Suggest an alternate datetime for this appointment.</span>
+              :
+              <span>Pick a suitable datetime for this appointment. The artist is available at the following times: <br/>
+                    Monday: 1-4pm<br/>
+                    Wednesday: 10am-8pm<br/>
+                    Thursday: 3-9pm
+              </span>
+            } <br/><br/>
+            <em>You can send selected datetime multiple times, only the last time will be recorded.</em> <br/><br/>
 
             <Label for={"start-time"}>Start Time</Label>
             <Input
@@ -47,7 +56,7 @@ export class PopUpSendDateTime extends Component {
               value={this.state.startTime}
               onChange={this.handleInputChange}
               required={true}
-            />
+            /> <br/>
             <Label for={"duration"}>Duration</Label>
             <Input
               id={"duration"}

@@ -58,3 +58,7 @@ tr:nth-child(even) {
 .modal-body, .modal-footer {
     text-align: left;
 }
+
+.duration-needed {
+    color: orangered;
+}

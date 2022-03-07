@@ -119,6 +119,7 @@ export class BookingRow extends Component {
             trigger={this.state.showSendDateTime}
             setTrigger={() => this.setState({showSendDateTime: !this.state.showSendDateTime})}
             sendDateTime={this.sendDateTime}
+            userType={userType}
           />
 
         </tr>
