@@ -1,23 +1,43 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useState} from 'react'
 import HeaderAdmin from 'components/HeaderAdmin'
 import { Container, Button} from 'react-bootstrap'
 
-export class Admin extends Component {
-  data = [
-    { username: "Spongebob", accountStatus: "active", artistStatus: "certified"},
+function Admin () {
+  const [data, setData] = useState([
+    { username: "Spongebob", accountStatus: "active", artistStatus: "approved"},
     { username: "Gary", accountStatus: "suspended", artistStatus: "N/A"},
     { username: "PatrickYahhh", accountStatus: "active", artistStatus:"applied"},
-    { username: "Mr.krab", accountStatus: "active", artistStatus:"N/A",},
-  ]
+    { username: "Mr.krab", accountStatus: "active", artistStatus:"rejected",},
+  ]);
 
-  // [accInfo, setAccInfo] = useState(this.data);
+  const handleSuspend = (i, e) =>{
+    e.preventDefault();
+    const newData = [...data];
+    newData[i].accountStatus = "suspended";
+    setData(newData);
+  }
 
-  // handleEdit =(e, acc) =>{
-  //   e.preventDefault;
-  //   setAccInfo(acc, id);
-  // }
+  const handleActivate = (i, e) =>{
+    e.preventDefault();
+    const newData = [...data];
+    newData[i].accountStatus = "active";
+    setData(newData);
+  }
 
-  render() {
+  const handleApprove = (i, e) =>{
+    e.preventDefault();
+    const newData = [...data];
+    newData[i].artistStatus = "approved";
+    setData(newData);
+  }
+
+  const handleReject = (i, e) =>{
+    e.preventDefault();
+    const newData = [...data];
+    newData[i].artistStatus = "rejected";
+    setData(newData);
+  }
+
     return (
       <div>
         <div><HeaderAdmin/></div>        
@@ -32,20 +52,24 @@ export class Admin extends Component {
           <th>Artist Status</th>
           <th>Actions</th>
         </tr>
-        {this.data.map((val, key) => {
+        {data.map((_, index) => {
           return (
-            <tr key={key}>
-              <td>{val.username}</td>
-              <td>{val.accountStatus}</td>
+            <tr key={index}>
+              <td>{data[index].username}</td>
+              <td>{data[index].accountStatus}</td>
               <td>
-                <button type="button" class="btn btn-outline-danger btn-sm"> Suspend </button>
-                <button type="button" class="btn btn-outline-success btn-sm"> Activate </button>
+                <button type="button" class="btn btn-outline-danger btn-sm" onClick={handleSuspend.bind(this, index)}> 
+                Suspend </button>
+                <button type="button" class="btn btn-outline-success btn-sm" onClick={handleActivate.bind(this, index)}> 
+                Activate </button>
               </td>
-              <td>{val.artistStatus}</td>
+              <td>{data[index].artistStatus}</td>
               <td>
               <button type="button" class="btn btn-outline-info btn-sm"> View </button>
-              <button type="button" class="btn btn-outline-success btn-sm"> Approve </button>
-              <button type="button" class="btn btn-outline-danger btn-sm"> Reject </button>
+              <button type="button" class="btn btn-outline-success btn-sm" onClick={handleApprove.bind(this, index)}> 
+              Approve </button>
+              <button type="button" class="btn btn-outline-danger btn-sm" onClick={handleReject.bind(this, index)}> 
+              Reject </button>
               </td>
             </tr>
           )
@@ -56,7 +80,6 @@ export class Admin extends Component {
       </div>
 
     )
-  }
 }
 
 export default Admin
