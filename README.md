@@ -19,6 +19,8 @@
 
 ### *Calendar* `/calendar`
 - Page where allow users to keep track of their available data and time.
+- Click on each appointments showing on the calendar to see details
+- Click the edit/delete button on the upper-right popup of each appoitment to edit/delete the appointment
 
 ### *Profile*  
   - For cutomers, `/userprofile`
