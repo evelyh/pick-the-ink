@@ -8,6 +8,10 @@ export class HeaderAdmin extends Component {
     fontSize: "22px",
     textTransform: "none",
   }
+  nav={
+    fontSize:"18px",
+    fontWeight: "normal",
+  }
   
   render() {
     return (
@@ -20,8 +24,8 @@ export class HeaderAdmin extends Component {
             <Navbar.Toggle/>
             <Navbar.Collapse>
                 <Nav>
-                    <Nav.Link href="/admin">ManagementDashboard</Nav.Link>
-                    <Nav.Link href="/">UserView</Nav.Link>
+                    <Nav.Link style={this.nav} href="/admin">Dashboard</Nav.Link>
+                    <Nav.Link style={this.nav} href="/">UserView</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
             <Navbar.Collapse className="justify-content-end">

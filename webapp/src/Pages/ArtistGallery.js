@@ -42,7 +42,7 @@ function ArtistGallery() {
   const [buttonPopUpDel, setButtonPopUpDel] = useState(undefined);
   const [buttonPopUpAdd, setButtonPopUpAdd] = useState(false);
 
-  const [isUser] = useState(false);
+  const [isUser] = useState(true);
 
   const deleteById = (id, event) => {
     event.preventDefault();

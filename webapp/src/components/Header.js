@@ -22,7 +22,7 @@ export class Header extends Component {
 
     return (
       <div className='header'>
-          <Navbar>
+          <Navbar bg="light">
             <Container>
               {
                 loggedIn ?
@@ -38,7 +38,7 @@ export class Header extends Component {
             <Navbar.Collapse>
                 <Nav>
                     {loggedIn ? <Nav.Link style={this.nav} href="/explore">Explore</Nav.Link> : <Nav.Link style={this.nav} href="/">Explore</Nav.Link>}
-                    <Nav.Link style={this.nav} href="/managebooking">Manage Booking</Nav.Link>
+                    <Nav.Link style={this.nav} href="/managebooking">Bookings</Nav.Link>
                     <Nav.Link style={this.nav} href="/calendar">Calendar</Nav.Link>
                     <Nav.Link style={this.nav} href="/userprofile">Profile</Nav.Link>
                 </Nav>

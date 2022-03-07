@@ -17,7 +17,7 @@ export default function PopUpAddGallery(props){
         // setNewPic({...newPic, [field]: val});
         let copy = {...newPic};
         copy[field] = val;
-        setNewPic({copy});
+        setNewPic({...newPic, [field]: val});
     }
 
     const onChangeImg = (event) =>{
