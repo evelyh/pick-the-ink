@@ -10,7 +10,11 @@ export class Header extends Component {
     fontSize: "22px",
     textTransform: "none",
   }
+
   render() {
+
+    const {loggedIn} = this.props;
+
     return (
       <div className='header'>
           <Navbar bg="light">
@@ -21,7 +25,7 @@ export class Header extends Component {
             <Navbar.Toggle/>
             <Navbar.Collapse>
                 <Nav>
-                    <Nav.Link href="/">Explore</Nav.Link>
+                    <Nav.Link href="/explore">Explore</Nav.Link>
                     <Nav.Link href="/managebooking">Manage Booking</Nav.Link>
                     <Nav.Link href="/calendar">Calendar</Nav.Link>
                     <Nav.Link href="/userprofile">Profile</Nav.Link>
@@ -29,7 +33,7 @@ export class Header extends Component {
             </Navbar.Collapse>
             <Navbar.Collapse className="justify-content-end">
               <Navbar.Text>
-                Signed in as: <a href="/userprofile">PatrickYahhh</a>
+                {loggedIn ? <span>Signed in as: <a href="/userprofile">PatrickYahhh</a></span> : <span><a href={"/login"}>Login</a> / <a href={"/"}>Sign In</a> </span>}
               </Navbar.Text>
             </Navbar.Collapse>
             </Container>

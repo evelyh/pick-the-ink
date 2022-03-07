@@ -43,7 +43,7 @@ function UserProfile() {
     return (
       <div>
         <div>
-          <Header/>
+          <Header loggedIn={true}/>
         </div>
         <PopUpProfileForm info={values} setInfo = {setValues} success={success} setSuccess={setSuccess} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpProfileForm>
         <div className="container">
