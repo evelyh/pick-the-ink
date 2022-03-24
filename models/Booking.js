@@ -31,7 +31,7 @@ const Booking = mongoose.model("Booking", {
   flashLink: { // link to image of flash
     type: String,
   },
-  // todo: ^ maybe change this to link to Image schema?
+  // todo: ^ maybe change image links to link to Image schema?
   customIdea: {
     type: String,
   },
@@ -50,6 +50,7 @@ const Booking = mongoose.model("Booking", {
   duration: {
     type: Number,
     min: 1,
+    default: 1,
   },
 });
 
