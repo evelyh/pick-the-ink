@@ -4,6 +4,10 @@ const { mongoose } = require('../db/mongoose');
 const { Booking } = require('../models/Booking')
 
 module.exports = function(app) {
+    function isMongoError(error) { // checks for first error returned by promise rejection if Mongo database suddently disconnects
+        return typeof error === 'object' && error !== null && error.name === "MongoNetworkError"
+    }
+
     app.post('/bookings', async (req, res) => {
         if (mongoose.connection.readyState != 1) {
             log('There is issue to mongoose connection')
@@ -11,21 +15,21 @@ module.exports = function(app) {
             return;
         }  
     
-        const booking = new Booking({
-            artistID: req.body.artistID,
-            customerID: req.body.customerID,
-            isCancellable: req.body.isCancellable,
-            isModifiable: req.body.isModifiable,
-            choice: req.body.choice,
-            flashLink: req.body.flashLink,
-            customIdea: req.body.customIdea,
-            size: req.body.size,
-            placement: req.body.placement,
-            otherLink: req.body.otherLink,
-            concerns: req.body.concerns
-        })
-    
         try {
+            const booking = new Booking({
+                artistID: req.body.artistID,
+                customerID: req.body.customerID,
+                isCancellable: req.body.isCancellable,
+                isModifiable: req.body.isModifiable,
+                choice: req.body.choice,
+                flashLink: req.body.flashLink,
+                customIdea: req.body.customIdea,
+                size: req.body.size,
+                placement: req.body.placement,
+                otherLink: req.body.otherLink,
+                concerns: req.body.concerns
+            })
+            
             const result = await booking.save()	
             res.send({result})
         } catch(error) {

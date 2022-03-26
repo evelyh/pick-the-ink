@@ -7,10 +7,6 @@ var validateEmail = function(email) {
 };
 
 const User = mongoose.model('User', {
-	userID: {
-		type: mongoose.SchemaTypes.ObjectId,
-		required: true,
-	},
 	userName: {
 		type: String,
 		required: true,   
@@ -51,12 +47,12 @@ const User = mongoose.model('User', {
     },
     followingIDs: {
         type: [mongoose.SchemaTypes.ObjectId],
-        required: true,
+        required: false,
         ref: "User"
     },
     followerIDs: {
         type: [mongoose.SchemaTypes.ObjectId],
-        required: true,
+        required: false,
         ref: "User"
     },
     favoriteStyles: {
