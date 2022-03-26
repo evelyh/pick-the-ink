@@ -9,11 +9,10 @@ const app = express();
 const bodyParser = require('body-parser')
 app.use(bodyParser.json());
 
-// Mongo and Mongoose
-const { ObjectID } = require('mongodb')
-const { mongoose } = require('./db/mongoose');
 
+require('./server/Booking-api')(app)
 require('./server/User-api')(app)
+
 
 
 const port = process.env.PORT || 5000

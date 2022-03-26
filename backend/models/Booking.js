@@ -27,6 +27,7 @@ const Booking = mongoose.model("Booking", {
   },
   choice: { // custom design / flash
     type: String,
+    required:true
   },
   flashLink: { // link to image of flash
     type: String,
@@ -37,9 +38,11 @@ const Booking = mongoose.model("Booking", {
   },
   size: {
     type: String,
+    required:true
   },
   placement: {
     type: String,
+    required:true
   },
   otherLink: { // image / screenshot
     type: String,
