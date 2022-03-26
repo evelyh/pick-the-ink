@@ -1,3 +1,4 @@
+const log = console.log;
 const { ObjectID } = require('mongodb')
 const { mongoose } = require('../db/mongoose');
 const { Booking } = require('../models/Booking')
