@@ -55,6 +55,10 @@ const Booking = mongoose.model("Booking", {
     min: 1,
     default: 1,
   },
+  isConfirmed: {
+    type: Boolean,
+    default: false
+  }
 });
 
 module.exports = { Booking };

@@ -12,6 +12,7 @@ app.use(bodyParser.json());
 
 require('./server/Booking-api')(app)
 require('./server/User-api')(app)
+require('./server/Timeslot-api')(app)
 
 
 
