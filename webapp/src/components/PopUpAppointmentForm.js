@@ -60,8 +60,8 @@ function PopUpAppointmentForm(props) {
                       <Form.Label>What are you interested in getting:</Form.Label>
                       <Form.Control as='select' 
                       id="choice"
-                      onChange={ e => setField('choice', e.target.value) }>
-                          <option>---Choose---</option>
+                      onChange={ e => setField('choice', e.target.value) }
+                      required>
                           <option>Flash</option>
                           <option>Custom Design</option>
                       </Form.Control>
@@ -90,7 +90,8 @@ function PopUpAppointmentForm(props) {
                       <Form.Control 
                       id="size"
                       type="text" 
-                      onChange={ e => setField('size', e.target.value) }/>
+                      onChange={ e => setField('size', e.target.value) }
+                      required/>
                   </Form.Group>
   
                   <Form.Group className="mb-3" >
@@ -98,7 +99,8 @@ function PopUpAppointmentForm(props) {
                       <Form.Control 
                       id="placement"
                       type="text" 
-                      onChange={ e => setField('placement', e.target.value) }/>
+                      onChange={ e => setField('placement', e.target.value) }
+                      required/>
                   </Form.Group>
   
                   <Form.Group className="mb-3" >

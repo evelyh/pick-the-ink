@@ -83,18 +83,16 @@ function addBooking(form) {
     });
 
     // Send the request with fetch()
-    fetch(request)
-    .then(function(res, mode="no-cors") {
+    fetch(request).then(function(res, mode="no-cors") {
 
         if (res.status === 200) {
             // If student was added successfully, tell the user.
-            console.log('Successfully added booking')
+            console.log('Successfully added booking') 
         } else {
             // If server couldn't add the student, tell the user.
             console.log('[Unsuccessful] add booking')
-     
         }
-        log(res)  // log the result in the console for development purposes
+        // log(res)  // log the result in the console for development purposes
     }).catch((error) => {
         log(error)
     })
