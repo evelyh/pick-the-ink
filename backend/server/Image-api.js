@@ -6,12 +6,15 @@ const {Image} = require('../models/Image')
 const multer = require("multer");
 const req = require('express/lib/request');
 
+const fs = require("fs")
+
 const storage = multer.diskStorage({
     destination: function(req, file, callback) {
         callback(null, './images/')
     },
     filename: function(req, file, callback) {
-        callback(null, new Date().toISOString().replace(/:/g, '-') + file.originalname)
+        log(req)
+        callback(null, file.originalname + '.png')
     }
 });
 
@@ -39,6 +42,8 @@ module.exports = function (app){
 
     //Upload a new file
     app.post("/api/images", upload.single('img'), async(req, res) => {
+        log(req.file)
+
         if (mongoose.connection.readyState != 1) {
             log('There is issue to mongoose connection')
             res.status(500).send('Internal server error')
@@ -48,7 +53,8 @@ module.exports = function (app){
         try {
             const image = new Image({
                 desc: req.body.desc,
-                img: req.file.path
+                img: req.file.path,
+                path: req.file.path
             })
             
             const result = await image.save()	
@@ -91,7 +97,6 @@ module.exports = function (app){
     // delete image by id
     app.delete('/api/images/:id', async (req, res) => {
         const id = req.params.id
-        log(id)
         // Validate id
         if (!ObjectID.isValid(id)) {
             res.status(404).send('Resource not found')
@@ -104,10 +109,34 @@ module.exports = function (app){
             res.status(500).send('Internal server error')
             return;
         } 
-    
+
+        var img = await Image.findById(id)
+        log(img)
+        const path = "./images/"
+        
         try {
             log(id)
-            const image = await Image.findByIdAndRemove(id)          
+            const image = await Image.findByIdAndRemove(id, {new: true, useFindAndModify: false},
+                function(err, img) {
+                    if(err) 
+                    {
+                        log(error)
+                        res.status(500).send() 
+                    } 
+                    else 
+                    {
+                        fs.unlink(img.path, (err) => {
+                            if (err) {
+                                console.log("failed to delete local image:"+err);
+                                res.status(500).send() 
+                            } 
+                            else 
+                            {
+                                console.log('successfully deleted local image');                             
+                            }
+                        })
+                    }
+                  })          
             if (!image) {
                 res.status(404).send()
             } else {   

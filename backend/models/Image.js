@@ -12,7 +12,10 @@ const Image = mongoose.model('Image', {
     desc: {
         type: String,
         required: false
-    }
+    },
+	path: {
+		type: String
+	}
 })
 
 module.exports = { Image }
