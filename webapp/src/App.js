@@ -22,6 +22,7 @@ import ManageBookingClient from "./Pages/ManageBookingClient";
 import ManageBookingClientConfirm from "./Pages/ManageBookingClientConfirm";
 import Admin from 'Pages/admin/Admin';
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -46,5 +47,8 @@ function App() {
     
   );
 }
+
+
+
 export default App;
 

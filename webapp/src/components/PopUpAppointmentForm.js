@@ -1,14 +1,14 @@
 import {React, useState }  from 'react'
 import '../assets/css/userProfile.css'
-
 import {Form} from 'react-bootstrap'
+import {addBooking} from '../api/booking.js'
 
 
 function PopUpAppointmentForm(props) {
 
     const handleSubmit = (data) => {
         data.preventDefault(); 
-        console.log(form)
+        addBooking(form);
         props.setTrigger(false);
     }
 
@@ -29,9 +29,10 @@ function PopUpAppointmentForm(props) {
             <h4 id="bookingFormTitle">{props.info.userName}'s Booking Form:</h4>
               <Form className='popupForm' onSubmit={handleSubmit}>
               
-                  <Form.Group className="mb-3" >
+                  {/* <Form.Group className="mb-3" >
                       <Form.Label>First Name:</Form.Label>
                       <Form.Control type="text"
+                      id='firstName'
                       onChange={ e => setField('firstName', e.target.value) }/>
                   </Form.Group>
   
@@ -53,11 +54,13 @@ function PopUpAppointmentForm(props) {
                   <Form.Group className="mb-3" >
                       <Form.Label>Phone:</Form.Label>
                       <Form.Control type="phone" onChange={ e => setField('phone', e.target.value) }/>
-                  </Form.Group>
+                  </Form.Group> */}
   
                   <Form.Group className="mb-3" >
                       <Form.Label>What are you interested in getting:</Form.Label>
-                      <Form.Control as='select' onChange={ e => setField('type', e.target.value) }>
+                      <Form.Control as='select' 
+                      id="choice"
+                      onChange={ e => setField('choice', e.target.value) }>
                           <option>---Choose---</option>
                           <option>Flash</option>
                           <option>Custom Design</option>
@@ -66,38 +69,62 @@ function PopUpAppointmentForm(props) {
   
                   <Form.Group className="mb-3" >
                       <Form.Label>For flash disign, please send a screenshot of the design:</Form.Label>
-                      <Form.Control type="file" className="form-control-file" onChange={ e => setField('flashPhoto', e.target.value) }/>
+                      <Form.Control 
+                      type="file" 
+                      id='flashLink'
+                      className="form-control-file" 
+                      onChange={ e => setField('flashLink', e.target.value) }/>
                   </Form.Group>
   
                   <Form.Group className="mb-3" >
                       <Form.Label>For custom disign, please describe your ideas in detail:</Form.Label>
-                      <textarea className="form-control" rows="3"  onChange={ e => setField('customIdea', e.target.value) }></textarea>
+                      <textarea 
+                      className="form-control" 
+                      id="customIdea"
+                      rows="3"  
+                      onChange={ e => setField('customIdea', e.target.value) }></textarea>
                   </Form.Group>
   
                   <Form.Group className="mb-3" >
                       <Form.Label>What size are you thinking (in inches or cm):</Form.Label>
-                      <Form.Control type="text" onChange={ e => setField('size', e.target.value) }/>
+                      <Form.Control 
+                      id="size"
+                      type="text" 
+                      onChange={ e => setField('size', e.target.value) }/>
                   </Form.Group>
   
                   <Form.Group className="mb-3" >
                       <Form.Label>Where do you want to place the tattoo:</Form.Label>
-                      <Form.Control type="text" onChange={ e => setField('placement', e.target.value) }/>
+                      <Form.Control 
+                      id="placement"
+                      type="text" 
+                      onChange={ e => setField('placement', e.target.value) }/>
                   </Form.Group>
   
                   <Form.Group className="mb-3" >
                       <Form.Label>Please send us any reference photos, drawings, sketches, screenshots, etc. that will help to explain your ideas:</Form.Label>
-                      <Form.Control type="file" className="form-control-file" onChange={ e => setField('otherPhoto', e.target.value) }/>
+                      <Form.Control 
+                      type="file" 
+                      id="otherLink"
+                      className="form-control-file" 
+                      onChange={ e => setField('otherLink', e.target.value) }/>
                   </Form.Group>
   
                   <Form.Group className="mb-3" >
                       <Form.Label>Anything else we should know (allergies, accommodations, peronal concerns ):</Form.Label>
-                      <textarea className="form-control" rows="3" onChange={ e => setField('others', e.target.value) }></textarea>
+                      <textarea 
+                      className="form-control" 
+                      id="concern"
+                      rows="3" 
+                      onChange={ e => setField('concern', e.target.value) }></textarea>
                   </Form.Group>
   
   
                   <button id="button-16" type="button" onClick={()=>{setConfirm(false);
                     props.setTrigger(false);}}>cancel</button>
-                  <button id="button-16" type="submit" onClick={()=>{setConfirm(true);}}>submit</button>
+                  <button id="button-16" type="submit" 
+                  onClick={()=>
+                    {setConfirm(true);}}>submit</button>
               </Form>
             </div>
         </div>

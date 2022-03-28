@@ -1,5 +1,4 @@
 const log = console.log
-
 log('Loaded front-end javascript.')
 
 const backWeb = "http://localhost:5000";
@@ -55,27 +54,37 @@ function getBookingsByID(id) {
     })
 }
 
-function addBooking(data) {
+function addBooking(form) {
     // the URL for the request
     const url = backWeb + '/api/bookings';
 
     // The data we are going to send in our request
-    // let data = {
-    //     name: document.querySelector('#name').value,
-    //     year: document.querySelector('#year').value
-    // }
+    let data = {
+        artistID: "623f4747554c0d0d6fe6c99f",
+        customerID: "623f4747554c0d0d6fe6c99f",
+        isCancellable: true,
+        isModifiable: true,
+        choice: form.choice,
+        flashLink: form.flashLink,
+        customIdea: form.customIdea,
+        size: form.size,
+        placement: form.placement,
+        otherLink: form.otherLink,
+        concern: form.concern
+    }
     const request = new Request(url, {
         method: 'post', 
         body: JSON.stringify(data),
         headers: {
             'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*"
         },
     });
 
     // Send the request with fetch()
     fetch(request)
-    .then(function(res) {
+    .then(function(res, mode="no-cors") {
 
         if (res.status === 200) {
             // If student was added successfully, tell the user.
@@ -91,3 +100,4 @@ function addBooking(data) {
     })
 }
 
+export {getBookings, addBooking, getBookingsByID}
