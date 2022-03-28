@@ -4,13 +4,12 @@ const mongoose = require('mongoose')
 const Image = mongoose.model('Image', {
 	imageID: {
 		type: mongoose.SchemaTypes.ObjectId,
-		required: true,
 	},
-	link: {
-		type: String,
-		required: true,
+	img: { 
+		type: String, 
+		required: true
 	},
-    Text: {
+    desc: {
         type: String,
         required: false
     }
