@@ -9,11 +9,14 @@ const app = express();
 const bodyParser = require('body-parser')
 app.use(bodyParser.json());
 
+require('./server/Admin-api')(app)
+require('./server/Artist-api')(app)
 require('./server/Booking-api')(app)
-require('./server/User-api')(app)
-require('./server/Timeslot-api')(app)
 require('./server/Image-api')(app)
-
+require('./server/Location-api')(app)
+require('./server/Style-api')(app)
+require('./server/Timeslot-api')(app)
+require('./server/User-api')(app)
 
 const port = process.env.PORT || 5000
 app.listen(port, () => {
