@@ -44,7 +44,7 @@ module.exports = function (app){
 
   // update some fields in admin by userID or userName
   // todo: add middleware to check if authorized user
-  app.path("/api/admin", async (req, res) => {
+  app.patch("/api/admin", async (req, res) => {
 
     // check mongoose connection established
     if (mongoose.connection.readyState !== 1){

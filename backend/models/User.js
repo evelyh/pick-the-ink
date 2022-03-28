@@ -6,6 +6,43 @@ var validateEmail = function(email) {
     return re.test(email)
 };
 
+const ArtistSchema = new mongoose.Schema({
+	imageIDs: {
+		type: [mongoose.SchemaTypes.ObjectId],
+		required: false,
+        ref: "Image"
+	},
+    homeLocation: {
+        type: mongoose.SchemaTypes.ObjectId,
+		required: true,
+        ref: "Location"
+    },
+    artStyles: {
+        type: [mongoose.SchemaTypes.ObjectId],
+		required: false,
+        ref: "Style"
+    },
+    bookingCancellable: {
+        type: Boolean,
+        required: true,
+        default: true
+    },
+    bookingModifiable: {
+        type: Boolean,
+        required: true,
+        default: true
+    },
+    license: {
+        type: String,
+        required: true
+    },
+    approved: {
+        type: Boolean,
+        required: true,
+        default: false
+    }
+});
+
 const User = mongoose.model('User', {
 	userName: {
 		type: String,
@@ -64,6 +101,15 @@ const User = mongoose.model('User', {
         type: [mongoose.SchemaTypes.ObjectId],
         required: false,
         ref: "Booking"
+    },
+    isArtist: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
+    artistSub: {
+        type: ArtistSchema,
+        required: false,
     }
 })
 

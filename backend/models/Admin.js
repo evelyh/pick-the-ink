@@ -2,10 +2,6 @@
 const mongoose = require('mongoose')
 
 const Admin = mongoose.model('Admin', {
-	userID: {
-		type: mongoose.SchemaTypes.ObjectId,
-		required: true,
-	},
 	userName: {
 		type: String,
 		required: true,   
