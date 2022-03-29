@@ -14,7 +14,7 @@ const ArtistSchema = new mongoose.Schema({
 	},
     homeLocation: {
         type: mongoose.SchemaTypes.ObjectId,
-		required: true,
+		required: false,
         ref: "Location"
     },
     artStyles: {

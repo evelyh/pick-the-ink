@@ -36,6 +36,7 @@ module.exports = function(app) {
         }
     })
 
+    //get timeslot by ??
     app.get('/api/timeslots', async (req, res) => {
         if (mongoose.connection.readyState != 1) {
             log('There is issue to mongoose connection')
@@ -61,6 +62,20 @@ module.exports = function(app) {
                 const timeslot = await Timeslot.find()
                 res.send({ timeslot })
             }
+        } catch(error) {
+            log(error)
+            res.status(500).send("Internal Server Error")
+        }
+    })
+
+    //get timeslots by start and end time
+    app.get('/api/timeslots', async(req, res) => {
+        let start = req.query.start
+        let end = req.query.end
+
+        try{
+            const result = await Timeslot.find({startTime: {$gte: start, $lte: end}, isBooked: false})
+            res.send(result)
         } catch(error) {
             log(error)
             res.status(500).send("Internal Server Error")

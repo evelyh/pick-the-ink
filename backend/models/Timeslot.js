@@ -5,7 +5,7 @@ const Timeslot = mongoose.model("Timeslot", {
   artistID: {
     type: mongoose.SchemaTypes.ObjectId,
     required: true,
-    ref: "Artist", // todo: check to match schema name
+    ref: "User", // todo: check to match schema name
   },
   locationID: {
     type: mongoose.SchemaTypes.ObjectId,

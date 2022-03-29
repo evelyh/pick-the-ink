@@ -28,15 +28,19 @@ module.exports = function(app) {
             })
             if(user.isArtist){
                 user.artistSub = {
+                    homeLocation: req.body.homeLocation,
                     license: req.body.artistSub.license,
                     physicalID: req.body.artistSub.physicalID
                 }
+                user.artistSub.artStyles.concat(req.body.artStyles)
             }else{
                 user.artistSub = null;
             }
+
+            console.log(user);
             
             const result = await user.save()	
-            res.send({result})
+            res.send(result)
         } catch(error) {
             log(error) 
             if (isMongoError(error)) 
@@ -94,7 +98,10 @@ module.exports = function(app) {
     app.get("/api/findArtists", async(req, res) => {
         const {query} = req.query;
         try{
-            const result = await User.find({artistSub: {homeLocation: query.homeLocation, } });
+            const result = await User.find(
+                {artistSub: {$and: [{homeLocation: query.locationID}, 
+                                    {artStyles: {$in: query.styleIDs}}]
+                                }, isArtist: true});
             if (!result) {
                 res.status(404).send('Resource not found')
             } else { 
