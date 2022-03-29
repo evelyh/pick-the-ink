@@ -28,11 +28,11 @@ module.exports = function(app) {
             })
             if(user.isArtist){
                 user.artistSub = {
-                    homeLocation: req.body.homeLocation,
+                    // homeLocation: req.body.homeLocation,
+                    // artistSub: req.body.artStyles,
                     license: req.body.artistSub.license,
                     physicalID: req.body.artistSub.physicalID
                 }
-                user.artistSub.artStyles.concat(req.body.artStyles)
             }else{
                 user.artistSub = null;
             }
