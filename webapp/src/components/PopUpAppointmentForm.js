@@ -1,7 +1,7 @@
 import {React, useState }  from 'react'
 import '../assets/css/userProfile.css'
 import {Form} from 'react-bootstrap'
-import {addBooking} from '../api/booking.js'
+import {addBooking} from '../apiHook/booking.js'
 
 
 function PopUpAppointmentForm(props) {

@@ -24,4 +24,22 @@ module.exports = function (app){
 
   })
 
+  //get styles by name
+  app.get("/api/styles/:name", async(req, res) =>{
+    if (mongoose.connection.readyState !== 1){
+      console.log("Issue with mongoose connection");
+      res.status(500).send("Internal server error");
+      return;
+    }
+
+    try{
+      var result = await Style.findOne({styleName: req.params.styleName});
+      res.send(result);
+    } catch (error){
+      console.log(error);
+      res.status(500).send("Internal Server error");
+    }
+
+  })
+
 }

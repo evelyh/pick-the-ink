@@ -32,6 +32,10 @@ const ArtistSchema = new mongoose.Schema({
         required: true,
         default: true
     },
+    physicalID:{
+        type: String,
+        required: true
+    },
     license: {
         type: String,
         required: true

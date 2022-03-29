@@ -1,12 +1,12 @@
 const log = console.log
 log('Loaded front-end javascript.')
 
-const backWeb = "http://localhost:5000";
+const hostURL = "http://localhost:5000";
 
 // GET bookings request to the web server,
 function getBookings(data) {
     // the URL for the request
-    const url = backWeb + '/api/bookings';
+    const url = hostURL + '/api/bookings';
 
     const request = new Request(url, {
         method: 'get', 
@@ -32,7 +32,7 @@ function getBookings(data) {
 // GET bookings by id request to the web server,
 function getBookingsByID(id) {
     // the URL for the request
-    const url = backWeb + '/api/bookings/' + {id};
+    const url = hostURL + '/api/bookings/' + {id};
 
     const request = new Request(url, {
         method: 'get',
@@ -56,7 +56,7 @@ function getBookingsByID(id) {
 
 function addBooking(form) {
     // the URL for the request
-    const url = backWeb + '/api/bookings';
+    const url = hostURL + '/api/bookings';
 
     // The data we are going to send in our request
     let data = {

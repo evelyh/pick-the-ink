@@ -28,16 +28,12 @@ module.exports = function(app) {
             })
             if(user.isArtist){
                 user.artistSub = {
-                    homeLocation: req.body.artistSub.homeLocation,
-                    artStyles:req.body.artistSub.artStyles,
-                    bookingCancellable: req.body.artistSub.bookingCancellable,
-                    bookingModifiable: req.body.artistSub.bookingModifiable,
                     license: req.body.artistSub.license,
+                    physicalID: req.body.artistSub.physicalID
                 }
             }else{
-                
+                user.artistSub = null;
             }
-            
             
             const result = await user.save()	
             res.send({result})
