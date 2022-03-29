@@ -15,7 +15,7 @@ module.exports = function (app){
 
     // get styles
     try{
-      const styles = Style.find();
+      const styles = await Style.find();
       res.send(styles);
     } catch (error){
       console.log(error);
@@ -24,8 +24,17 @@ module.exports = function (app){
 
   })
 
+  //create new style
+  app.post("/api/styles", async (req, res) => {
+        const style = new Style({
+          name: req.body.name
+        })
+        const result = await style.save()
+        res.send(result)
+    })
+
   //get styles by name
-  app.get("/api/styles/:name", async(req, res) =>{
+  app.get("/api/styles/", async(req, res) =>{
     if (mongoose.connection.readyState !== 1){
       console.log("Issue with mongoose connection");
       res.status(500).send("Internal server error");
@@ -33,7 +42,7 @@ module.exports = function (app){
     }
 
     try{
-      var result = await Style.findOne({styleName: req.params.styleName});
+      var result = await Style.find({name: req.query.name});
       res.send(result);
     } catch (error){
       console.log(error);

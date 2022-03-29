@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const Style = mongoose.model("Style", {
-  styleName: {
+  name: {
     type: String,
     required: true,
   },

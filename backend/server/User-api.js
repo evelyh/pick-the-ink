@@ -58,7 +58,7 @@ module.exports = function(app) {
     
         try {
             const user = await User.find()
-            res.send({ user })
+            res.send(user)
         } catch(error) {
             log(error)
             res.status(500).send("Internal Server Error")

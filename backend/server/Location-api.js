@@ -3,8 +3,8 @@ const { Location } = require("../models/Location");
 
 module.exports = function (app){
 
-  // Get location by name
-  app.get("/api/locations/:country/:region", async (req, res) => {
+  // Get location by name or find all
+  app.get("/api/locations", async (req, res) => {
 
     // check mongoose connection established
     if (mongoose.connection.readyState !== 1){
@@ -15,8 +15,15 @@ module.exports = function (app){
 
     // get locations
     try{
-      const locations = Location.findOne({country: req.params.country, region: req.params.region});
-      res.send(locations);
+      var location;
+      if(Object.keys(req.query).length != 0){
+        let country = req.query.country;
+        let region = req.query.region;
+        location = await Location.findOne({country: country, region: region});
+      }else{
+        location = await Location.find();
+      }
+      res.send(location);
     } catch (error){
       console.log(error);
       res.status(500).send("Internal Server error");
@@ -34,9 +41,9 @@ module.exports = function (app){
     }
 
     try{
-      var result = await Location.findOne({country: req.body.country, region: req.body.region});
+      var result = await Location.findOne({country: req.body.country, region: req.body.region}, function(err,obj) { console.log(obj); });
       if(result == null){
-          const location =  new Location({
+      const location =  new Location({
             country: req.body.country,
             region: req.body.region,
         });
@@ -49,7 +56,6 @@ module.exports = function (app){
     }
 
   })
-
 
 
 }
