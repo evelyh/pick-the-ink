@@ -1,5 +1,4 @@
 // Booking Mongoose Model
-
 const mongoose = require("mongoose");
 
 const Booking = mongoose.model("Booking", {
@@ -30,7 +29,7 @@ const Booking = mongoose.model("Booking", {
     required:true
   },
   flashLink: { // link to image of flash
-    type: String,
+    type: mongoose.SchemaTypes.ObjectId,
   },
   // todo: ^ maybe change image links to link to Image schema?
   customIdea: {
@@ -45,7 +44,7 @@ const Booking = mongoose.model("Booking", {
     required:true
   },
   otherLink: { // image / screenshot
-    type: String,
+    type: mongoose.SchemaTypes.ObjectId,
   },
   concerns: {
     type: String,

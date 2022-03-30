@@ -6,10 +6,14 @@ import {addBooking} from '../apiHook/booking.js'
 
 function PopUpAppointmentForm(props) {
 
-    const handleSubmit = (data) => {
+    async function handleSubmit(data){
         data.preventDefault(); 
-        addBooking(form);
-        props.setTrigger(false);
+        const result = await addBooking(form);
+        console.log(result)
+        if(result == 200){
+            props.setTrigger(false);
+        }
+        
     }
 
     const [ form, setForm ] = useState({})
@@ -73,7 +77,7 @@ function PopUpAppointmentForm(props) {
                       type="file" 
                       id='flashLink'
                       className="form-control-file" 
-                      onChange={ e => setField('flashLink', e.target.value) }/>
+                      onChange={ e => setField('flashLink', e.target.files[0]) }/>
                   </Form.Group>
   
                   <Form.Group className="mb-3" >
@@ -109,7 +113,7 @@ function PopUpAppointmentForm(props) {
                       type="file" 
                       id="otherLink"
                       className="form-control-file" 
-                      onChange={ e => setField('otherLink', e.target.value) }/>
+                      onChange={ e => setField('otherLink', e.target.files[0]) }/>
                   </Form.Group>
   
                   <Form.Group className="mb-3" >

@@ -70,6 +70,30 @@ module.exports = function (app){
         }
     })
 
+    // Get all images
+    app.get('/api/images', async (req, res) => {
+        // Add code here
+        const id = req.params.id
+        
+        if (mongoose.connection.readyState != 1) {
+            log('There is issue to mongoose connection')
+            res.status(500).send('Internal server error')
+            return;
+        }
+        
+        try {
+            const result = await Image.find()
+            if (!result) {
+                res.status(404).send('Resource not found')
+            } else { 
+                res.send({result})
+            }
+        } catch(error) {
+            log(error)
+            res.status(500).send('Internal Server Error')
+        }
+    })
+
     // Get image by ID
     app.get('/api/images/:id', async (req, res) => {
         // Add code here
