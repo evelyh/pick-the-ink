@@ -1,7 +1,7 @@
 import { Inject, Day, Week, WorkWeek, Month, Agenda, ScheduleComponent} from '@syncfusion/ej2-react-schedule';
 import React, { Component } from 'react'
 import Header from 'components/Header';
-
+import "../apiHook/calender"
 
 export class Calendar extends Component {
   render() {

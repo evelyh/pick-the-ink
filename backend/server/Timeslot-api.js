@@ -38,30 +38,40 @@ module.exports = function(app) {
 
     //get timeslot by ??
     app.get('/api/timeslots', async (req, res) => {
+        
+        var artistID = req.param("artistID");
+        var userID = req.param("userID");
+        var isBooked = req.param("isBooked");
+        var locationID = req.param("locationID")
         if (mongoose.connection.readyState != 1) {
             log('There is issue to mongoose connection')
             res.status(500).send('Internal server error')
             return;
         } 
+        
+        data ={}
+
+        if(artistID != undefined){
+            data["artistID"] = artistID
+        }
+        if(userID != undefined){
+            data["userID"] = userID
+        }
+        if(isBooked != undefined){
+            data["isBooked"] = isBooked
+        }
+        if(locationID != undefined){
+            data["locationID"] = locationID
+        }
+        log(data)
     
         try {
-            if(req.body.artistID){
-                if(req.body.isBooked != undefined){
-                    const isBookedTimeslot = await Timeslot.find({artistID:req.body.artistID, isBooked:req.body.isBooked})
-                    res.send({ isBookedTimeslot })
-                }else{
-                    const artistTimeslot = await Timeslot.find({artistID:req.body.artistID})
-                    res.send({ artistTimeslot })
-                }
-            }
-            else if(req.body.locationID){
-                const locationTimeslot = await Timeslot.find({locationID:req.body.locationID})
-                res.send({ locationTimeslot })
-            }
-            else{
-                const timeslot = await Timeslot.find()
-                res.send({ timeslot })
-            }
+            const result = await Timeslot.find(data);
+            if (!result) {
+                res.status(404).send('Resource not found')
+            } else { 
+                res.send({result})
+            }   
         } catch(error) {
             log(error)
             res.status(500).send("Internal Server Error")
@@ -79,6 +89,30 @@ module.exports = function(app) {
         } catch(error) {
             log(error)
             res.status(500).send("Internal Server Error")
+        }
+    })
+
+    app.get('/api/timeslots/:id', async (req, res) => {
+        // Add code here
+            
+        const id = req.params.id
+        
+        if (mongoose.connection.readyState != 1) {
+            log('There is issue to mongoose connection')
+            res.status(500).send('Internal server error')
+            return;
+        }
+        
+        try {
+            const result = await Timeslot.findById(id)
+            if (!result) {
+                res.status(404).send('Resource not found')
+            } else { 
+                res.send({result})
+            }
+        } catch(error) {
+            log(error)
+            res.status(500).send('Internal Server Error')
         }
     })
 
