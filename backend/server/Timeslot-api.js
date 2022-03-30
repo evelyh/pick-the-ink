@@ -40,7 +40,6 @@ module.exports = function(app) {
     app.get('/api/timeslots', async (req, res) => {
         
         var artistID = req.param("artistID");
-        var userID = req.param("userID");
         var isBooked = req.param("isBooked");
         var locationID = req.param("locationID")
         if (mongoose.connection.readyState != 1) {
@@ -53,9 +52,6 @@ module.exports = function(app) {
 
         if(artistID != undefined){
             data["artistID"] = artistID
-        }
-        if(userID != undefined){
-            data["userID"] = userID
         }
         if(isBooked != undefined){
             data["isBooked"] = isBooked
