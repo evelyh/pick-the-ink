@@ -13,9 +13,12 @@ const Image = mongoose.model('Image', {
         type: String,
         required: false
     },
-	path: {
-		type: String
-	}
+	// path: {
+	// 	type: String,
+	// 	required: false
+	// },
+	created_at: String,
+
 })
 
 module.exports = { Image }
