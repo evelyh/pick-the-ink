@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Header from "../components/Header";
 import NavTabTwo from "../components/NavTabTwo";
 import { Navigate } from "react-router-dom";
-import {Button, Input, Label} from "reactstrap";
+import {Alert, Button, Input, Label} from "reactstrap";
 
 // styles
 import "../assets/css/loginSignUp.css";
@@ -20,6 +20,9 @@ export class Login extends Component {
     success: false,
     showPassword: false,
     artist: false,
+    host: "http://localhost:5000",
+    showFail: false,
+    loggedIn: false,
   }
 
   handleInputChange = (event) => {
@@ -35,19 +38,77 @@ export class Login extends Component {
 
     // todo: connect to backend
     // sign user up with the info given
-    console.log("here");
 
-    // set state if backend sends back 201
-    if (this.state.username !== ""){
+    const requestBody = {
+      userName: this.state.username,
+      password: this.state.password,
+      email: this.state.mail,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      birthDate: this.state.dob,
+      isArtist: this.state.artist,
+      phoneNum: this.state.phone,
+      artistSub: { // todo: handle file uploads
+        license: "something",
+        physicalID: "something else",
+      }
+    };
+
+    const url = this.state.host + "/api/users";
+    const request = new Request(url, {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    fetch(request).then((res) => {
+      if (res.ok){
+        this.setState({
+          success: true,
+        });
+      } else{
+        // bad request
+        this.setState({
+          showFail: true,
+        });
+        setTimeout(() => {
+          this.setState({
+            showFail: false,
+          })
+        }, 2000);
+      }
+    }).catch((error) => {
+      console.log(error);
+    })
+
+
+    // phase 1 code
+    // // set state if backend sends back 201
+    // if (this.state.username !== ""){
+    //   this.setState({
+    //     success: true
+    //   });
+    // }
+    // return null;
+  }
+
+  componentDidMount() {
+    const url = this.state.host + "/users/login";
+    const request = new Request(url, {
+      method: "GET",
+    });
+
+    fetch(request).then((res) => {
       this.setState({
-        success: true
-      });
-    }
-    return null;
+        loggedIn: res.data.loggedIn,
+      })
+    })
   }
 
   checkRedirection = () => {
-    if (this.state.success){
+    if (this.state.success || this.state.loggedIn){
       return <Navigate to={"/explore"} />;
     }
   }
@@ -62,6 +123,7 @@ export class Login extends Component {
         {this.checkRedirection()}
 
         <Header loggedIn={false}/>
+        <Alert isOpen={this.state.showFail} color={"danger"}>Sign up failed, please check</Alert>
 
         <div className={"login-form-container"}>
 

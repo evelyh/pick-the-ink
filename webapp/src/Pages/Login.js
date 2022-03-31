@@ -3,19 +3,24 @@ import Header from "../components/Header";
 import NavTabTwo from "../components/NavTabTwo";
 import { Navigate } from "react-router-dom";
 import {Alert, Button, Input, Label} from "reactstrap";
+import { withCookies } from "react-cookie";
 // styles
 import "../assets/css/loginSignUp.css";
+
+// const host = "http://localhost:5000";
 
 export class Login extends Component {
 
   state = {
     username: "",
     password: "",
-    valid: null,
+    invalid: null,
     admin: null,
     forgotPassword: false,
     passwordType: "password",
     showPassword: false,
+    host: "http://localhost:5000",
+    loggedIn: false,
   }
 
   handleInputChange = (event) => {
@@ -35,29 +40,65 @@ export class Login extends Component {
     // if return true (credentials match), then redirect to "some page"
     // by setting valid = true
 
-    const userFound = this.state.username === "user" && this.state.password === "user";
-    const isAdmin = this.state.username === "admin" && this.state.password === "admin";
-    if (userFound){
-      this.setState({
-        username: "",
-        password: "",
-        valid: true
-      });
-    } else{
-      this.setState({
-        valid: false
-      })
-    }
+    const requestBody = {
+      username: this.state.username,
+      password: this.state.password,
+    };
 
-    if (isAdmin){
-      this.setState({
-        username: "",
-        password: "",
-        admin: true,
-      })
-    }
+    const url = this.state.host + "/users/login";
+    const request = new Request(url, {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    fetch(request).then((res) => {
+      if (res.ok){
+        this.setState({
+          invalid: false,
+        });
+      } else{
+        // bad request
+        this.setState({
+          invalid: true,
+        });
+        setTimeout(() => {
+          this.setState({
+            invalid: null,
+          })
+        }, 2000);
+      }
+    }).catch((error) => {
+      console.log(error);
+    })
+
+    // phase 1 code
+    // const userFound = this.state.username === "user" && this.state.password === "user";
+    // const isAdmin = this.state.username === "admin" && this.state.password === "admin";
+    // if (userFound){
+    //   this.setState({
+    //     username: "",
+    //     password: "",
+    //     valid: true
+    //   });
+    // } else{
+    //   this.setState({
+    //     valid: false
+    //   })
+    // }
+    //
+    // if (isAdmin){
+    //   this.setState({
+    //     username: "",
+    //     password: "",
+    //     admin: true,
+    //   })
+    // }
   }
 
+  // implement if have enough time
   forgetPassword = () => {
     // if forget password, redirect to page for resetting password
     this.setState({
@@ -65,15 +106,27 @@ export class Login extends Component {
     });
   }
 
+  componentDidMount() {
+    const url = this.state.host + "/users/login";
+    const request = new Request(url, {
+      method: "GET",
+    });
+
+    fetch(request).then((res) => {
+      this.setState({
+        loggedIn: res.data.loggedIn,
+      })
+    })
+  }
+
   checkRedirection = () => {
     if (this.state.admin){
       return <Navigate to={"/admin"}/>;
     }
-    else if (this.state.valid){
+    else if (this.state.invalid === false || this.state.loggedIn){
       return <Navigate to={"/explore"} />;
-    } else if (this.state.valid != null){
-      return <Alert color={"danger"}> Incorrect username / password. Try again! </Alert>;
     }
+    // todo: implement if have time
     if (this.state.forgotPassword){
       // redirect to page for resetting password
       return;
@@ -90,6 +143,8 @@ export class Login extends Component {
         {this.checkRedirection()}
 
         <Header loggedIn={false}/>
+
+        <Alert color={"danger"} isOpen={this.state.invalid}> Incorrect username / password. Try again! </Alert>
 
         <div className={"login-form-container"}>
 
@@ -144,4 +199,4 @@ export class Login extends Component {
   }
 }
 
-export default Login
+export default withCookies(Login)
