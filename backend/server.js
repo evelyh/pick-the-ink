@@ -9,6 +9,10 @@ const app = express();
 const bodyParser = require('body-parser')
 app.use(bodyParser.json());
 
+// mongoose and mongo connection
+const { mongoose } = require("./db/mongoose");
+mongoose.set('useFindAndModify', false);
+
 require('./server/Admin-api')(app)
 // require('./server/Artist-api')(app)
 require('./server/Booking-api')(app)
