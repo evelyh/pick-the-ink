@@ -3,6 +3,100 @@ log('Loaded front-end javascript.')
 
 const hostURL = "http://localhost:5000";
 
+function getAllImage() 
+{
+    const url = host + "/api/images/";
+
+    const request = new Request(url, {
+        method: "GET",
+    });
+
+    fetch(request).then(res => {
+        if (res.status === 200) {
+            // return a promise that resolves with the JSON body
+            console.log("Successfully get image")
+            return res.json();
+        } else {
+            console.log("Failed to get image")
+            alert("Failed to get image");
+        }
+    }).catch(error => {
+        console.log(error);
+    });
+}
+
+function getImageById(imageID) 
+{
+    const url = host + "/api/images/" + imageID;
+
+    const request = new Request(url, {
+        method: "GET",
+    });
+
+    fetch(request).then(res => {
+        if (res.status === 200) {
+            // return a promise that resolves with the JSON body
+            console.log("Successfully get image")
+            return res.json();
+        } else {
+            console.log("Failed to get image")
+            alert("Failed to get image");
+        }
+    }).catch(error => {
+        console.log(error);
+    });
+}
+
+function updateImageById(imageID, decs, title)
+{
+    const url = host + "/api/images/" + imageID;
+
+    const request = new Request(url, {
+        method: "UPDATE",
+        body: {
+            decs: decs,
+            title:title
+        },
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+
+    fetch(request).then(res => {
+        if (res.status === 200) {
+            // return a promise that resolves with the JSON body
+            console.log("Successfully updated image")
+            return res.json();
+        } else {
+            console.log("Failed to update image")
+            alert("Failed to update image");
+        }
+    }).catch(error => {
+        console.log(error);
+    });
+}
+
+function deleteImageById(imageID) 
+{
+    const url = host + "/api/images/" + imageID;
+    const request = new Request(url, {
+        method: "DELETE",
+    });
+
+    fetch(request).then(res => {
+        if (res.status === 200) {
+            // return a promise that resolves with the JSON body
+            console.log("Successfully delete image")
+            return res.json();
+        } else {
+            console.log("Failed to delete image")
+            alert("Failed to delete image");
+        }
+    }).catch(error => {
+        console.log(error);
+    });
+}
+
 async function addImage(img) {
     // the URL for the request
     const url = hostURL + '/api/images';
@@ -40,4 +134,4 @@ async function addImage(img) {
     })
 }
 
-export {addImage}
+export {getAllImage, getImageById, updateImageById, deleteImageById, addImage}
