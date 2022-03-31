@@ -87,41 +87,12 @@ module.exports = function (app){
             return;
         }
 
-    // Get all images
-    app.get('/api/images', async (req, res) => {
-        // Add code here
-        const id = req.params.id
-        
-        if (mongoose.connection.readyState != 1) {
-            log('There is issue to mongoose connection')
-            res.status(500).send('Internal server error')
-            return;
-        }
-        
-        try {
-            const result = await Image.find()
-            if (!result) {
-                res.status(404).send('Resource not found')
-            } else { 
-                res.send({result})
-            }
-        } catch(error) {
-            log(error)
-            res.status(500).send('Internal Server Error')
-        }
-    })
-
-    // Get image by ID
-    app.get('/api/images/:id', async (req, res) => {
-        // Add code here
-        const id = req.params.id
-        
         if (mongoose.connection.readyState != 1) {
             log('Issue with mongoose connection')
             res.status(500).send('Internal server error')
             return;
-        } 
-    
+        }
+
         // Delete an image by its id (NOT the database ID, but its id on the cloudinary server)
         // on the cloudinary server
         cloudinary.uploader.destroy(imageId, function (result) {
@@ -139,7 +110,27 @@ module.exports = function (app){
                     res.status(500).send(); // server error, could not delete.
                 });
         });
+
     });
+
+    // Get all images
+    app.get('/api/images', async (req, res) => {
+        
+        if (mongoose.connection.readyState != 1) {
+            log('There is issue to mongoose connection')
+            res.status(500).send('Internal server error')
+            return;
+        }
+        
+        Image.find().then(
+            images => {
+                res.send({ images }); // can wrap in object if want to add more properties
+            },
+            error => {
+                res.status(500).send(error); // server error
+            }
+        );
+    })
 
     app.get("/api/images/:imageId", (req, res) => {
         const imageId = req.params.imageId;
