@@ -7,7 +7,7 @@ var validateEmail = function(email) {
 };
 
 const ArtistSchema = new mongoose.Schema({
-	imageIDs: {
+	artworks: {
 		type: [mongoose.SchemaTypes.ObjectId],
 		required: false,
         ref: "Image"
@@ -33,12 +33,14 @@ const ArtistSchema = new mongoose.Schema({
         default: true
     },
     physicalID:{
-        type: String,
-        required: true
+        type: mongoose.SchemaTypes.ObjectId,
+        required: false,
+        ref: "Image"
     },
     license: {
-        type: String,
-        required: true
+        type: mongoose.SchemaTypes.ObjectId,
+        required: false,
+        ref: "Image"
     },
     approved: {
         type: Boolean,

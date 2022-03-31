@@ -28,10 +28,10 @@ module.exports = function(app) {
             })
             if(user.isArtist){
                 user.artistSub = {
-                    // homeLocation: req.body.homeLocation,
-                    // artistSub: req.body.artStyles,
-                    license: req.body.artistSub.license,
-                    physicalID: req.body.artistSub.physicalID
+                    homeLocation: req.body.artistSub.homeLocation,
+                    artistSub: req.body.artistSub.artStyles,
+                    // license: req.body.artistSub.license,
+                    // physicalID: req.body.artistSub.physicalID
                 }
             }else{
                 user.artistSub = null;
@@ -99,8 +99,8 @@ module.exports = function(app) {
         const {query} = req.query;
         try{
             const result = await User.find(
-                {artistSub: {$and: [{homeLocation: query.locationID}, 
-                                    {artStyles: {$in: query.styleIDs}}]
+                {artistSub: {$and: [{homeLocation: query.location}, 
+                                    {artStyles: {$in: query.style}}]
                                 }, isArtist: true});
             if (!result) {
                 res.status(404).send('Resource not found')
