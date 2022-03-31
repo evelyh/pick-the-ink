@@ -1,7 +1,7 @@
 const log = console.log
 log('Loaded front-end javascript.')
 
-const hostURL = "http://localhost:5000";
+const host = "http://localhost:5000";
 
 function getAllImage() 
 {
@@ -99,7 +99,7 @@ function deleteImageById(imageID)
 
 async function addImage(img) {
     // the URL for the request
-    const url = hostURL + '/api/images';
+    const url = host + '/api/images';
     // The data we are going to send in our request
 
     let formData = new FormData()
