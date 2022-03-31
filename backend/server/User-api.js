@@ -212,7 +212,7 @@ module.exports = function(app) {
   // for checking login status
   app.get("/users/login", (req, res) => {
     if (req.session.user){
-      res.send({"loggedIn": true, user: req.session.user});
+      res.send({"loggedIn": true, user: req.session.user, userType: req.session.userType});
     } else{
       res.send({"loggedIn": false});
     }
