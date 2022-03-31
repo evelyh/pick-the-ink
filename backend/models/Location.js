@@ -2,15 +2,11 @@
 const mongoose = require('mongoose')
 
 const Location = mongoose.model('Location', {
-	locationID: {
-		type: mongoose.SchemaTypes.ObjectId,
-		required: true,
-	},
-	cityName: {
+	country: {
 		type: String,
 		required: true
 	},
-    provName: {
+    region: {
         type: String,
 		required: true
     }

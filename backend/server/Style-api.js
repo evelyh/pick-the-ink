@@ -15,8 +15,35 @@ module.exports = function (app){
 
     // get styles
     try{
-      const styles = Style.find();
+      const styles = await Style.find();
       res.send(styles);
+    } catch (error){
+      console.log(error);
+      res.status(500).send("Internal Server error");
+    }
+
+  })
+
+  //create new style
+  app.post("/api/styles", async (req, res) => {
+        const style = new Style({
+          name: req.body.name
+        })
+        const result = await style.save()
+        res.send(result)
+    })
+
+  //get styles by name
+  app.get("/api/styles/", async(req, res) =>{
+    if (mongoose.connection.readyState !== 1){
+      console.log("Issue with mongoose connection");
+      res.status(500).send("Internal server error");
+      return;
+    }
+
+    try{
+      var result = await Style.find({name: req.query.name});
+      res.send(result);
     } catch (error){
       console.log(error);
       res.status(500).send("Internal Server error");

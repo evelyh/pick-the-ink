@@ -1,6 +1,5 @@
 'use strict';
 
-
 const log = console.log;
 
 // Express
@@ -8,6 +7,21 @@ const express = require('express')
 const app = express();
 const bodyParser = require('body-parser')
 app.use(bodyParser.json());
+const cors = require("cors");
+app.use(cors());
+
+// session handling
+const session = require("express-session");
+// middleware to create session on every request
+app.use(session({
+	secret: "some secret", // todo: change
+	cookie: {
+		expires: 360000, // expires in 1hr
+		httpOnly: true,
+	},
+	saveUninitialized: false,
+	resave: false,
+}));
 
 // mongoose and mongo connection
 const { mongoose } = require("./db/mongoose");
