@@ -19,8 +19,10 @@ module.exports = function(app) {
         try {
             const timeslot = new Timeslot({
                 artistID: req.body.artistID,
+                customerID: req.body.customerID,
                 locationID: req.body.locationID,
                 startTime: req.body.startTime,
+                isBooked:req.body.isBooked
             })
             
             const result = await timeslot.save()	
@@ -40,6 +42,7 @@ module.exports = function(app) {
     app.get('/api/timeslots', async (req, res) => {
         
         var artistID = req.param("artistID");
+        var customerID = req.param("customerID");
         var isBooked = req.param("isBooked");
         var locationID = req.param("locationID")
         if (mongoose.connection.readyState != 1) {
@@ -52,6 +55,9 @@ module.exports = function(app) {
 
         if(artistID != undefined){
             data["artistID"] = artistID
+        }
+        if(customerID != undefined){
+            data["customerID"] = customerID
         }
         if(isBooked != undefined){
             data["isBooked"] = isBooked
