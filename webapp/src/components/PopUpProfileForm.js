@@ -1,33 +1,33 @@
 import React from 'react'
 import '../assets/css/userProfile.css'
-import { useState} from 'react';
+import { useState, useEffect} from 'react';
 import {Multiselect} from 'multiselect-react-dropdown';
-
+import { getStyles } from 'apiHook/profile';
 import {Form} from 'react-bootstrap'
 
 
 function PopUpProfileForm(props) {
     const [validated, setValidated] = useState(false);
-    
+    console.log(props.info)
     const [prev] = useState({
         firstName: props.info.firstName,
         lastName: props.info.lastName,
         userName: props.info.userName,
         email: props.info.email,
-        birthday: props.info.birthday,
+        birthDate: props.info.birthDate,
         phoneNum : props.info.phoneNum,
-        style: props.info.style,
+        favoriteStyles: props.info.favoriteStyles,
         image: props.info.image,
         isArtist: props.info.isArtist,
-        followers:props.info.followers,
-        following:props.info.following,
+        followingIDs:props.info.followingIDs,
+        followerIDs:props.info.following,
         comment:props.info.comment
       });
-
 
     const onSubmit = (event) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
+            console.log("submit error")
             event.preventDefault();
             event.stopPropagation();
         }else{
@@ -39,22 +39,12 @@ function PopUpProfileForm(props) {
             setValidated(true);}
       };
 
-    const optionData = [{name:'Traditional', id: 1}, 
-    {name:'Japanese', id: 2}, 
-    {name:'New School', id: 3},
-    {name:'Realism', id: 5}, 
-    {name:'Illustrative', id: 6}, 
-    {name: 'Portraiture', id: 7}, 
-    {name: 'Blackwork', id: 8},
-    {name: 'Watercolor', id: 9},
-    {name:'Lettering',id: 10},
-    {name:'Geometric',id: 11},
-    {name:'Surrealism',id: 12},
-    {name:'Microrealism',id: 13},
-    {name:'Minimalism',id: 14},
-    {name:'Single Line',id: 15},
-    {name:'Dot Work',id: 16},];
-    const [option]=useState(optionData);
+    const [option, setOption]=useState();
+
+    useEffect(()=>{
+        getStyles().then(json => 
+          { setOption(json);});
+      }, [validated])
 
     return (props.trigger) ? (
       <div className='popup' >
@@ -112,8 +102,8 @@ function PopUpProfileForm(props) {
                 <Form.Group className="mb-3" >
                     <Form.Label>Date of Birth:</Form.Label>
                     <Form.Control type="date"
-                    value={props.info.birthday}
-                    onChange={e => props.setInfo({...props.info, birthday:e.target.value})}
+                    value={props.info.birthDate}
+                    onChange={e => props.setInfo({...props.info, birthDate:e.target.value})}
                     required/>
                     <Form.Control.Feedback type="invalid">
                     Please enter a date of birth.
@@ -135,8 +125,8 @@ function PopUpProfileForm(props) {
                 <Form.Group className="mb-3" >
                     <Form.Label>Favorite styles:</Form.Label>
                     <Multiselect options={option} displayValue="name"
-                        onSelect={e => props.setInfo({...props.info, style:e})}
-                        onRemove={e => props.setInfo({...props.info, style:e})}></Multiselect>
+                        onSelect={e => props.setInfo({...props.info, favoriteStyles:e})}
+                        onRemove={e => props.setInfo({...props.info, favoriteStyles:e})}></Multiselect>
                 </Form.Group>
 
                 <Form.Group className="mb-3" >

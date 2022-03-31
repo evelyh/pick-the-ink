@@ -62,9 +62,10 @@ module.exports = function (app){
         cloudinary.uploader.upload(
             req.files.img.path,
             function (result) {
-
                 var img = new Image({
                     img: result.url,
+                    desc: req.body.desc,
+                    title: req.body.title,
                     created_at: new Date(),
                 });
 
@@ -77,6 +78,36 @@ module.exports = function (app){
                     }
                 );
             });
+    });
+
+    // update the image by id
+    app.put("/api/images/:imageId", (req, res) => {
+        const imageId = req.params.imageId;
+
+        if (!ObjectID.isValid(imageId)) {
+            res.status(404).send('Resource not found')
+            return;
+        }
+
+        if (mongoose.connection.readyState != 1) {
+            log('Issue with mongoose connection')
+            res.status(500).send('Internal server error')
+            return;
+        }
+
+        Image.findByIdAndUpdate(imageId, {new: true, useFindAndModify: false})
+                .then(img => {
+                    if (!img) {
+                        res.status(404).send();
+                    } else {
+                        if (req.body.desc) {img.desc = req.body.desc;}
+                        if (req.body.title && req.body.title !== "") {img.title = req.body.title;}
+                        res.send(img);
+                    }
+                })
+                .catch(error => {
+                    res.status(500).send(); // server error, could not delete.
+                });
     });
 
     app.delete("/api/images/:imageId", (req, res) => {
