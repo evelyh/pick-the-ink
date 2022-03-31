@@ -10,6 +10,19 @@ app.use(bodyParser.json());
 const cors = require("cors");
 app.use(cors());
 
+// session handling
+const session = require("express-session");
+// middleware to create session on every request
+app.use(session({
+	secret: "some secret", // todo: change
+	cookie: {
+		expires: 360000, // expires in 1hr
+		httpOnly: true,
+	},
+	saveUninitialized: false,
+	resave: false,
+}));
+
 require('./server/Admin-api')(app)
 // require('./server/Artist-api')(app)
 require('./server/Booking-api')(app)
