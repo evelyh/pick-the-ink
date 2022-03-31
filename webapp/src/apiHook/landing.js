@@ -18,12 +18,12 @@ async function getLocation(data){
             alert('Could not get Bookings')
         }                
     }).catch((error) => {
-        log(error)
+        console.log(error)
     })
 }
 
 
-async function getStyle(data){
+async function getStyles(data){
     const url = hostURL + '/api/styles/' + '?name=' + data.style
     const request = new Request(url, {
         method: 'get', 
@@ -40,13 +40,14 @@ async function getStyle(data){
             alert('Could not get Bookings')
         }                
     }).catch((error) => {
-        log(error)
+        console.log(error)
     })
 }
 
 
-async function getTimeslot(data){
+async function getTimeslots(data){
     const url = hostURL + '/api/timeslots/' + '?start=' + data.start + '&end=' + data.end
+    console.log(url)
     const request = new Request(url, {
         method: 'get', 
         headers: {
@@ -62,20 +63,28 @@ async function getTimeslot(data){
             alert('Could not get Bookings')
         }                
     }).catch((error) => {
-        log(error)
+        console.log(error)
     })
 }
 
 
 async function getArtists(data){
-    const url = hostURL + '/api/findArtists/?';
+    var url = hostURL + '/api/findArtists/?';
     if(data.styleIDs){
-        const len = styleIDs.length;
+        url += 'style=['
+        const len = data.styleIDs.length;
         for(let i = 0; i < len; i++){
-            url += `style=${data.styleIDs[i]}&`
+            url += `"${data.styleIDs[i]}"`
+            if(i != len-1){
+                url += ","
+            }
         }
+        url += ']'
     }
     if(data.locationID){
+        if(data.styleIDs){
+            url += '&'
+        }
         url += `location=${data.locationID}`
     }
     const request = new Request(url, {
@@ -93,6 +102,8 @@ async function getArtists(data){
             alert('Could not get Bookings')
         }                
     }).catch((error) => {
-        log(error)
+        console.log(error)
     })
 }
+
+export {getLocation, getStyles, getTimeslots, getArtists}

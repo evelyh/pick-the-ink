@@ -39,46 +39,46 @@ module.exports = function(app) {
     })
 
     //get timeslot by ??
-    app.get('/api/timeslots', async (req, res) => {
+    // app.get('/api/timeslots', async (req, res) => {
         
-        var artistID = req.param("artistID");
-        var customerID = req.param("customerID");
-        var isBooked = req.param("isBooked");
-        var locationID = req.param("locationID")
-        if (mongoose.connection.readyState != 1) {
-            log('There is issue to mongoose connection')
-            res.status(500).send('Internal server error')
-            return;
-        } 
+    //     var artistID = req.param("artistID");
+    //     var customerID = req.param("customerID");
+    //     var isBooked = req.param("isBooked");
+    //     var locationID = req.param("locationID")
+    //     if (mongoose.connection.readyState != 1) {
+    //         log('There is issue to mongoose connection')
+    //         res.status(500).send('Internal server error')
+    //         return;
+    //     } 
         
-        data ={}
+    //     data ={}
 
-        if(artistID != undefined){
-            data["artistID"] = artistID
-        }
-        if(customerID != undefined){
-            data["customerID"] = customerID
-        }
-        if(isBooked != undefined){
-            data["isBooked"] = isBooked
-        }
-        if(locationID != undefined){
-            data["locationID"] = locationID
-        }
-        log(data)
+    //     if(artistID != undefined){
+    //         data["artistID"] = artistID
+    //     }
+    //     if(customerID != undefined){
+    //         data["customerID"] = customerID
+    //     }
+    //     if(isBooked != undefined){
+    //         data["isBooked"] = isBooked
+    //     }
+    //     if(locationID != undefined){
+    //         data["locationID"] = locationID
+    //     }
+    //     log(data)
     
-        try {
-            const result = await Timeslot.find(data);
-            if (!result) {
-                res.status(404).send('Resource not found')
-            } else { 
-                res.send({result})
-            }   
-        } catch(error) {
-            log(error)
-            res.status(500).send("Internal Server Error")
-        }
-    })
+    //     try {
+    //         const result = await Timeslot.find(data);
+    //         if (!result) {
+    //             res.status(404).send('Resource not found')
+    //         } else { 
+    //             res.send({result})
+    //         }   
+    //     } catch(error) {
+    //         log(error)
+    //         res.status(500).send("Internal Server Error")
+    //     }
+    // })
 
     //get timeslots by start and end time
     app.get('/api/timeslots', async(req, res) => {
