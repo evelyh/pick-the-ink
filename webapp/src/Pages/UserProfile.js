@@ -19,7 +19,7 @@ import {getStyleById, getUser, postUser} from "../apiHook/profile"
 
 function UserProfile() {
     const { id } = useParams();
-    const myid = "623f4747554c0d0d6fe6c99f";
+    const myid = "6247154e0213d255193c575f";
     
     let isUser =false;
     if(myid == id){
@@ -45,25 +45,27 @@ function UserProfile() {
       followerIDs:0,
       comment:""}
       );
-    
-    let style = [];
     const [success,setSuccess] = useState(false);
     useEffect(()=>{
       getUser(myid).then(json => 
-        { let data = json;
-
-          let favoriteStyles = []
-          data.favoriteStyles.map((x, i)=>{
-            getStyleById(data.favoriteStyles[i]).then(style_data =>{
-              favoriteStyles.push(style_data);
-            })
-          })
-            
+        { console.log(json)
+          let data = json;
+          const favoriteStyles = [];
+          document.getElementById("style").innerHTML = "";
+          for(const s_id in data.favoriteStyles){
+            getStyleById(data.favoriteStyles[s_id]).then((ele)=> 
+            {favoriteStyles[s_id] = ele;
+              const li = document.createElement("li");
+              li.innerText = ele.name;
+              document.getElementById("style").appendChild(li);
+            });
+          }
+          data.favoriteStyles = favoriteStyles
           data.birthDate = data.birthDate.slice(0,10);
-          data.favoriteStyles = favoriteStyles;
-          setValues(data);
+          setValues(data); 
         });
-    }, [success])
+    }, [buttonPopUp])
+    
     const onDismiss = ()=>{
       setSuccess(false);
     };
@@ -162,11 +164,7 @@ function UserProfile() {
 
                 <label className="col-sm-3 col-form-label col-form-label">Favorite styles:</label>
                 {values.favoriteStyles ?
-                <div className="col-sm-7">
-                  {values.favoriteStyles.forEach((x, i) => (
-                    <li className="col-6 col-form-label col-form-label" key={i}>{x}</li>
-                  ))}
-                </div>
+                <div id = "style" className="col-sm-7"> </div>
                 :null}
               </div>
               { isUser ? <Button size='sm' onClick={()=> setButtonPopUp(true)}>Edit your profile</Button> :null }

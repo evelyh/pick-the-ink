@@ -30,6 +30,7 @@ module.exports = function(app) {
               userName: req.body.userName,
               password: req.body.password,
               email:req.body.email,
+              birthDate:req.body.birthDate,
               firstName: req.body.firstName,
               lastName: req.body.lastName,
               isArtist: req.body.isArtist
@@ -128,7 +129,7 @@ module.exports = function(app) {
   })
 
   //modify user info by id
-  app.patch("/api/users/:id", async(req, res) => {
+  app.put("/api/users/:id", async(req, res) => {
     const id = req.params.id
 
     if (!ObjectID.isValid(id)) {

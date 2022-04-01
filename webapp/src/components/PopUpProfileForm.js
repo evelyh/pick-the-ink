@@ -117,8 +117,7 @@ function PopUpProfileForm(props) {
                     <Form.Control type="phone" 
                     value={props.info.phoneNum}
                     onChange={e => props.setInfo({...props.info, phoneNum:e.target.value})}
-                    type="tel"
-                    required/>
+                    type="tel"/>
                     <Form.Control.Feedback type="invalid">
                     Please enter a valid phone number.
                     </Form.Control.Feedback>
@@ -147,8 +146,8 @@ function PopUpProfileForm(props) {
                 
                 <button id="button-16" 
                 onClick={()=>{
-                    props.setInfo({...prev});
-                    props.setTrigger(false);}}>cancel</button>
+                    props.setTrigger(false);
+                    props.setSuccess(false);}}>cancel</button>
                 <button id="button-16" type="submit" 
                >confirm</button>
             </Form>

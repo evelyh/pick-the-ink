@@ -36,19 +36,24 @@ async function postUser(data) {
     delete data._id;
     delete data.__v;
     delete data.password;
-
+    const favoriteStyles = [];
+    for(const idx in data.favoriteStyles){
+        favoriteStyles.push(data.favoriteStyles[idx]);
+    }
+    delete data.favoriteStyles;
+    data.favoriteStyles = favoriteStyles;
 
     const url = hostURL + '/api/users/' + id;
     console.log("------------------");
-    console.log(data);
-    console.log(JSON.parse(JSON.stringify(data)));
+    console.log(JSON.stringify(data));
+
     const request = new Request(url, {
-        method: 'patch', 
-        body: data, 
+        method: 'put', 
+        body: JSON.stringify(data), 
         headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json, multipart/form-data',
-            "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": "*",
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
         },
     });
 
@@ -68,7 +73,6 @@ async function postUser(data) {
         log(error)
     })
 }
-
 
 async function getStyles() {
     const url = hostURL + '/api/styles';
