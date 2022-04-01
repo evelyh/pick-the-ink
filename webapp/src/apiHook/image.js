@@ -59,7 +59,7 @@ function updateImageById(imageID, decs, title)
         },
         headers: {
             "Content-Type": "application/json",
-        }
+        } 
     });
 
     fetch(request).then(res => {

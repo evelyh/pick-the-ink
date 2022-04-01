@@ -23,6 +23,8 @@ import {
   DropdownItem,
   UncontrolledDropdown} from 'reactstrap'
 
+import {getAllImage, getImageById, deleteImageById, addImage} from "../apiHook/image"
+
 function ArtistGallery() {
 
   const [values, setValues] = useState({
