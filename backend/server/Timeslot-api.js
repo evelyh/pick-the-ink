@@ -2,6 +2,7 @@ const log = console.log;
 const { ObjectID } = require('mongodb')
 const { mongoose } = require('../db/mongoose');
 const { Timeslot } = require('../models/Timeslot')
+const { authenticateUser } = require('./authentication-helpers')
 
 module.exports = function(app) {
     function isMongoError(error) { // checks for first error returned by promise rejection if Mongo database suddently disconnects
@@ -9,7 +10,7 @@ module.exports = function(app) {
     }
 
     // create a new timeslot
-    app.post('/api/timeslots', async (req, res) => {
+    app.post('/api/timeslots',authenticateUser, async (req, res) => {
         if (mongoose.connection.readyState != 1) {
             log('There is issue to mongoose connection')
             res.status(500).send('Internal server error')
@@ -39,7 +40,7 @@ module.exports = function(app) {
     })
 
     //get timeslot by ??
-    app.get('/api/timeslots', async (req, res) => {
+    app.get('/api/timeslots', authenticateUser, async (req, res) => {
         
         var artistID = req.param("artistID");
         var customerID = req.param("customerID");
@@ -81,7 +82,7 @@ module.exports = function(app) {
     })
 
     //get timeslots by start and end time
-    app.get('/api/timeslots', async(req, res) => {
+    app.get('/api/timeslotArtist',authenticateUser, async(req, res) => {
         let start = req.query.start
         let end = req.query.end
 
@@ -94,7 +95,7 @@ module.exports = function(app) {
         }
     })
 
-    app.get('/api/timeslots/:id', async (req, res) => {
+    app.get('/api/timeslots/:id',authenticateUser, async (req, res) => {
         // Add code here
             
         const id = req.params.id
@@ -119,7 +120,7 @@ module.exports = function(app) {
     })
 
 
-    app.patch('/api/timeslots/:id', async (req, res) => {
+    app.patch('/api/timeslots/:id',authenticateUser, async (req, res) => {
         const id = req.params.id
     
         if (!ObjectID.isValid(id)) {
@@ -152,7 +153,7 @@ module.exports = function(app) {
     })
 
     // delete Timeslot by ID
-    app.delete('/api/timeslots/:id', async (req, res) => {
+    app.delete('/api/timeslots/:id',authenticateUser, async (req, res) => {
         const id = req.params.id
     
         // Validate id

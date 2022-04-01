@@ -1,7 +1,7 @@
 const log = console.log
 log('Loaded front-end javascript.')
 
-const hostURL = "http://localhost:5000";
+const host = "http://localhost:5000";
 
 function getAllImage() 
 {
@@ -25,15 +25,19 @@ function getAllImage()
     });
 }
 
-function getImageById(imageID) 
+async function getImageById(imageID) 
 {
     const url = host + "/api/images/" + imageID;
 
     const request = new Request(url, {
         method: "GET",
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
     });
 
-    fetch(request).then(res => {
+    return await fetch(request).then(res => {
         if (res.status === 200) {
             // return a promise that resolves with the JSON body
             console.log("Successfully get image")
@@ -99,7 +103,7 @@ function deleteImageById(imageID)
 
 async function addImage(img) {
     // the URL for the request
-    const url = hostURL + '/api/images';
+    const url = host + '/api/images';
     // The data we are going to send in our request
 
     let formData = new FormData()

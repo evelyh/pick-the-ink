@@ -1,5 +1,5 @@
 const host = "http://localhost:5000";
-
+const log = console.log
 // sign user up
 function signUp(data){
   const url = host + "/api/users";
@@ -24,8 +24,34 @@ function signUp(data){
 }
 
 // log user in
-function login(data){
-  const url = host + "/users/login";
+// function login(data){
+//   const url = host + "/users/login";
+//   const request = new Request(url, {
+//     method: "POST",
+//     body: JSON.stringify(data),
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   });
+
+//   fetch(request).then((res) => {
+//     if (res.ok){
+//       this.setState({
+//         valid: true,
+//       });
+//     } else{
+//       // bad request
+//       this.setState({
+//         valid: false,
+//       })
+//     }
+//   }).catch((error) => {
+//     console.log(error);
+//   })
+// }
+
+async function login(data){
+  const url = host + "/api/users/login";
   const request = new Request(url, {
     method: "POST",
     body: JSON.stringify(data),
@@ -34,20 +60,41 @@ function login(data){
     },
   });
 
-  fetch(request).then((res) => {
-    if (res.ok){
-      this.setState({
-        valid: true,
-      });
-    } else{
-      // bad request
-      this.setState({
-        valid: false,
-      })
+  return await fetch(request).then(res => {
+    if (res.status === 200) {
+        console.log('Successfully logged in') 
+        return res.json()
+    } else {
+        console.log('[Unsuccessful] logged in')
+        return res.status
     }
-  }).catch((error) => {
-    console.log(error);
-  })
+}).
+catch((error) => {
+    log(error)
+})
+}
+
+async function getlogin(){
+  const url = host + "/api/users/login";
+  const request = new Request(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return await fetch(request).then(res => {
+    if (res.status === 200) {
+        console.log('Successfully logged in') 
+        return res.json()
+    } else {
+        console.log('[Unsuccessful] logged in')
+        return res.status
+    }
+}).
+catch((error) => {
+    log(error)
+})
 }
 
 // sign user out
@@ -68,4 +115,4 @@ function logout(){
   })
 }
 
-export { signUp, logout, login }
+export { signUp, logout, login , getlogin}

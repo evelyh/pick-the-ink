@@ -1,4 +1,5 @@
 import React from 'react'
+import {useParams} from "react-router-dom";
 import { Header } from '../components/Header'
 import { Container, Alert, CloseButton} from 'react-bootstrap'
 import patrick from '../assets/img/patrick.jpg'
@@ -7,39 +8,66 @@ import krabs from '../assets/img/krabs.jpg'
 import profilepic from '../assets/img/profilepic.jpg'
 import '../assets/css/userProfile.css'
 import PopUpProfileForm from '../components/PopUpProfileForm'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardBody, CardImg,CardText,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,Button} from 'reactstrap'
+import {getStyleById, getUser, postUser} from "../apiHook/profile"
 
 
 function UserProfile() {
+    const { id } = useParams();
+    const myid = "623f4747554c0d0d6fe6c99f";
+    
+    let isUser =false;
+    if(myid == id){
+      isUser = true;
+    }else{
+      isUser = false;
+    }
 
     // Should get this data from the server
-    const [values, setValues] = useState({
-      firstName: "Patrick",
-      lastName: "Sea-Star",
-      userName: "PatrickYahhh",
-      email: "patrick@gmail.com",
-      birthday: "1999-12-13",
-      phoneNum : "123-456-7890",
-      style: [{name: 'Blackwork', id: 1},{name: 'Watercolor', id: 2}],
+    const [buttonPopUp, setButtonPopUp] = useState(false);
+
+    const [values, setValues] = useState(
+      {firstName: "",
+      lastName: "",
+      userName: "",
+      email: "",
+      birthDate: "",
+      phoneNum : "",
+      favoriteStyles: [],
       image: "../images/patrick.jpg",
       isArtist: false,
-      followers:1,
-      following:2,
-      comment:"I can't see my forehead!"
-    });
-    const [buttonPopUp, setButtonPopUp] = useState(false);
+      followingIDs:0,
+      followerIDs:0,
+      comment:""}
+      );
+    
+    let style = [];
     const [success,setSuccess] = useState(false);
-    const [isUser] = useState(true);
+    useEffect(()=>{
+      getUser(myid).then(json => 
+        { let data = json;
 
+          let favoriteStyles = []
+          data.favoriteStyles.map((x, i)=>{
+            getStyleById(data.favoriteStyles[i]).then(style_data =>{
+              favoriteStyles.push(style_data);
+            })
+          })
+            
+          data.birthDate = data.birthDate.slice(0,10);
+          data.favoriteStyles = favoriteStyles;
+          setValues(data);
+        });
+    }, [success])
     const onDismiss = ()=>{
       setSuccess(false);
     };
-
+    
     return (
       <div>
         <div>
@@ -57,7 +85,7 @@ function UserProfile() {
             <UncontrolledDropdown className="btn-group" id="profileDropdown">
              <DropdownToggle tag="a"
               data-toggle="dropdown">
-              Following: {values.following}
+              Following: {}
               </DropdownToggle>
               <DropdownMenu >
               <DropdownItem tag="a" href="/userprofile/krab" >
@@ -73,7 +101,7 @@ function UserProfile() {
             <UncontrolledDropdown className="btn-group">
              <DropdownToggle tag="a"
               data-toggle="dropdown">
-              Followers: {values.followers}
+              Followers: {}
               </DropdownToggle>
               <DropdownMenu >
               <DropdownItem tag="a" href="/userprofile/gary" >
@@ -121,7 +149,7 @@ function UserProfile() {
                 {isUser ? <label className="col-sm-3 col-form-label col-form-label">Date of Birth:</label>:null}
                 {isUser ? 
                 <div className="col-sm-7">
-                  <label className="col-sm-6 col-form-label col-form-label">{values.birthday}</label>
+                  <label className="col-sm-6 col-form-label col-form-label">{values.birthDate}</label>
                 </div>
                 :null}
                 
@@ -133,11 +161,13 @@ function UserProfile() {
                 :null}
 
                 <label className="col-sm-3 col-form-label col-form-label">Favorite styles:</label>
+                {values.favoriteStyles ?
                 <div className="col-sm-7">
-                  {values.style.map((_, index) => (
-                    <li className="col-6 col-form-label col-form-label" key={index}>{values.style[index]["name"]}</li>
+                  {values.favoriteStyles.forEach((x, i) => (
+                    <li className="col-6 col-form-label col-form-label" key={i}>{x}</li>
                   ))}
                 </div>
+                :null}
               </div>
               { isUser ? <Button size='sm' onClick={()=> setButtonPopUp(true)}>Edit your profile</Button> :null }
               </Container>
