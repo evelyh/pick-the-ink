@@ -1,6 +1,5 @@
 const log = console.log
 log('Loaded front-end javascript.')
-
 const host = "http://localhost:5000";
 
 async function getAllImage() 

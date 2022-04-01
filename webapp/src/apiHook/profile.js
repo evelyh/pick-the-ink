@@ -1,3 +1,4 @@
+import {addImage} from './image.js'
 import {login, getlogin} from './loginSignUp'
 const log = console.log
 log('Loaded front-end javascript.')
@@ -37,6 +38,13 @@ async function postUser(data) {
     delete data.__v;
     delete data.password;
     const favoriteStyles = [];
+
+    console.log(data.profilePic)
+    if(data.profilePic != undefined){
+        await addImage(data.profilePic).then(json => data.profilePic = json["img"]);
+    }
+    console.log(data.profilePic)
+
     for(const idx in data.favoriteStyles){
         favoriteStyles.push(data.favoriteStyles[idx]);
     }

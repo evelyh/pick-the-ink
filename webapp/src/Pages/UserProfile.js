@@ -2,7 +2,6 @@ import React from 'react'
 import {useParams} from "react-router-dom";
 import { Header } from '../components/Header'
 import { Container, Alert, CloseButton} from 'react-bootstrap'
-import patrick from '../assets/img/patrick.jpg'
 import gary from '../assets/img/gary.jpg'
 import krabs from '../assets/img/krabs.jpg'
 import profilepic from '../assets/img/profilepic.jpg'
@@ -19,7 +18,7 @@ import {getStyleById, getUser, postUser} from "../apiHook/profile"
 
 function UserProfile() {
     const { id } = useParams();
-    const myid = "6247154e0213d255193c575f";
+    const myid = "624769ffa025c967d7d132a0";
     
     let isUser =false;
     if(myid == id){
@@ -32,7 +31,9 @@ function UserProfile() {
     const [buttonPopUp, setButtonPopUp] = useState(false);
 
     const [values, setValues] = useState(
-      {firstName: "",
+      {
+      profilePic:"",
+      firstName: "",
       lastName: "",
       userName: "",
       email: "",
@@ -63,13 +64,15 @@ function UserProfile() {
           data.favoriteStyles = favoriteStyles
           data.birthDate = data.birthDate.slice(0,10);
           setValues(data); 
+          console.log(values)
         });
     }, [buttonPopUp])
     
     const onDismiss = ()=>{
       setSuccess(false);
     };
-    
+
+
     return (
       <div>
         <div>
@@ -80,8 +83,9 @@ function UserProfile() {
           <div className="row">
             <div className="col-3">
             <Card id="profileCard" style={{width: '20rem'}}>
-              <CardBody>
-              <CardImg src={patrick} id="profileCirclePic" alt='profile' />  
+              <CardBody>  
+                {values.profilePic?  <CardImg src={values.profilePic} id="profileCirclePic" alt='profile' />  :
+                 <CardImg src={profilepic} id="profileCirclePic" alt='profile' />  }  
               <h5>{values.userName}</h5>
               <CardText>{values.comment}</CardText>
             <UncontrolledDropdown className="btn-group" id="profileDropdown">

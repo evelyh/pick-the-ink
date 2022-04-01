@@ -53,6 +53,16 @@ function PopUpProfileForm(props) {
           <div className='popupInner'>  
             <Form noValidate validated={validated} onSubmit={onSubmit} className='popupForm'>
                 <Form.Group className="mb-3" >
+                      <Form.Label>Profile Picture:</Form.Label>
+                      <Form.Control 
+                      type="file" 
+                      id='profilePic'
+                      className="form-control-file" 
+                      onChange={ e => props.setInfo({...props.info, profilePic: e.target.files[0]})}/>
+                </Form.Group>
+                
+                
+                <Form.Group className="mb-3" >
                     <Form.Label>First Name:</Form.Label>
                     <Form.Control type="text" 
                     value={props.info.firstName}

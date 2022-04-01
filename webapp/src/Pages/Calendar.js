@@ -6,6 +6,9 @@ import "../apiHook/calender"
 
 export class Calendar extends Component {
   render() {
+
+    const myid = "624769ffa025c967d7d132a0";
+
     // Should get this data from the server
     function addHoursToDate(date) {
       return new Date(new Date(date).setHours(date.getHours() + 1));
@@ -44,10 +47,8 @@ export class Calendar extends Component {
       }
     }
 
-    
-    getArtistCalender("623f584add0f9e13c36ad5a3")
-    getCustomerCalender("624511d6fd121a1cf17a24b0")
-    console.log(data)
+    // getArtistCalender("623f584add0f9e13c36ad5a3")
+    getCustomerCalender(myid)
 
 //     const data = [{
 //       Id: 1,
