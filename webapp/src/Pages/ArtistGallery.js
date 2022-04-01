@@ -11,7 +11,7 @@ import PopUpAppointmentForm from '../components/PopUpAppointmentForm'
 import PopUpEditGallery from '../components/PopUpEditGallery'
 import PopUpDelGallery from "../components/PopUpDelGallery"
 import PopUpAddGallery from "../components/PopUpAddGallery"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardImg, CardBody, CardTitle, CardText, Button } from 'reactstrap';
 import FlatList from 'flatlist-react';
 import _ from "lodash";
@@ -23,21 +23,23 @@ import {
   DropdownItem,
   UncontrolledDropdown} from 'reactstrap'
 
-import {getAllImage, getImageById, deleteImageById, addImage} from "../apiHook/image"
+import {addImage, getImageById, updateArtistsGallery} from "../apiHook/image"
+import {getUser, getStyleById} from "../apiHook/profile"
 
 function ArtistGallery() {
 
+  const myID = "624765be4de0da31f0fca2f4";
+
   const [values, setValues] = useState({
-    userName: "Spongebob",
+    userName: "SpongeBob",
     email: "spongebob@gmail.com",
     following: 0,
-    followers: 1,
-    comment:"hahahaha",
+    followers: 0,
+    followerIDs: [],
+    followingIDs: [],
     homeLocation: "Toronto",
     image: "../images/profilepic.jpg",
-    gallery:[
-      {id:0, title: "My BF", description: "Patrick and me", img: pic1},
-      {id:1, title: "Great time", description: "Patrick and me", img: pic2}],
+    gallery:[],
   });
 
   const [buttonPopUp, setButtonPopUp] = useState(false);
@@ -46,6 +48,67 @@ function ArtistGallery() {
   const [buttonPopUpAdd, setButtonPopUpAdd] = useState(false);
 
   const [isUser] = useState(true);
+
+  const [mounted, setMounted] = useState(false)
+
+  if(!mounted){
+    getUser(myID).then(async (json) => 
+      { 
+        console.log(json)
+        json.followers = json.followerIDs.length;
+        json.following = json.followingIDs.length;
+        json.homeLocation = "Toronto";
+
+        json.gallery = [];
+        for(let i = 0; i < json.artistSub.artworks.length; i++){
+          await getImageById(json.artistSub.artworks[i]).then(res => {
+            console.log(res)
+            const newImg = {
+              id: res.images._id,
+              title: res.images.title,
+              img: res.images.img,
+              desc: res.images.desc
+            }
+            json.gallery = json.gallery.concat(newImg);
+            console.log(json.gallery)
+          })
+        }
+        console.log("gallery")
+        console.log(json.gallery)
+        setValues(json)
+        setButtonPopUp(false);
+      });
+  }
+
+  useEffect(async () => {
+    setMounted(true)
+    await getUser(myID).then(json => 
+      { 
+        console.log(json)
+        json.followers = json.followerIDs.length;
+        json.following = json.followingIDs.length;
+        json.homeLocation = "Toronto";
+
+        json.gallery = [];
+        for(let i = 0; i < json.artistSub.artworks.length; i++){
+          getImageById(json.artistSub.artworks[i]).then(res => {
+            console.log(res)
+            const newImg = {
+              id: res.images._id,
+              title: res.images.title,
+              img: res.images.img,
+              desc: res.images.desc
+            }
+            json.gallery = json.gallery.concat(newImg);
+            console.log(json.gallery)
+          })
+        }
+        console.log("gallery")
+        console.log(json.gallery)
+        setValues(json)
+        setButtonPopUp(false);
+      });
+  }, [buttonPopUp])
 
   const deleteById = (id, event) => {
     event.preventDefault();
@@ -59,9 +122,31 @@ function ArtistGallery() {
   }
 
   const addNewPic = (newPic) => {
-    const newGallery = values.gallery.concat(newPic);
+    getUser(myID).then(json => 
+      { 
+        console.log(json)
+        var newArtWorks = json.artistSub.artworks.concat(newPic._id)
+        json.artistSub.artworks = newArtWorks
+
+        updateArtistsGallery(json).catch(error => {
+          console.log(error);
+        });
+      });
+    const newImg = {
+      id: newPic._id,
+      desc: newPic.desc,
+      title: newPic.title,
+      img: newPic.img
+    }
+    const newGallery = values.gallery.concat(newImg);
     setValues({gallery: newGallery});
   }
+
+  // const addNewPic = async (imgID) => {
+  //   const img = await getImageById(imgID);
+  //   const newGallery = values.gallery.concat(img);
+  //   setValues({gallery: newGallery});
+  // }
 
   const renderItem = (galleryPic, index) => {
 
@@ -71,12 +156,12 @@ function ArtistGallery() {
         <CardImg id="cardImg" className='galleryPics' top src={galleryPic.img} alt="..."/>
         <CardBody>
         <CardTitle className='cardTitle'>{galleryPic.title}</CardTitle>
-        <CardText className='cardText'>{galleryPic.description}</CardText>
+        <CardText className='cardText'>{galleryPic.desc}</CardText>
           <PopUpEditGallery 
             values={values}
             title = {galleryPic.title}
             index = {index}
-            description = {galleryPic.description}
+            description = {galleryPic.desc}
             setValues = {setValues}
             trigger={buttonPopUpEdit} 
             setTrigger={setButtonPopUpEdit}
@@ -139,6 +224,10 @@ function ArtistGallery() {
                     Following: {values.following}
                   </DropdownToggle>
                   <DropdownMenu >
+                    <DropdownItem tag="a" href="/userprofile/">
+                      <img id="profileDropdownPic" src={patrick} alt='patrick' ></img>
+                      patrick
+                    </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
                 <UncontrolledDropdown className="btn-group">
