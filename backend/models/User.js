@@ -52,6 +52,11 @@ const ArtistSchema = new mongoose.Schema({
 });
 
 const UserSchema = new mongoose.Schema({
+  profilePic:{
+    type: String,
+    required: false,
+    default:""
+  },
   userName: {
     type: String,
     unique: true,

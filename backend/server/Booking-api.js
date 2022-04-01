@@ -45,7 +45,7 @@ module.exports = function(app) {
         }
     })
 
-    app.post('/api/bookings/:id',authenticateUser, async (req, res) => {
+    app.post('/api/bookings/:id', async (req, res) => {
         // Add code here
         const id = req.params.id
     
@@ -82,7 +82,7 @@ module.exports = function(app) {
     // req.body.customerID, get all bookings of that customer
     // req.body.artistID AND req.body.isConfirmed, get all bookings for confirmed/ (not confirmed) artist's bookings
     // req.body.customerID AND req.body.isConfirmed, get all bookings for confirmed/ (not confirmed) customer's bookings
-    app.get('/api/bookings', authenticateUser, async (req, res) => {
+    app.get('/api/bookings', async (req, res) => {
         if (mongoose.connection.readyState != 1) {
             log('There is issue to mongoose connection')
             res.status(500).send('Internal server error')
@@ -144,7 +144,7 @@ module.exports = function(app) {
     })
 
     // update SOME fields in booking by ID
-    app.patch('/api/bookings/:id',authenticateUser, async (req, res) => {
+    app.patch('/api/bookings/:id', async (req, res) => {
         const id = req.params.id
     
         if (!ObjectID.isValid(id)) {
@@ -177,7 +177,7 @@ module.exports = function(app) {
     })
 
     // delete booking by ID
-    app.delete('/api/bookings/:id',authenticateUser, async (req, res) => {
+    app.delete('/api/bookings/:id', async (req, res) => {
         const id = req.params.id
     
         // Validate id

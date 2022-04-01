@@ -64,8 +64,8 @@ async function addBooking(form) {
     // The data we are going to send in our request
 
     let data = {
-        artistID: "6247154e0213d255193c575f",
-        customerID: "6247154e0213d255193c575f",
+        artistID: "62476f27a025c967d7d132fa",
+        customerID: "624769ffa025c967d7d132a0",
         isCancellable: true,
         isModifiable: true,
         choice: form.choice,
