@@ -1,9 +1,14 @@
+import {login, getlogin} from './loginSignUp'
 const log = console.log
 log('Loaded front-end javascript.')
 
 const hostURL = "http://localhost:5000";
 
+
 async function getUser(id) {
+
+    
+
     const url = hostURL + '/api/users/' + id;
 
     const request = new Request(url, {
