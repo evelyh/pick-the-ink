@@ -63,27 +63,29 @@ async function addBooking(form) {
     const url = hostURL + '/api/bookings';
     // The data we are going to send in our request
 
-    // need to call addImage and get back the id of the image added
-    // if(form.flashLink != undefined){
-    //     addImage(form.flashLink)
-    // }
-    // if(form.otherLink != undefined){
-    //     addImage(form.otherLink)
-    // }
-
     let data = {
-        artistID: "623f4747554c0d0d6fe6c99f",
-        customerID: "623f4747554c0d0d6fe6c99f",
+        artistID: "6247154e0213d255193c575f",
+        customerID: "6247154e0213d255193c575f",
         isCancellable: true,
         isModifiable: true,
         choice: form.choice,
-        // flashLink: imageId,
         customIdea: form.customIdea,
         size: form.size,
         placement: form.placement,
-        // otherLink: form.otherLink,
         concern: form.concern
     }
+
+    // need to call addImage and get back the id of the image added
+    if(form.flashLink != undefined){
+        await addImage(form.flashLink).then(json => data.flashLink = json["_id"]);
+    }
+    if(form.otherLink != undefined){
+        await addImage(form.otherLink).then(json => data.otherLink = json["_id"]);
+    }
+    
+    
+    console.log(data)
+    
     const request = new Request(url, {
         method: 'post', 
         body: JSON.stringify(data),

@@ -10,7 +10,7 @@ module.exports = function(app) {
     }
 
     // add a booking
-    app.post('/api/bookings',authenticateUser, async (req, res) => {
+    app.post('/api/bookings', async (req, res) => {
         if (mongoose.connection.readyState != 1) {
             log('There is issue to mongoose connection')
             res.status(500).send('Internal server error')
