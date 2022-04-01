@@ -25,15 +25,19 @@ function getAllImage()
     });
 }
 
-function getImageById(imageID) 
+async function getImageById(imageID) 
 {
     const url = host + "/api/images/" + imageID;
 
     const request = new Request(url, {
         method: "GET",
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
     });
 
-    fetch(request).then(res => {
+    return await fetch(request).then(res => {
         if (res.status === 200) {
             // return a promise that resolves with the JSON body
             console.log("Successfully get image")

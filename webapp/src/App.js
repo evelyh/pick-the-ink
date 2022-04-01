@@ -20,7 +20,7 @@ import Calendar from 'Pages/Calendar';
 import ManageBookingConfirm from "./Pages/ManageBookingConfirm";
 import ManageBookingClient from "./Pages/ManageBookingClient";
 import ManageBookingClientConfirm from "./Pages/ManageBookingClientConfirm";
-import Admin from 'Pages/admin/Admin';
+import Admin from 'Pages/Admin';
 
 
 function App() {
