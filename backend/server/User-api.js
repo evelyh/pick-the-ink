@@ -200,15 +200,15 @@ module.exports = function(app) {
     const password = req.body.password;
 
     try{
-      const user = await User.find({userName:username, password:password});
+      const user = await User.findByUsernamePassword(username, password);
       if (!user){
         res.status(400).send("bad request");
       } else{
         // add user id and username to session
-        req.session.user = user[0]._id;
-        req.session.username = user[0].userName;
-        req.session.userType = user[0].isArtist;
-        console.log(req.session)
+        log(user)
+        req.session.user = user._id;
+        req.session.username = user.userName;
+        req.session.userType = user.userType;
         res.status(200).send("Login successful");
       }
     } catch (error){
@@ -223,7 +223,7 @@ module.exports = function(app) {
   })
 
   // for checking login status
-  app.get("/api/users/login", mongoChecker, async (req, res) => {
+  app.get("/api/users/login", (req, res) => {
     if (req.session.user){
       res.send({"loggedIn": true, user: req.session.user, userType: req.session.userType});
     } else{
@@ -241,6 +241,4 @@ module.exports = function(app) {
         res.status(200).send("logout successful");
       }
     })
-  })
-
-}
+  })}

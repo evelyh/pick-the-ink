@@ -5,9 +5,9 @@ log('Loaded front-end javascript.')
 const hostURL = "http://localhost:5000";
 
 
-async function getUser(id) {
 
-    
+
+async function getUser(id) {
 
     const url = hostURL + '/api/users/' + id;
 
@@ -31,20 +31,23 @@ async function getUser(id) {
     })
 }
 
-async function postUser(form) {
-
-    const id = form._id;
-    const data = form;
+async function postUser(data) {
+    const id = data._id;
     delete data._id;
     delete data.__v;
+    delete data.password;
+
+
     const url = hostURL + '/api/users/' + id;
-    console.log(JSON.parse(JSON.stringify(data)), 1);
+    console.log("------------------");
+    console.log(data);
+    console.log(JSON.parse(JSON.stringify(data)));
     const request = new Request(url, {
         method: 'patch', 
-        body: JSON.parse(JSON.stringify(data)),
+        body: data, 
         headers: {
             'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json, multipart/form-data',
             "Access-Control-Allow-Origin": "*"
         },
     });
@@ -90,4 +93,30 @@ async function getStyles() {
     })
 }
 
-export {getUser, getStyles, postUser}
+async function getStyleById(id) {
+    const url = hostURL + '/api/styles/' + id;
+
+    const request = new Request(url, {
+        method: 'get',
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
+    });
+    return await fetch(request)
+    .then((res) => { 
+        if (res.status === 200) {
+            // return a promise that resolves with the JSON body
+           return res.json() 
+       } else {
+            alert('Could not get current logged in User')
+       }                
+    }).catch((error) => {
+        log(error)
+    })
+}
+
+
+
+
+export {getStyleById, getUser, getStyles, postUser}

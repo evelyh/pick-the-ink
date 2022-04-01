@@ -33,7 +33,7 @@ function App() {
         <Route path="/managebooking-confirm" element={<ManageBookingClientConfirm />}/>
         <Route path="/artist-managebooking" element={<ManageBooking />}/>
         <Route path="/artist-managebooking-confirm" element={<ManageBookingConfirm />}/>
-        <Route path="/userprofile" element={<UserProfile />} />
+        <Route path="/userprofile/:id" element={<UserProfile />} />
         <Route path="/userprofile/krab" element={<UserProfileKrab />} />
         <Route path="/userprofile/gary" element={<UserProfileGary />} />
         <Route path="/artistprofile" element={<ArtistProfile />} />
