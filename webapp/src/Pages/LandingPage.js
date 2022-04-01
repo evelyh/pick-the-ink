@@ -7,6 +7,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import "../assets/css/landingPage.css";
 import {getAllStyles, getLocation, getStyles, getTimeslots, getArtists} from "../apiHook/landing.js";
+import { getImageById } from '../apiHook/image.js';
 import pic1 from '../assets/img/gallery_pic2.jpg'
 
 export class LandingPage extends Component {
@@ -61,35 +62,54 @@ export class LandingPage extends Component {
     end: '',
     styles: [],
     artists:[],
-    allStyles: []
+    allStyles: [],
+    imageObjList: []
   }
 
-  componentDidMount = async() =>{
+  componentWillMount = async() =>{
     var allStyles = await getAllStyles();
     var artists = await getArtists({});
     this.setState({allStyles: allStyles, artists: artists})
+
+    var imgobjs = new Array();
+    var artlen = this.state.artists.length;
+    for(let i = 0; i < artlen; i++){
+      var imgids = this.state.artists[i].artistSub.artworks
+      var imglen = imgids.length
+      imgobjs.push(new Array());
+      for(let j = 0; j < imglen; j++){
+        var img = await getImageById(imgids[j]);
+        imgobjs[i].push(img)
+      }
+    }
+    this.setState({imageObjList: imgobjs});
+
   }
 
   render(){
     const {loggedIn} = this.props;
+    var imageList = {};
+    var artlen = this.state.artists.length;
+    if(this.state.imageObjList.length != 0){
+      for(let i = 0; i < artlen; i++){
+        var list = (this.state.imageObjList)[i]
+        imageList[(this.state.artists[i]).userName] = list.map((image) =>
+            <div key={image.images.img}>
+              <img src={image.images.img} />
+            </div>)
+      }
+    }
+    //{image.img} title = {image.title} alt={image.desc}
     const hostURL = "http://localhost:3000"
     const artistProfile = hostURL + "/artistprofile/"
-    var imageList = {}
-    for(let i = 0; i < this.state.artists.length; i++){
-      imageList[this.state.artists[i].userName] = this.state.artists[i].artistSub.artworks.map((image) =>
-        <div>
-            <img src={pic1}/>
-        </div>)
-    }
-    //<img src={image.img} title = {image.title} alt={image.desc}/>
     const artistList = this.state.artists.map((artist) => 
-      <div className="card" key={artist.userName}>
-        <a className="username" href={artistProfile + artist._id} > {artist.userName} </a>
-        <p className='mb-3'> {artist.comment} </p>
-        <Carousel class='carousel'>
-            {imageList[artist.userName]}
-        </Carousel>
-      </div>)
+        <div className="card" key={artist.userName}>
+          <a className="username" href={artistProfile + artist._id} > {artist.userName} </a>
+          <p className='mb-3'> {artist.comment} </p>
+          <Carousel class='carousel'>
+              {imageList[artist.userName]}
+          </Carousel>
+        </div>)
 
     return (
       <div>
