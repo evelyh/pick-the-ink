@@ -5,9 +5,9 @@ log('Loaded front-end javascript.')
 const hostURL = "http://localhost:5000";
 
 
-async function getUser(id) {
 
-    
+
+async function getUser(id) {
 
     const url = hostURL + '/api/users/' + id;
 
@@ -31,20 +31,21 @@ async function getUser(id) {
     })
 }
 
-async function postUser(form) {
-
-    const id = form._id;
-    const data = form;
+async function postUser(data) {
+    const id = data._id;
     delete data._id;
     delete data.__v;
+    delete data.password;
     const url = hostURL + '/api/users/' + id;
-    console.log(JSON.parse(JSON.stringify(data)), 1);
+    console.log("------------------");
+    console.log(data);
+    console.log(JSON.parse(JSON.stringify(data)));
     const request = new Request(url, {
         method: 'patch', 
-        body: JSON.parse(JSON.stringify(data)),
+        body: data, 
         headers: {
             'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json, multipart/form-data',
             "Access-Control-Allow-Origin": "*"
         },
     });

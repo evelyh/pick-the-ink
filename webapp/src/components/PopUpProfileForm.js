@@ -4,12 +4,14 @@ import { useState, useEffect} from 'react';
 import {Multiselect} from 'multiselect-react-dropdown';
 import { getStyles } from 'apiHook/profile';
 import {Form} from 'react-bootstrap'
+import {postUser} from "../apiHook/profile"
 
 
 function PopUpProfileForm(props) {
     const [validated, setValidated] = useState(false);
     console.log(props.info)
     const [prev] = useState({
+        _id:props.info._id,
         firstName: props.info.firstName,
         lastName: props.info.lastName,
         userName: props.info.userName,
@@ -24,7 +26,7 @@ function PopUpProfileForm(props) {
         comment:props.info.comment
       });
 
-    const onSubmit = (event) => {
+    const onSubmit = async (event) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             console.log("submit error")
@@ -32,8 +34,8 @@ function PopUpProfileForm(props) {
             event.stopPropagation();
         }else{
             event.preventDefault();
-            const data = new FormData(event.target);
-            console.log(data);
+            await postUser(props.info);
+
             props.setTrigger(false);
             props.setSuccess(true);
             setValidated(true);}

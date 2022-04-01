@@ -1,4 +1,5 @@
 import React from 'react'
+import {useParams} from "react-router-dom";
 import { Header } from '../components/Header'
 import { Container, Alert, CloseButton} from 'react-bootstrap'
 import patrick from '../assets/img/patrick.jpg'
@@ -15,12 +16,21 @@ import { Card, CardBody, CardImg,CardText,
   UncontrolledDropdown,Button} from 'reactstrap'
 import {getUser, postUser} from "../apiHook/profile"
 
+
 function UserProfile() {
+    const { id } = useParams();
+    const myid = "623f4747554c0d0d6fe6c99f";
+    
+    let isUser =false;
+    if(myid == id){
+      isUser = true;
+    }else{
+      isUser = false;
+    }
 
     // Should get this data from the server
     const [buttonPopUp, setButtonPopUp] = useState(false);
 
-    const [isUser] = useState(true);
     const [values, setValues] = useState(
       {firstName: "",
       lastName: "",
@@ -36,23 +46,15 @@ function UserProfile() {
       comment:""}
       );
     
-    const [sendInfo, setSendInfo] = useState(values);
     const [success,setSuccess] = useState(false);
-
-    useEffect(()=>{
-      getUser("623f4747554c0d0d6fe6c99f").then(json => 
-        { let data = json["result"];
-          data.birthDate = data.birthDate.slice(0,10);
-          setValues(data);
-          setSendInfo(data);});
-    }, [success])
- 
-    useEffect(()=>{
-        if(sendInfo.firstName != "")
-        {postUser(sendInfo,"623f4747554c0d0d6fe6c99f");}
-        
-      }, [success])
     
+    useEffect(()=>{
+      getUser(myid).then(json => 
+        { let data = json;
+          data.birthDate = data.birthDate.slice(0,10);
+          setValues(data);});
+    }, [success])    
+
 
     const onDismiss = ()=>{
       setSuccess(false);
@@ -63,7 +65,7 @@ function UserProfile() {
         <div>
           <Header loggedIn={true}/>
         </div>
-        <PopUpProfileForm info={sendInfo} setInfo = {setSendInfo} success={success} setSuccess={setSuccess} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpProfileForm>
+        <PopUpProfileForm info={values} setInfo = {setValues} success={success} setSuccess={setSuccess} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpProfileForm>
         <div className="container">
           <div className="row">
             <div className="col-3">
