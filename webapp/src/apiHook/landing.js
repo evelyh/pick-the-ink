@@ -24,7 +24,7 @@ async function getLocation(data){
 
 
 async function getStyles(data){
-    const url = hostURL + '/api/styles/' + '?name=' + data.style
+    const url = hostURL + '/api/style/' + '?name=' + data.style
     const request = new Request(url, {
         method: 'get', 
         headers: {
@@ -46,7 +46,7 @@ async function getStyles(data){
 
 
 async function getTimeslots(data){
-    const url = hostURL + '/api/timeslots/' + '?start=' + data.start + '&end=' + data.end
+    const url = hostURL + '/api/timeslotArtist/' + '?start=' + data.start + '&end=' + data.end
     console.log(url)
     const request = new Request(url, {
         method: 'get', 
