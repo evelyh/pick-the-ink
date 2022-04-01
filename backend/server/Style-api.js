@@ -23,6 +23,27 @@ module.exports = function (app){
     }
 
   })
+ 
+  // Get styles by id
+  app.get("/api/styles/:id", async (req, res) => {
+    const id = req.params.id;
+    // check mongoose connection established
+    if (mongoose.connection.readyState !== 1){
+      console.log("Issue with mongoose connection");
+      res.status(500).send("Internal server error");
+      return;
+    }
+
+    // get styles
+    try{
+      const styles = await Style.findById(id);
+      res.send(styles);
+    } catch (error){
+      console.log(error);
+      res.status(500).send("Internal Server error");
+    }
+
+  })
 
   //create new style
   app.post("/api/styles", async (req, res) => {

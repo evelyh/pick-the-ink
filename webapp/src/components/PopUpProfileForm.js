@@ -127,8 +127,14 @@ function PopUpProfileForm(props) {
                 <Form.Group className="mb-3" >
                     <Form.Label>Favorite styles:</Form.Label>
                     <Multiselect options={option} displayValue="name"
-                        onSelect={e => props.setInfo({...props.info, favoriteStyles:e})}
-                        onRemove={e => props.setInfo({...props.info, favoriteStyles:e})}></Multiselect>
+                        onSelect={e => {
+                            let s = []
+                            e.forEach((x, i) => s.push(x["_id"]));
+                            props.setInfo({...props.info, favoriteStyles:s});}}
+                        onRemove={e => {
+                            let s = []
+                            e.forEach((x, i) => s.push(x["_id"]));
+                            props.setInfo({...props.info, favoriteStyles:s});}}></Multiselect>
                 </Form.Group>
 
                 <Form.Group className="mb-3" >

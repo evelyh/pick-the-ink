@@ -14,7 +14,7 @@ import { Card, CardBody, CardImg,CardText,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,Button} from 'reactstrap'
-import {getUser, postUser} from "../apiHook/profile"
+import {getStyleById, getUser, postUser} from "../apiHook/profile"
 
 
 function UserProfile() {
@@ -46,20 +46,28 @@ function UserProfile() {
       comment:""}
       );
     
+    let style = [];
     const [success,setSuccess] = useState(false);
-    
     useEffect(()=>{
       getUser(myid).then(json => 
         { let data = json;
+
+          let favoriteStyles = []
+          data.favoriteStyles.map((x, i)=>{
+            getStyleById(data.favoriteStyles[i]).then(style_data =>{
+              favoriteStyles.push(style_data);
+            })
+          })
+            
           data.birthDate = data.birthDate.slice(0,10);
-          setValues(data);});
-    }, [success])    
-
-
+          data.favoriteStyles = favoriteStyles;
+          setValues(data);
+        });
+    }, [success])
     const onDismiss = ()=>{
       setSuccess(false);
     };
-
+    
     return (
       <div>
         <div>
@@ -155,8 +163,8 @@ function UserProfile() {
                 <label className="col-sm-3 col-form-label col-form-label">Favorite styles:</label>
                 {values.favoriteStyles ?
                 <div className="col-sm-7">
-                  {values.favoriteStyles.map((_, index) => (
-                    <li className="col-6 col-form-label col-form-label" key={index}>{values.favoriteStyles[index]["name"]}</li>
+                  {values.favoriteStyles.forEach((x, i) => (
+                    <li className="col-6 col-form-label col-form-label" key={i}>{x}</li>
                   ))}
                 </div>
                 :null}

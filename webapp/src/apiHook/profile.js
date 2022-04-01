@@ -36,6 +36,8 @@ async function postUser(data) {
     delete data._id;
     delete data.__v;
     delete data.password;
+
+
     const url = hostURL + '/api/users/' + id;
     console.log("------------------");
     console.log(data);
@@ -91,4 +93,30 @@ async function getStyles() {
     })
 }
 
-export {getUser, getStyles, postUser}
+async function getStyleById(id) {
+    const url = hostURL + '/api/styles/' + id;
+
+    const request = new Request(url, {
+        method: 'get',
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
+    });
+    return await fetch(request)
+    .then((res) => { 
+        if (res.status === 200) {
+            // return a promise that resolves with the JSON body
+           return res.json() 
+       } else {
+            alert('Could not get current logged in User')
+       }                
+    }).catch((error) => {
+        log(error)
+    })
+}
+
+
+
+
+export {getStyleById, getUser, getStyles, postUser}
