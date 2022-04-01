@@ -9,19 +9,19 @@ var validateEmail = function(email) {
 };
 
 const ArtistSchema = new mongoose.Schema({
-	artworks: {
-		type: [mongoose.SchemaTypes.ObjectId],
-		required: false,
+    artworks: {
+        type: [mongoose.SchemaTypes.ObjectId],
+        required: false,
         ref: "Image"
-	},
+    },
     homeLocation: {
         type: mongoose.SchemaTypes.ObjectId,
-		required: false,
+		    required: false,
         ref: "Location"
     },
     artStyles: {
         type: [mongoose.SchemaTypes.ObjectId],
-		required: false,
+		    required: false,
         ref: "Style"
     },
     bookingCancellable: {
@@ -36,12 +36,12 @@ const ArtistSchema = new mongoose.Schema({
     },
     physicalID:{
         type: mongoose.SchemaTypes.ObjectId,
-        required: false,
+        required: true,
         ref: "Image"
     },
     license: {
         type: mongoose.SchemaTypes.ObjectId,
-        required: false,
+        required: true,
         ref: "Image"
     },
     approved: {
@@ -54,6 +54,7 @@ const ArtistSchema = new mongoose.Schema({
 const UserSchema = new mongoose.Schema({
   userName: {
     type: String,
+    unique: true,
     required: true,
     minlegth: 1
   },
@@ -84,11 +85,16 @@ const UserSchema = new mongoose.Schema({
   },
   birthDate: {
     type: Date,
-    required: true
+    required: false
   },
   phoneNum: {
     type: String,
     required: false
+  },
+  comment: {
+    type: String,
+    required: false,
+    default: ""
   },
   followingIDs: {
     type: [mongoose.SchemaTypes.ObjectId],

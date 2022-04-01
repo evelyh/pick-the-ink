@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { Header } from '../components/Header.js'
-import { Container } from 'react-bootstrap'
-import { Button, Form} from 'react-bootstrap'
-import {Multiselect} from 'multiselect-react-dropdown';
-import { CountryDropdown, RegionDropdown} from 'react-country-region-selector';
-import ArtistCard from 'components/ArtistCard.js';
+import { Container, Button, Form } from 'react-bootstrap'
+import { Multiselect } from 'multiselect-react-dropdown';
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; 
+import { Carousel } from 'react-responsive-carousel';
 import "../assets/css/landingPage.css";
-import {getLocation, getStyles, getTimeslots, getArtists} from "../apiHook/landing.js";
+import {getAllStyles, getLocation, getStyles, getTimeslots, getArtists} from "../apiHook/landing.js";
+import pic1 from '../assets/img/gallery_pic2.jpg'
 
 export class LandingPage extends Component {
 
@@ -23,7 +24,7 @@ export class LandingPage extends Component {
         data["locationID"] = location._id;
       }
 
-      if(this.state.styles.length != 0){
+      if(this.state.styles){
         for(let i = 0; i < this.state.styles.length; i++){
           const style = await getStyles({style: this.state.styles[i]['name']});
           styles.push(style[0]._id);
@@ -59,32 +60,36 @@ export class LandingPage extends Component {
     start: '',
     end: '',
     styles: [],
-    artists:[]
-    }
+    artists:[],
+    allStyles: []
+  }
 
-  // useEffect(() => {
-  //   validateDates();
-  // })
-
-  optionData = [{name:'blackline', id: 1}, 
-    {name:'Japanese', id: 2}, 
-    {name:'New School', id: 3},
-    {name:'Realism', id: 5}, 
-    {name:'Illustrative', id: 6}, 
-    {name: 'Portraiture', id: 7}, 
-    {name: 'Blackwork', id: 8},
-    {name: 'watercolor', id: 9},
-    {name:'Lettering',id: 10},
-    {name:'Geometric',id: 11},
-    {name:'Surrealism',id: 12},
-    {name:'Microrealism',id: 13},
-    {name:'Minimalism',id: 14},
-    {name:'Single Line',id: 15},
-    {name:'Dot Work',id: 16},];
+  componentDidMount = async() =>{
+    var allStyles = await getAllStyles();
+    var artists = await getArtists({});
+    this.setState({allStyles: allStyles, artists: artists})
+  }
 
   render(){
-
     const {loggedIn} = this.props;
+    const hostURL = "http://localhost:3000"
+    const artistProfile = hostURL + "/artistprofile/"
+    var imageList = {}
+    for(let i = 0; i < this.state.artists.length; i++){
+      imageList[this.state.artists[i].userName] = this.state.artists[i].artistSub.artworks.map((image) =>
+        <div>
+            <img src={pic1}/>
+        </div>)
+    }
+    //<img src={image.img} title = {image.title} alt={image.desc}/>
+    const artistList = this.state.artists.map((artist) => 
+      <div className="card" key={artist.userName}>
+        <a className="username" href={artistProfile + artist._id} > {artist.userName} </a>
+        <p className='mb-3'> {artist.comment} </p>
+        <Carousel class='carousel'>
+            {imageList[artist.userName]}
+        </Carousel>
+      </div>)
 
     return (
       <div>
@@ -123,7 +128,7 @@ export class LandingPage extends Component {
 
                   <Form.Group className="col-4 formField" >
                       <Form.Label>Styles:</Form.Label>
-                      <Multiselect options={this.optionData} displayValue="name"
+                      <Multiselect options={this.state.allStyles} displayValue="name"
                         onSelect={(val) => this.setState({styles: this.state.styles.concat(val)})}
                         onRemove={(val) => this.setState({styles: this.state.styles.remove(val)})}>
                       </Multiselect>
@@ -132,12 +137,7 @@ export class LandingPage extends Component {
                   <Button className="mt-3 mb-3 button" id="button-14" type="submit" onClick={this.handleSubmit}>Apply</Button>
               </Form>
             <div className='cardContainer'> 
-              <ArtistCard/>
-              <ArtistCard/>
-              <ArtistCard/>
-              <ArtistCard/>
-              <ArtistCard/>
-              <ArtistCard/>
+                {artistList}
             </div>
           </Container>
       </div>
@@ -147,7 +147,3 @@ export class LandingPage extends Component {
 }
 
 export default LandingPage
-
-//timeslots api -> param
-//styles -> supplied by us, stored in db originally, selected by artist, so can hardcoded?
-//do we give them options to add an artstyle?

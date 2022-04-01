@@ -10,22 +10,21 @@ module.exports = function(app) {
   }
 
   // create user -> sign up
-  app.post('/api/users', async (req, res) => {
-    if (mongoose.connection.readyState != 1) {
-      log('There is issue to mongoose connection')
-      res.status(500).send('Internal server error')
-      return;
-    }
-  })
+  // app.post('/api/users', async (req, res) => {
+  //   if (mongoose.connection.readyState != 1) {
+  //     log('There is issue to mongoose connection')
+  //     res.status(500).send('Internal server error')
+  //     return;
+  //   }
+  // })
 
   //create user
-  app.post('/api/users', async (req, res) => {
+  app.post('/api/users/', async (req, res) => {
       if (mongoose.connection.readyState != 1) {
           log('There is issue to mongoose connection')
           res.status(500).send('Internal server error')
           return;
-      }   
-  
+      }
       try {
           const user = new User({
               userName: req.body.userName,
@@ -33,21 +32,19 @@ module.exports = function(app) {
               email:req.body.email,
               firstName: req.body.firstName,
               lastName: req.body.lastName,
-              birthDate: req.body.birthDate,
               isArtist: req.body.isArtist
           })
           if(user.isArtist){
               user.artistSub = {
-                  homeLocation: mongoose.Types.ObjectId(req.body.artistSub.homeLocation),
-                  artistSub: mongoose.Types.ObjectId(req.body.artistSub.artStyles),
+                //not required
+                  // homeLocation: mongoose.Types.ObjectId(req.body.artistSub.homeLocation),
+                  // artStyles: mongoose.Types.ObjectId(req.body.artistSub.artStyles),
                   license: mongoose.Types.ObjectId(req.body.artistSub.license),
                   physicalID: mongoose.Types.ObjectId(req.body.artistSub.physicalID)
               }
           }else{
               user.artistSub = null;
           }
-
-          console.log(user);
           
           const result = await user.save()	
           res.send(result)
@@ -80,7 +77,7 @@ module.exports = function(app) {
   })
 
   //search artists by conditions
-  app.get("/api/findArtists", async(req, res) => {
+  app.get("/api/artists", async(req, res) => {
     var location, styles;
     var data = {isArtist: true};
     if(req.query.location){
@@ -99,7 +96,7 @@ module.exports = function(app) {
           if (!result) {
               res.status(404).send('Resource not found')
           } else { 
-              res.send({result})
+              res.send(result)
           }   
       }catch(error) {
           log(error)
@@ -122,7 +119,7 @@ module.exports = function(app) {
       if (!result) {
         res.status(404).send('Resource not found')
       } else {
-        res.send({result})
+        res.send(result)
       }
     }catch(error) {
       log(error)
@@ -185,7 +182,7 @@ module.exports = function(app) {
       if (!user) {
         res.status(404).send()
       } else {
-        res.send({user})
+        res.send(user)
       }
     } catch(error) {
       log(error)
