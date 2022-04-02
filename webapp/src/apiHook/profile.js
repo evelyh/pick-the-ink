@@ -40,11 +40,12 @@ async function postUser(data) {
     const favoriteStyles = [];
 
     console.log(data.profilePic)
-    if(data.profilePic != undefined){
+    if(data.profilePic != undefined && typeof(data.profilePic) == File){
         await addImage(data.profilePic).then(json => data.profilePic = json["img"]);
+    }else{
+        delete data.profilePic;
     }
-    console.log(data.profilePic)
-
+    
     for(const idx in data.favoriteStyles){
         favoriteStyles.push(data.favoriteStyles[idx]);
     }

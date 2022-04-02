@@ -10,15 +10,6 @@ module.exports = function(app) {
   }
 
   // create user -> sign up
-  // app.post('/api/users', async (req, res) => {
-  //   if (mongoose.connection.readyState != 1) {
-  //     log('There is issue to mongoose connection')
-  //     res.status(500).send('Internal server error')
-  //     return;
-  //   }
-  // })
-
-  //create user
   app.post('/api/users/', async (req, res) => {
       if (mongoose.connection.readyState != 1) {
           log('There is issue to mongoose connection')
@@ -27,13 +18,14 @@ module.exports = function(app) {
       }
       try {
           const user = new User({
-              userName: req.body.userName,
-              password: req.body.password,
-              email:req.body.email,
-              birthDate:req.body.birthDate,
-              firstName: req.body.firstName,
-              lastName: req.body.lastName,
-              isArtist: req.body.isArtist
+            userName: req.body.userName,
+            password: req.body.password,
+            email:req.body.email,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            birthDate: req.body.birthDate,
+            isArtist: req.body.isArtist,
+            phoneNum: req.body.phoneNum,
           })
           if(user.isArtist){
               user.artistSub = {
@@ -196,7 +188,7 @@ module.exports = function(app) {
   // Login and Logout routes
 
   // login users
-  app.post("/api/users/login", mongoChecker, async (req, res) => {
+  app.post("/users/login", mongoChecker, async (req, res) => {
     const username = req.body.userName;
     const password = req.body.password;
 
@@ -209,7 +201,8 @@ module.exports = function(app) {
         log(user)
         req.session.user = user._id;
         req.session.username = user.userName;
-        req.session.userType = user.userType;
+        req.session.isArtist = user.isArtist;
+        // res.redirect("/explore");
         res.status(200).send("Login successful");
       }
     } catch (error){
@@ -224,16 +217,16 @@ module.exports = function(app) {
   })
 
   // for checking login status
-  app.get("/api/users/login", (req, res) => {
+  app.get("/users/login", (req, res) => {
     if (req.session.user){
-      res.send({"loggedIn": true, user: req.session.user, userType: req.session.userType});
+      res.send({"loggedIn": true, user: req.session.user, isArtist: req.session.isArtist});
     } else{
       res.send({"loggedIn": false});
     }
   })
 
   // logout users
-  app.get("/api/users/logout", mongoChecker, async (req, res) => {
+  app.get("/users/logout", mongoChecker, async (req, res) => {
     // remove session
     req.session.destroy((error) => {
       if (error){

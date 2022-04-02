@@ -16,6 +16,11 @@ import { Card, CardBody, CardImg,CardText,
 import {getStyleById, getUser, postUser} from "../apiHook/profile"
 
 
+// function setList(link, name, pic) {
+//   return "<DropdownItem tag='a' href="+ link+ " ><img id='profileDropdownPic' src="+pic +" alt="+name + " ></img>"+name+"</DropdownItem>";
+//  }
+
+
 function UserProfile() {
     const { id } = useParams();
     const myid = "624769ffa025c967d7d132a0";
@@ -29,7 +34,8 @@ function UserProfile() {
 
     // Should get this data from the server
     const [buttonPopUp, setButtonPopUp] = useState(false);
-
+    
+    
     const [values, setValues] = useState(
       {
       profilePic:"",
@@ -46,6 +52,8 @@ function UserProfile() {
       followerIDs:0,
       comment:""}
       );
+
+    let lst = [];
     const [success,setSuccess] = useState(false);
     useEffect(()=>{
       getUser(myid).then(json => 
@@ -53,6 +61,8 @@ function UserProfile() {
           let data = json;
           const favoriteStyles = [];
           document.getElementById("style").innerHTML = "";
+          
+          
           for(const s_id in data.favoriteStyles){
             getStyleById(data.favoriteStyles[s_id]).then((ele)=> 
             {favoriteStyles[s_id] = ele;
@@ -63,11 +73,30 @@ function UserProfile() {
           }
           data.favoriteStyles = favoriteStyles
           data.birthDate = data.birthDate.slice(0,10);
+
           setValues(data); 
-          console.log(values)
+          // console.log(values)
+          // let str = "";
+          // for(const u_id in values.followingIDs){
+          //   getUser(values.followingIDs[u_id]).then((ele) =>
+          //   {
+          //     let pic = ele.profilePic;
+          //     if(ele.profilePic == undefined | ele.profilePic == ""){
+          //       pic = profilepic;
+          //     }
+          //     const link = "/userprofile/" + ele._id;
+          //     const name = ele.userName;
+          //     const dict = {"pic":pic, "link":link, "name":name};
+          //     str += setList(link, name, pic);
+          //   }
+          //   )
+          // }
+          // console.log(str)
+          // document.getElementById("iii").innerHTML = str;
         });
     }, [buttonPopUp])
     
+
     const onDismiss = ()=>{
       setSuccess(false);
     };
@@ -75,6 +104,7 @@ function UserProfile() {
 
     return (
       <div>
+       
         <div>
           <Header loggedIn={true}/>
         </div>
@@ -88,32 +118,37 @@ function UserProfile() {
                  <CardImg src={profilepic} id="profileCirclePic" alt='profile' />  }  
               <h5>{values.userName}</h5>
               <CardText>{values.comment}</CardText>
-            <UncontrolledDropdown className="btn-group" id="profileDropdown">
+            <UncontrolledDropdown className="btn-group" id="followingDD">
              <DropdownToggle tag="a"
               data-toggle="dropdown">
-              Following: {}
+              Following: {values.followingIDs.length}
               </DropdownToggle>
-              <DropdownMenu >
-              <DropdownItem tag="a" href="/userprofile/krab" >
+              <DropdownMenu id = "iii">
+              {/* <DropdownItem tag="a" href="/userprofile/krab" >
               <img id="profileDropdownPic" src={krabs} alt='krabs' ></img>
               Mr.krab
               </DropdownItem>
+              
               <DropdownItem  tag="a" href="/artistprofile">
               <img id="profileDropdownPic" src={profilepic} alt='profilepic' ></img>
               Spongebob
-              </DropdownItem>
+              </DropdownItem> */}
+              
               </DropdownMenu>
             </UncontrolledDropdown>
+            
+            
             <UncontrolledDropdown className="btn-group">
              <DropdownToggle tag="a"
               data-toggle="dropdown">
-              Followers: {}
+              Followers: {values.followerIDs.length}
               </DropdownToggle>
+              
               <DropdownMenu >
-              <DropdownItem tag="a" href="/userprofile/gary" >
-              <img id="profileDropdownPic" src={gary} alt='gary' ></img>
-              Gary
-              </DropdownItem>
+                <DropdownItem tag="a" href="/userprofile/gary" >
+                  <img id="profileDropdownPic" src={gary} alt='gary' ></img>
+                    Gary
+                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
 

@@ -24,34 +24,8 @@ function signUp(data){
 }
 
 // log user in
-// function login(data){
-//   const url = host + "/users/login";
-//   const request = new Request(url, {
-//     method: "POST",
-//     body: JSON.stringify(data),
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   });
-
-//   fetch(request).then((res) => {
-//     if (res.ok){
-//       this.setState({
-//         valid: true,
-//       });
-//     } else{
-//       // bad request
-//       this.setState({
-//         valid: false,
-//       })
-//     }
-//   }).catch((error) => {
-//     console.log(error);
-//   })
-// }
-
 async function login(data){
-  const url = host + "/api/users/login";
+  const url = host + "/users/login";
   const request = new Request(url, {
     method: "POST",
     body: JSON.stringify(data),
@@ -74,8 +48,26 @@ catch((error) => {
 })
 }
 
+// check login user status
+function loginStatus(){
+  const url = host + "/users/login";
+  const request = new Request(url, {
+    method: "GET",
+    credentials: "same-origin",
+    headers: {
+      Accept: "*/*",
+    }
+  });
+
+  fetch(request)
+    .then(res => res.json())
+    .then(json => {
+      return json;
+    });
+
+ 
 async function getlogin(){
-  const url = host + "/api/users/login";
+  const url = host + "/users/login";
   const request = new Request(url, {
     method: "GET",
     headers: {
@@ -115,4 +107,4 @@ function logout(){
   })
 }
 
-export { signUp, logout, login , getlogin}
+export { signUp, logout, login , getlogin, loginStatus}
