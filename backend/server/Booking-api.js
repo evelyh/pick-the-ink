@@ -2,6 +2,7 @@ const log = console.log;
 const { ObjectID } = require('mongodb')
 const { mongoose } = require('../db/mongoose');
 const { Booking } = require('../models/Booking')
+const { authenticateUser } = require('./authentication-helpers')
 
 module.exports = function(app) {
     function isMongoError(error) { // checks for first error returned by promise rejection if Mongo database suddently disconnects
@@ -118,7 +119,7 @@ module.exports = function(app) {
     })
 
     // get particular booking id
-    app.get('/api/bookings/:id', async (req, res) => {
+    app.get('/api/bookings/:id',authenticateUser, async (req, res) => {
         // Add code here
             
         const id = req.params.id

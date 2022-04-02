@@ -9,49 +9,57 @@ var validateEmail = function(email) {
 };
 
 const ArtistSchema = new mongoose.Schema({
-  imageIDs: {
-    type: [mongoose.SchemaTypes.ObjectId],
-    required: false,
-    ref: "Image"
-  },
-  homeLocation: {
-    type: mongoose.SchemaTypes.ObjectId,
-    required: false,
-    ref: "Location"
-  },
-  artStyles: {
-    type: [mongoose.SchemaTypes.ObjectId],
-    required: false,
-    ref: "Style"
-  },
-  bookingCancellable: {
-    type: Boolean,
-    required: true,
-    default: true
-  },
-  bookingModifiable: {
-    type: Boolean,
-    required: true,
-    default: true
-  },
-  physicalID:{
-    type: String,
-    required: true
-  },
-  license: {
-    type: String,
-    required: true
-  },
-  approved: {
-    type: Boolean,
-    required: true,
-    default: false
-  }
+    artworks: {
+        type: [mongoose.SchemaTypes.ObjectId],
+        required: false,
+        ref: "Image"
+    },
+    homeLocation: {
+        type: mongoose.SchemaTypes.ObjectId,
+		    required: false,
+        ref: "Location"
+    },
+    artStyles: {
+        type: [mongoose.SchemaTypes.ObjectId],
+		    required: false,
+        ref: "Style"
+    },
+    bookingCancellable: {
+        type: Boolean,
+        required: true,
+        default: true
+    },
+    bookingModifiable: {
+        type: Boolean,
+        required: true,
+        default: true
+    },
+    physicalID:{
+        type: mongoose.SchemaTypes.ObjectId,
+        required: true,
+        ref: "Image"
+    },
+    license: {
+        type: mongoose.SchemaTypes.ObjectId,
+        required: true,
+        ref: "Image"
+    },
+    approved: {
+        type: Boolean,
+        required: true,
+        default: false
+    }
 });
 
 const UserSchema = new mongoose.Schema({
+  profilePic:{
+    type: String,
+    required: false,
+    default:""
+  },
   userName: {
     type: String,
+    unique: true,
     required: true,
     minlegth: 1
   },
@@ -82,11 +90,16 @@ const UserSchema = new mongoose.Schema({
   },
   birthDate: {
     type: Date,
-    required: true
+    required: false
   },
   phoneNum: {
     type: String,
     required: false
+  },
+  comment: {
+    type: String,
+    required: false,
+    default: ""
   },
   followingIDs: {
     type: [mongoose.SchemaTypes.ObjectId],

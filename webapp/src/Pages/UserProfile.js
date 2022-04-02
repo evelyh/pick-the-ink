@@ -1,44 +1,77 @@
 import React from 'react'
+import {useParams} from "react-router-dom";
 import { Header } from '../components/Header'
 import { Container, Alert, CloseButton} from 'react-bootstrap'
-import patrick from '../assets/img/patrick.jpg'
 import gary from '../assets/img/gary.jpg'
 import krabs from '../assets/img/krabs.jpg'
 import profilepic from '../assets/img/profilepic.jpg'
 import '../assets/css/userProfile.css'
 import PopUpProfileForm from '../components/PopUpProfileForm'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardBody, CardImg,CardText,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,Button} from 'reactstrap'
+import {getStyleById, getUser, postUser} from "../apiHook/profile"
 
 
 function UserProfile() {
+    const { id } = useParams();
+    const myid = "624769ffa025c967d7d132a0";
+    
+    let isUser =false;
+    if(myid == id){
+      isUser = true;
+    }else{
+      isUser = false;
+    }
 
     // Should get this data from the server
-    const [values, setValues] = useState({
-      firstName: "Patrick",
-      lastName: "Sea-Star",
-      userName: "PatrickYahhh",
-      email: "patrick@gmail.com",
-      birthday: "1999-12-13",
-      phoneNum : "123-456-7890",
-      style: [{name: 'Blackwork', id: 1},{name: 'Watercolor', id: 2}],
+    const [buttonPopUp, setButtonPopUp] = useState(false);
+
+    const [values, setValues] = useState(
+      {
+      profilePic:"",
+      firstName: "",
+      lastName: "",
+      userName: "",
+      email: "",
+      birthDate: "",
+      phoneNum : "",
+      favoriteStyles: [],
       image: "../images/patrick.jpg",
       isArtist: false,
-      followers:1,
-      following:2,
-      comment:"I can't see my forehead!"
-    });
-    const [buttonPopUp, setButtonPopUp] = useState(false);
+      followingIDs:0,
+      followerIDs:0,
+      comment:""}
+      );
     const [success,setSuccess] = useState(false);
-    const [isUser] = useState(true);
-
+    useEffect(()=>{
+      getUser(myid).then(json => 
+        { console.log(json)
+          let data = json;
+          const favoriteStyles = [];
+          document.getElementById("style").innerHTML = "";
+          for(const s_id in data.favoriteStyles){
+            getStyleById(data.favoriteStyles[s_id]).then((ele)=> 
+            {favoriteStyles[s_id] = ele;
+              const li = document.createElement("li");
+              li.innerText = ele.name;
+              document.getElementById("style").appendChild(li);
+            });
+          }
+          data.favoriteStyles = favoriteStyles
+          data.birthDate = data.birthDate.slice(0,10);
+          setValues(data); 
+          console.log(values)
+        });
+    }, [buttonPopUp])
+    
     const onDismiss = ()=>{
       setSuccess(false);
     };
+
 
     return (
       <div>
@@ -50,14 +83,15 @@ function UserProfile() {
           <div className="row">
             <div className="col-3">
             <Card id="profileCard" style={{width: '20rem'}}>
-              <CardBody>
-              <CardImg src={patrick} id="profileCirclePic" alt='profile' />  
+              <CardBody>  
+                {values.profilePic?  <CardImg src={values.profilePic} id="profileCirclePic" alt='profile' />  :
+                 <CardImg src={profilepic} id="profileCirclePic" alt='profile' />  }  
               <h5>{values.userName}</h5>
               <CardText>{values.comment}</CardText>
             <UncontrolledDropdown className="btn-group" id="profileDropdown">
              <DropdownToggle tag="a"
               data-toggle="dropdown">
-              Following: {values.following}
+              Following: {}
               </DropdownToggle>
               <DropdownMenu >
               <DropdownItem tag="a" href="/userprofile/krab" >
@@ -73,7 +107,7 @@ function UserProfile() {
             <UncontrolledDropdown className="btn-group">
              <DropdownToggle tag="a"
               data-toggle="dropdown">
-              Followers: {values.followers}
+              Followers: {}
               </DropdownToggle>
               <DropdownMenu >
               <DropdownItem tag="a" href="/userprofile/gary" >
@@ -121,7 +155,7 @@ function UserProfile() {
                 {isUser ? <label className="col-sm-3 col-form-label col-form-label">Date of Birth:</label>:null}
                 {isUser ? 
                 <div className="col-sm-7">
-                  <label className="col-sm-6 col-form-label col-form-label">{values.birthday}</label>
+                  <label className="col-sm-6 col-form-label col-form-label">{values.birthDate}</label>
                 </div>
                 :null}
                 
@@ -133,11 +167,9 @@ function UserProfile() {
                 :null}
 
                 <label className="col-sm-3 col-form-label col-form-label">Favorite styles:</label>
-                <div className="col-sm-7">
-                  {values.style.map((_, index) => (
-                    <li className="col-6 col-form-label col-form-label" key={index}>{values.style[index]["name"]}</li>
-                  ))}
-                </div>
+                {values.favoriteStyles ?
+                <div id = "style" className="col-sm-7"> </div>
+                :null}
               </div>
               { isUser ? <Button size='sm' onClick={()=> setButtonPopUp(true)}>Edit your profile</Button> :null }
               </Container>

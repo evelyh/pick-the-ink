@@ -32,6 +32,10 @@ app.use(session({
 	resave: false,
 }));
 
+// mongoose and mongo connection
+const { mongoose } = require("./db/mongoose");
+mongoose.set('useFindAndModify', false);
+
 require('./server/Admin-api')(app)
 // require('./server/Artist-api')(app)
 require('./server/Booking-api')(app)

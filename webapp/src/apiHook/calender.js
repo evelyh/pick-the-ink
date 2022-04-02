@@ -31,12 +31,15 @@ async function getTimeslotsById(id) {
     })
 }
 
-// get all timeslots from artist including booked and non-booked timeslots
-async function getTimeslotsByArtist(data) {
+// get all timeslots of user including booked and non-booked timeslots
+async function getTimeslotsByUser(data) {
     // the URL for the request
     let url = hostURL + "/api/timeslots?";
     if (data["artistID"] != undefined){
         url = url + "artistID=" + data["artistID"] + "&"
+    }
+    if (data["customerID"] != undefined){
+        url = url + "customerID=" + data["customerID"] + "&"
     }
     if (data["isBooked"] != undefined){
         url = url + "isBooked=" + data["isBooked"] + "&"
@@ -66,4 +69,4 @@ async function getTimeslotsByArtist(data) {
 }
 
 
-export {getTimeslotsByArtist, getTimeslotsById, getBookings}
+export {getTimeslotsByUser, getTimeslotsById, getBookings}

@@ -1,65 +1,67 @@
 import React from 'react'
 import '../assets/css/userProfile.css'
-import { useState} from 'react';
+import { useState, useEffect} from 'react';
 import {Multiselect} from 'multiselect-react-dropdown';
-
+import { getStyles } from 'apiHook/profile';
 import {Form} from 'react-bootstrap'
+import {postUser} from "../apiHook/profile"
 
 
 function PopUpProfileForm(props) {
     const [validated, setValidated] = useState(false);
-    
+    console.log(props.info)
     const [prev] = useState({
+        _id:props.info._id,
         firstName: props.info.firstName,
         lastName: props.info.lastName,
         userName: props.info.userName,
         email: props.info.email,
-        birthday: props.info.birthday,
+        birthDate: props.info.birthDate,
         phoneNum : props.info.phoneNum,
-        style: props.info.style,
+        favoriteStyles: props.info.favoriteStyles,
         image: props.info.image,
         isArtist: props.info.isArtist,
-        followers:props.info.followers,
-        following:props.info.following,
+        followingIDs:props.info.followingIDs,
+        followerIDs:props.info.following,
         comment:props.info.comment
       });
 
-
-    const onSubmit = (event) => {
+    const onSubmit = async (event) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
+            console.log("submit error")
             event.preventDefault();
             event.stopPropagation();
         }else{
             event.preventDefault();
-            const data = new FormData(event.target);
-            console.log(data);
+            await postUser(props.info);
+
             props.setTrigger(false);
             props.setSuccess(true);
             setValidated(true);}
       };
 
-    const optionData = [{name:'Traditional', id: 1}, 
-    {name:'Japanese', id: 2}, 
-    {name:'New School', id: 3},
-    {name:'Realism', id: 5}, 
-    {name:'Illustrative', id: 6}, 
-    {name: 'Portraiture', id: 7}, 
-    {name: 'Blackwork', id: 8},
-    {name: 'Watercolor', id: 9},
-    {name:'Lettering',id: 10},
-    {name:'Geometric',id: 11},
-    {name:'Surrealism',id: 12},
-    {name:'Microrealism',id: 13},
-    {name:'Minimalism',id: 14},
-    {name:'Single Line',id: 15},
-    {name:'Dot Work',id: 16},];
-    const [option]=useState(optionData);
+    const [option, setOption]=useState();
+
+    useEffect(()=>{
+        getStyles().then(json => 
+          { setOption(json);});
+      }, [validated])
 
     return (props.trigger) ? (
       <div className='popup' >
           <div className='popupInner'>  
             <Form noValidate validated={validated} onSubmit={onSubmit} className='popupForm'>
+                <Form.Group className="mb-3" >
+                      <Form.Label>Profile Picture:</Form.Label>
+                      <Form.Control 
+                      type="file" 
+                      id='profilePic'
+                      className="form-control-file" 
+                      onChange={ e => props.setInfo({...props.info, profilePic: e.target.files[0]})}/>
+                </Form.Group>
+                
+                
                 <Form.Group className="mb-3" >
                     <Form.Label>First Name:</Form.Label>
                     <Form.Control type="text" 
@@ -112,8 +114,8 @@ function PopUpProfileForm(props) {
                 <Form.Group className="mb-3" >
                     <Form.Label>Date of Birth:</Form.Label>
                     <Form.Control type="date"
-                    value={props.info.birthday}
-                    onChange={e => props.setInfo({...props.info, birthday:e.target.value})}
+                    value={props.info.birthDate}
+                    onChange={e => props.setInfo({...props.info, birthDate:e.target.value})}
                     required/>
                     <Form.Control.Feedback type="invalid">
                     Please enter a date of birth.
@@ -125,8 +127,7 @@ function PopUpProfileForm(props) {
                     <Form.Control type="phone" 
                     value={props.info.phoneNum}
                     onChange={e => props.setInfo({...props.info, phoneNum:e.target.value})}
-                    type="tel"
-                    required/>
+                    type="tel"/>
                     <Form.Control.Feedback type="invalid">
                     Please enter a valid phone number.
                     </Form.Control.Feedback>
@@ -135,8 +136,14 @@ function PopUpProfileForm(props) {
                 <Form.Group className="mb-3" >
                     <Form.Label>Favorite styles:</Form.Label>
                     <Multiselect options={option} displayValue="name"
-                        onSelect={e => props.setInfo({...props.info, style:e})}
-                        onRemove={e => props.setInfo({...props.info, style:e})}></Multiselect>
+                        onSelect={e => {
+                            let s = []
+                            e.forEach((x, i) => s.push(x["_id"]));
+                            props.setInfo({...props.info, favoriteStyles:s});}}
+                        onRemove={e => {
+                            let s = []
+                            e.forEach((x, i) => s.push(x["_id"]));
+                            props.setInfo({...props.info, favoriteStyles:s});}}></Multiselect>
                 </Form.Group>
 
                 <Form.Group className="mb-3" >
@@ -149,8 +156,8 @@ function PopUpProfileForm(props) {
                 
                 <button id="button-16" 
                 onClick={()=>{
-                    props.setInfo({...prev});
-                    props.setTrigger(false);}}>cancel</button>
+                    props.setTrigger(false);
+                    props.setSuccess(false);}}>cancel</button>
                 <button id="button-16" type="submit" 
                >confirm</button>
             </Form>

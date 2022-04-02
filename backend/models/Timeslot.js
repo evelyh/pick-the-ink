@@ -7,6 +7,11 @@ const Timeslot = mongoose.model("Timeslot", {
     required: true,
     ref: "User", // todo: check to match schema name
   },
+  customerID:{
+    type: mongoose.SchemaTypes.ObjectId,
+    required: true,
+    ref: "User", // todo: check to match schema name
+  },
   locationID: {
     type: mongoose.SchemaTypes.ObjectId,
     required: true,
