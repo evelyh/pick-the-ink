@@ -1,50 +1,55 @@
-.countrySelector{
-    padding: 8px;
-    border-color: rgb(213, 206, 206);
-    border-radius: 5%;
+.countrySelector {
+  padding: 8px;
+  border-color: rgb(213, 206, 206);
+  border-radius: 5%;
 }
 
-.formField{
-    display: inline-flex;
-    flex-direction: row;
+.formField {
+  display: inline-flex;
+  flex-direction: row;
 }
 
-.button{
-    position:relative;
-    left: 10%;
+.button {
+  position: relative;
+  left: 10%;
 }
 
 .cardContainer {
-    justify-content: center;
-    padding: 20px;
-    border-radius: 12px;
-    width: 90vw;
-    position: absolute;
-    left: 50%;
-    background-color: rgb(217, 237, 235);
-    display: grid;
-    transform: translateX(-50%);
-    grid-template-columns: auto auto auto;
+  display: grid;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 12px;
+  width: 85vw;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 18rem));
+  background-color: rgb(212, 225, 224);
 }
 
-#title{
-    font-weight: bold;
+#title {
+  font-weight: bold;
 }
 
-.card{
-    margin-right: 25px;
-    padding: 10px;
-    border-radius: '16px';
-    width: 350px;
+.card {
+  box-shadow: 0.2rem;
+  margin-right: 25px;
+  padding: 10px;
+  border-radius: "16px";
 }
 
-.carousel{
-    width: 360px;
-    position: center;
-    border-radius: 16px;
+card:hover {
+  transform: scale(1.01);
 }
 
-.username{
-    font-size: "16px";
-    font-weight: "bold";
+#carousel {
+  width: 360px;
+  position: center;
+  border-radius: 16px;
+}
+
+#username {
+  font-size: "18px";
+  font-weight: "bold";
+}
+
+.styles {
+  font-size: "16px";
 }

@@ -64,7 +64,7 @@ function loginStatus(){
     .then(json => {
       return json;
     });
-
+  }
  
 async function getlogin(){
   const url = host + "/users/login";

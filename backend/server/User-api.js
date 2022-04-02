@@ -29,11 +29,11 @@ module.exports = function(app) {
           })
           if(user.isArtist){
               user.artistSub = {
-                //not required
-                  // homeLocation: mongoose.Types.ObjectId(req.body.artistSub.homeLocation),
-                  // artStyles: mongoose.Types.ObjectId(req.body.artistSub.artStyles),
-                  license: mongoose.Types.ObjectId(req.body.artistSub.license),
-                  physicalID: mongoose.Types.ObjectId(req.body.artistSub.physicalID)
+                  // homeLocation: req.body.artistSub.homeLocation,
+                  // artStyles: req.body.artistSub.artStyles,
+                  // artworks: req.body.artistSub.artworks,
+                  license: req.body.artistSub.license,
+                  physicalID: req.body.artistSub.physicalID
               }
           }else{
               user.artistSub = null;
@@ -71,18 +71,18 @@ module.exports = function(app) {
 
   //search artists by conditions
   app.get("/api/artists", async(req, res) => {
-    var location, styles;
+    var styles;
     var data = {isArtist: true};
     if(req.query.location){
-      location = mongoose.Types.ObjectId(req.query.location);
-      data["artistSub.homeLocation"] = location;
+      data["artistSub.homeLocation"] = req.query.location;
     }
     if(req.query.style){
       styles = JSON.parse(req.query.style);
+      data["$or"] = []
       for(let i = 0; i < styles.length; i++){
-        styles[i] = mongoose.Types.ObjectId(styles[i]);
+        data["$or"].push({"artistSub.artStyles": {$elemMatch: {$all: styles[i]}} })
       }
-      data["artistSub.artStyles"] = styles;
+      
     }
       try{
           const result = await User.find(data);

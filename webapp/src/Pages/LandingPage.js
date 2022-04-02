@@ -6,9 +6,8 @@ import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; 
 import { Carousel } from 'react-responsive-carousel';
 import "../assets/css/landingPage.css";
-import {getAllStyles, getLocation, getStyles, getTimeslots, getArtists} from "../apiHook/landing.js";
+import {getAllStyles, getLocation, getTimeslots, getArtists} from "../apiHook/landing.js";
 import { getImageById } from '../apiHook/image.js';
-import pic1 from '../assets/img/gallery_pic2.jpg'
 
 export class LandingPage extends Component {
 
@@ -35,9 +34,9 @@ export class LandingPage extends Component {
         data["locationID"] = location._id;
       }
 
-      if(this.state.styles){
+      if(this.state.styles.length !== 0){
         for(let i = 0; i < this.state.styles.length; i++){
-          styles.push(this.state.styles[0]._id);
+          styles.push(this.state.styles[i]._id);
         }
           data["styleIDs"] = styles;
       }
@@ -50,7 +49,7 @@ export class LandingPage extends Component {
           }
         }
       }
-
+      
       artists = await getArtists(data);
       if(artistsFromTimeslots.length !== 0){
         for(let h = 0; h < artists.length; h++){
@@ -69,12 +68,12 @@ export class LandingPage extends Component {
     var artists = await getArtists({});
     this.setState({allStyles: allStyles, artists: artists})
 
-    var imgobjs = new Array();
+    var imgobjs = [];
     var artlen = this.state.artists.length;
     for(let i = 0; i < artlen; i++){
       var imgids = this.state.artists[i].artistSub.artworks
       var imglen = imgids.length
-      imgobjs.push(new Array());
+      imgobjs.push([]);
       for(let j = 0; j < imglen; j++){
         var img = await getImageById(imgids[j]);
         imgobjs[i].push(img)
@@ -88,7 +87,7 @@ export class LandingPage extends Component {
     const {loggedIn} = this.props;
     var imageList = {};
     var artlen = this.state.artists.length;
-    if(this.state.imageObjList.length != 0){
+    if(this.state.imageObjList.length !== 0){
       for(let i = 0; i < artlen; i++){
         var list = (this.state.imageObjList)[i]
         imageList[(this.state.artists[i]).userName] = list.map((image) =>
@@ -101,9 +100,9 @@ export class LandingPage extends Component {
     const artistProfile = hostURL + "/artistprofile/"
     const artistList = this.state.artists.map((artist) => 
         <div className="card" key={artist.userName}>
-          <a className="username" href={artistProfile+artist._id} > {artist.userName} </a>
-          <p className='mb-3'> {artist.comment} </p>
-          <Carousel class='carousel'>
+          <a className="username" href={artistProfile+artist._id} style={{fontSize: 16, fontWeight: "bold"}} > @{artist.userName} </a>
+          <p className='mb-3 styles'> {artist.comment} </p>
+          <Carousel id='carousel'>
               {imageList[artist.userName]}
           </Carousel>
         </div>)
@@ -146,8 +145,8 @@ export class LandingPage extends Component {
                   <Form.Group className="col-4 formField" >
                       <Form.Label>Styles:</Form.Label>
                       <Multiselect options={this.state.allStyles} displayValue="name"
-                        onSelect={(val) => this.setState({styles: this.state.styles.concat(val)})}
-                        onRemove={(val) => this.setState({styles: this.state.styles.remove(val)})}>
+                        onSelect={(val) => this.setState({styles: val})}
+                        onRemove={(val) => this.setState({styles: val})}>
                       </Multiselect>
                   </Form.Group>
 
