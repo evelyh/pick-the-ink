@@ -63,8 +63,8 @@ function loginStatus(){
     .then(res => res.json())
     .then(json => {
       return json;
-    });
-}
+    })};
+
  
 async function getlogin(){
   const url = host + "/users/login";
@@ -86,8 +86,7 @@ async function getlogin(){
 }).
 catch((error) => {
     log(error)
-})
-}
+})};
 
 // sign user out
 function logout(){
@@ -105,6 +104,6 @@ function logout(){
   }).catch((error) => {
     console.log(error);
   })
-}
+};
 
 export { signUp, logout, login , getlogin, loginStatus}

@@ -32,6 +32,58 @@ async function getUser(id) {
     })
 }
 
+async function getUserFollowing(id) {
+
+    const json = await getUser(id);
+    const ids = json["followingIDs"];
+
+    const arr = new Array();
+    if(ids != undefined){
+        for(const idx in ids){
+            const followU = await getUser(ids[idx]);
+            let uLink;
+            if(followU["isArtist"] == true){
+                uLink = "/artistprofile/" + followU["_id"];
+            }else{
+                uLink = "/userprofile/" + followU["_id"];
+            }
+            const uName = followU["userName"];
+            const uPic = followU["profilePic"];
+
+            arr.push({"uLink":uLink, "uName":uName, "uPic":uPic})
+        }
+    }
+    
+    return arr;
+}
+
+async function getUserFollower(id) {
+
+    const json = await getUser(id);
+    const ids = json["followerIDs"];
+
+    const arr = new Array();
+    if(ids != undefined){
+        for(const idx in ids){
+            const followU = await getUser(ids[idx]);
+            let uLink;
+            if(followU["isArtist"] == true){
+                uLink = "/artistprofile/" + followU["_id"];
+            }else{
+                uLink = "/userprofile/" + followU["_id"];
+            }
+            const uName = followU["userName"];
+            const uPic = followU["profilePic"];
+
+            arr.push({"uLink":uLink, "uName":uName, "uPic":uPic})
+        }
+    }
+    
+    return arr;
+}
+
+getUserFollowing("624769ffa025c967d7d132a0")
+
 async function postUser(data) {
     const id = data._id;
     delete data._id;
@@ -132,4 +184,4 @@ async function getStyleById(id) {
 
 
 
-export {getStyleById, getUser, getStyles, postUser}
+export {getStyleById, getUser, getStyles, postUser, getUserFollowing, getUserFollower}
