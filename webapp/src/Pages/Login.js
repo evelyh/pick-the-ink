@@ -7,7 +7,6 @@ import { withCookies } from "react-cookie";
 // styles
 import "../assets/css/loginSignUp.css";
 
-// const host = "http://localhost:5000";
 
 export class Login extends Component {
 
@@ -54,7 +53,6 @@ export class Login extends Component {
         "Content-Type": "application/json",
         Accept: '*/*',
         credentials: 'same-origin',
-        redirect: "follow",
       },
     });
 

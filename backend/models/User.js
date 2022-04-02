@@ -35,12 +35,14 @@ const ArtistSchema = new mongoose.Schema({
     default: true
   },
   physicalID:{
-    type: String,
-    required: true
+    type: mongoose.SchemaTypes.ObjectId,
+    required: true,
+    ref: "Image"
   },
   license: {
-    type: String,
-    required: true
+    type: mongoose.SchemaTypes.ObjectId,
+    required: true,
+    ref: "Image"
   },
   approved: {
     type: Boolean,

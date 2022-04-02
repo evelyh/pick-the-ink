@@ -6,8 +6,9 @@ import {Alert, Button, Input, Label} from "reactstrap";
 
 // styles
 import "../assets/css/loginSignUp.css";
+import {addImage} from "../apiHook/image";
 
-export class Login extends Component {
+export class SignUp extends Component {
 
   state = {
     firstName: "",
@@ -20,6 +21,8 @@ export class Login extends Component {
     success: false,
     showPassword: false,
     artist: false,
+    license: "",
+    physicalId: "",
     host: "http://localhost:5000",
     showFail: false,
     loggedIn: null,
@@ -35,13 +38,33 @@ export class Login extends Component {
     });
   }
 
-  signUserUp = (event) => {
+  // todo: double check
+  handleFileChange = (event) => {
+    if (event.target.files && event.target.files[0]){
+      const name = event.target.name;
+
+      this.setState({
+        [name]: event.target.files[0],
+      });
+    }
+  }
+
+  signUserUp = async (event) => {
 
     event.preventDefault();
     document.getElementById("signup-form").checkValidity();
     document.getElementById("signup-form").reportValidity();
 
-    // todo: connect to backend
+    // upload files to cloud
+    let licenseId = "";
+    await addImage({img: this.state.license}).then((json) => {
+      licenseId = json._id;
+    });
+    let identificationId = "";
+    await addImage({img: this.state.physicalId}).then((json) => {
+      identificationId = json._id;
+    })
+
     // sign user up with the info given
 
     const requestBody = {
@@ -51,15 +74,13 @@ export class Login extends Component {
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       birthDate: this.state.dob,
-      isArtist: this.state.artist,
+      isArtist: (this.state.artist === "on"),
       phoneNum: this.state.phone,
-      artistSub: { // todo: handle file uploads
-        license: "something",
-        physicalID: "something else",
-      }
+      artistSub: {
+        license: licenseId,
+        physicalID: identificationId,
+      },
     };
-
-    console.log(requestBody);
 
     const url = this.state.host + "/api/users";
     const request = new Request(url, {
@@ -75,7 +96,7 @@ export class Login extends Component {
 
     fetch(request).then((res) => {
       console.log(res)
-      if (res.ok){
+      if (res.ok) {
         this.setState({
           success: true,
         });
@@ -85,7 +106,7 @@ export class Login extends Component {
             redirect: true,
           })
         }, 3000);
-      } else{
+      } else {
         // bad request
         this.setState({
           showFail: true,
@@ -258,12 +279,14 @@ export class Login extends Component {
                      name={"license"}
                      id={"license"}
                      required={this.state.artist}
+                     onChange={this.handleFileChange}
               />
-              <Label for={"id"}>ID: </Label>
+              <Label for={"physicalId"}>ID: </Label>
               <Input type={"file"}
-                     name={"id"}
-                     id={"id"}
+                     name={"physicalId"}
+                     id={"physicalId"}
                      required={this.state.artist}
+                     onChange={this.handleFileChange}
               />
             </div>
 
@@ -281,4 +304,4 @@ export class Login extends Component {
   }
 }
 
-export default Login
+export default SignUp
