@@ -10,46 +10,49 @@ module.exports = function(app) {
   }
 
   // create user -> sign up
-  app.post('/api/users/', async (req, res) => {
-      if (mongoose.connection.readyState != 1) {
-          log('There is issue to mongoose connection')
-          res.status(500).send('Internal server error')
-          return;
+  app.post('/api/users', async (req, res) => {
+    if (mongoose.connection.readyState != 1) {
+      log('There is issue to mongoose connection')
+      res.status(500).send('Internal server error')
+      return;
+    }
+
+
+    try {
+      const user = new User({
+        userName: req.body.userName,
+        password: req.body.password,
+        email:req.body.email,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        birthDate: req.body.birthDate,
+        isArtist: req.body.isArtist,
+        phoneNum: req.body.phoneNum,
+      })
+      if(user.isArtist){
+        user.artistSub = {
+          // homeLocation: req.body.homeLocation,
+          // artistSub: req.body.artStyles,
+          license: req.body.artistSub.license,
+          physicalID: req.body.artistSub.physicalID
+        }
+      }else{
+        user.artistSub = null;
       }
-      try {
-          const user = new User({
-            userName: req.body.userName,
-            password: req.body.password,
-            email:req.body.email,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            birthDate: req.body.birthDate,
-            isArtist: req.body.isArtist,
-            phoneNum: req.body.phoneNum,
-          })
-          if(user.isArtist){
-              user.artistSub = {
-                //not required
-                  // homeLocation: mongoose.Types.ObjectId(req.body.artistSub.homeLocation),
-                  // artStyles: mongoose.Types.ObjectId(req.body.artistSub.artStyles),
-                  license: mongoose.Types.ObjectId(req.body.artistSub.license),
-                  physicalID: mongoose.Types.ObjectId(req.body.artistSub.physicalID)
-              }
-          }else{
-              user.artistSub = null;
-          }
-          
-          const result = await user.save()	
-          res.send(result)
-      } catch(error) {
-          log(error) 
-          if (isMongoError(error)) 
-          {
-              res.status(500).send('Internal server error')
-          } else {
-              res.status(400).send('Bad Request')
-          }
+
+      console.log(user);
+
+      const result = await user.save()
+      res.send(result)
+    } catch(error) {
+      log(error)
+      if (isMongoError(error))
+      {
+        res.status(500).send('Internal server error')
+      } else {
+        res.status(400).send('Bad Request')
       }
+    }
   })
 
   //get all users
@@ -69,33 +72,6 @@ module.exports = function(app) {
     }
   })
 
-  //search artists by conditions
-  app.get("/api/artists", async(req, res) => {
-    var location, styles;
-    var data = {isArtist: true};
-    if(req.query.location){
-      location = mongoose.Types.ObjectId(req.query.location);
-      data["artistSub.homeLocation"] = location;
-    }
-    if(req.query.style){
-      styles = JSON.parse(req.query.style);
-      for(let i = 0; i < styles.length; i++){
-        styles[i] = mongoose.Types.ObjectId(styles[i]);
-      }
-      data["artistSub.artStyles"] = styles;
-    }
-      try{
-          const result = await User.find(data);
-          if (!result) {
-              res.status(404).send('Resource not found')
-          } else { 
-              res.send(result)
-          }   
-      }catch(error) {
-          log(error)
-          res.status(500).send('Internal Server Error')
-      }
-  })
 
   //get user by id
   app.get("/api/users/:id", async(req, res) => {
@@ -112,7 +88,27 @@ module.exports = function(app) {
       if (!result) {
         res.status(404).send('Resource not found')
       } else {
-        res.send(result)
+        res.send({result})
+      }
+    }catch(error) {
+      log(error)
+      res.status(500).send('Internal Server Error')
+    }
+  })
+
+
+  //search artists by conditions
+  app.get("/api/findArtists", async(req, res) => {
+    const {query} = req.query;
+    try{
+      const result = await User.find(
+        {artistSub: {$and: [{homeLocation: query.locationID},
+              {artStyles: {$in: query.styleIDs}}]
+          }, isArtist: true});
+      if (!result) {
+        res.status(404).send('Resource not found')
+      } else {
+        res.send({result})
       }
     }catch(error) {
       log(error)
@@ -121,7 +117,7 @@ module.exports = function(app) {
   })
 
   //modify user info by id
-  app.put("/api/users/:id", async(req, res) => {
+  app.patch("/api/users/:id", async(req, res) => {
     const id = req.params.id
 
     if (!ObjectID.isValid(id)) {
@@ -175,7 +171,7 @@ module.exports = function(app) {
       if (!user) {
         res.status(404).send()
       } else {
-        res.send(user)
+        res.send({user})
       }
     } catch(error) {
       log(error)
@@ -189,7 +185,7 @@ module.exports = function(app) {
 
   // login users
   app.post("/users/login", mongoChecker, async (req, res) => {
-    const username = req.body.userName;
+    const username = req.body.username;
     const password = req.body.password;
 
     try{
@@ -198,7 +194,6 @@ module.exports = function(app) {
         res.status(400).send("bad request");
       } else{
         // add user id and username to session
-        log(user)
         req.session.user = user._id;
         req.session.username = user.userName;
         req.session.isArtist = user.isArtist;
@@ -235,4 +230,6 @@ module.exports = function(app) {
         res.status(200).send("logout successful");
       }
     })
-  })}
+  })
+
+}
