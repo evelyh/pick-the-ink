@@ -1,13 +1,14 @@
 import { React, useState }  from 'react';
 import '../assets/css/artistsGallery.css';
-import { useForm } from "react-hook-form";
 import _ from "lodash"
 import {
     FormGroup,
     Label,
     Input,
     Button
-  } from "reactstrap";
+} from "reactstrap";
+import {getImageById, updateImageById} from "../apiHook/image"
+
 
 
 function PopUpEditGallery(props) {
@@ -21,13 +22,33 @@ function PopUpEditGallery(props) {
         homeLocation: props.values.homeLocation,
         image: props.values.image,
         gallery: _.cloneDeep(props.values.gallery),
-      });
+    });
 
+    const [updatedPic, setUpdatedPic] = useState({title: undefined, desc: undefined})
 
-    const onSubmit = (event) => {
+    const onSubmit = async (event) => {
         event.preventDefault();
-        const data = new FormData(event.target);
-        console.log(data);
+        // const data = new FormData(event.target);
+        // console.log(data);
+        console.log(updatedPic)
+        const id = props.id
+        await getImageById(id).then(async (res) => {
+            var flag = false
+            if(updatedPic.desc !== undefined){
+                res.images.desc = updatedPic.desc
+                flag = true
+            }
+            if(updatedPic.title !== undefined){
+                res.images.title = updatedPic.title
+                console.log(res)
+                flag = true
+            }
+            if(flag){
+                const result = await updateImageById(id, res.images)
+                console.log(result)
+            }
+        })
+        window.location.reload();
     }
 
     const onCancel = (event) => {
@@ -37,14 +58,14 @@ function PopUpEditGallery(props) {
         props.setTrigger(undefined);
     }
 
-    const onChange = (val, index, field) =>{
-        let copy = {...props.values.gallery};
-        copy[index][field] = val;
-        props.setValues({...props.values, gallery: copy})
+    const onChange = async (val, field) =>{
+        let copy = {...updatedPic};
+        copy[field] = val;
+        setUpdatedPic({...updatedPic, [field]: val})
     } 
 
     return (props.trigger !== undefined) ? (
-        props.trigger === props.index && 
+        props.trigger === props.id && 
         <div id="popupEdit" className='popup'>
             <div className='popupInner'>
                 <form onSubmit={onSubmit}>
@@ -53,7 +74,7 @@ function PopUpEditGallery(props) {
                         <Input
                         type="text"
                         placeholder={props.title}
-                        onChange={val => onChange(val.target.value, props.index, "title")}
+                        onChange={val => onChange(val.target.value, "title")}
                         />
                     </FormGroup>
                     <FormGroup>
@@ -63,17 +84,20 @@ function PopUpEditGallery(props) {
                         className='textArea'
                         type="text"
                         placeholder ={props.description}
-                        onChange={val => onChange(val.target.value, props.index, "description")}
+                        onChange={val => onChange(val.target.value, "desc")}
                         />
                     </FormGroup>
                     <Button className="btn-round btn-icon" color="success" size='sm' type="submit" 
-                    onClick={()=>props.setTrigger(undefined)}>
+                    onClick={(e)=>{
+                        onSubmit(e);
+                        props.setTrigger(undefined);
+                        }}>
                         Submit
                     </Button>
                     <Button id = "del_but" className="btn-round btn-icon" color="default" size='sm' type="submit" 
                     onClick={(e)=>onCancel(e)}>
                         Cancel
-                    </Button>
+                    </Button> 
                 </form>
             </div>
         </div>

@@ -14,10 +14,9 @@ export default function PopUpAddGallery(props){
 
     console.log("Adding");
 
-    const [newPic, setNewPic] = useState({id: props.id, title: " ", desc: " ", img: undefined})
+    const [newPic, setNewPic] = useState({title: " ", desc: " ", img: undefined})
 
     const onChange = (val, field) =>{
-        // setNewPic({...newPic, [field]: val});
         let copy = {...newPic};
         copy[field] = val;
         setNewPic({...newPic, [field]: val});
@@ -27,28 +26,29 @@ export default function PopUpAddGallery(props){
         if (event.target.files && event.target.files[0]) {
             let img = event.target.files[0];
             setNewPic({...newPic, img: img});
-            // handleSubmit(newPic);
         }
     }
 
-    // async function handleSubmit(data){
-    //     console.log(data)
-    //     data.preventDefault(); 
-    //     const res1 = await addImage(data);
-    //     console.log(res1)
-    //     if(res1 === 200){
-    //         props.setTrigger(false);
-    //     } 
+    const addNewPic = (newPic) => {
+        getUser(props.myID).then(json => 
+        {
+        console.log(json)
+        var newArtWorks = json.artistSub.artworks.concat(newPic._id)
+        json.artistSub.artworks = newArtWorks
 
-    //     const res = await updateArtistsGallery();
-    // }
+        updateArtistsGallery(json).catch(error => {
+            console.log(error);
+        });
+        });
+        window.location.reload();
+    }
 
-    // onSubmit={(e) => {
-    //     e.preventDefault();
-    //     console.log(e.target)
-    //     props.onAdd(newPic);
-    //     props.setTrigger(undefined) 
-    // }}
+    const onSubmit=(e) => {
+        addImage(newPic).then((data) =>{
+            addNewPic(data);
+        });
+        props.setTrigger(undefined);
+    }
 
     return (props.trigger) ? (
         <div id="popupAdd" className='popup'>
@@ -85,18 +85,11 @@ export default function PopUpAddGallery(props){
                     className="btn-round btn-icon" 
                     color="success" 
                     size='sm'
-                    onClick={async (e)=>{
-                        e.preventDefault();
-                        console.log(newPic)
-                        addImage(newPic).then((data) =>{
-                            props.onAdd(data)
-                        });
-                        props.setTrigger(undefined);}}>
+                    onClick={async (e)=> onSubmit(e)}>
                         Submit
                     </Button>
                     <Button id = "del_but" className="btn-round btn-icon" color="default" size='sm'
-                    onClick={()=>{
-                        props.setTrigger(undefined);}}>
+                    onClick={()=>props.setTrigger(undefined)}>
                         Cancel
                     </Button>
                 </form>

@@ -1,7 +1,7 @@
 import React from 'react'
 import {useParams} from "react-router-dom";
 import { Header } from '../components/Header'
-import { Container, Alert, CloseButton} from 'react-bootstrap'
+import { Container, Alert, CloseButton, ListGroup} from 'react-bootstrap'
 import gary from '../assets/img/gary.jpg'
 import krabs from '../assets/img/krabs.jpg'
 import profilepic from '../assets/img/profilepic.jpg'
@@ -13,12 +13,10 @@ import { Card, CardBody, CardImg,CardText,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,Button} from 'reactstrap'
-import {getStyleById, getUser, postUser} from "../apiHook/profile"
+import {getStyleById, getUser, postUser, getUserFollowing, getUserFollower} from "../apiHook/profile"
+import { uid } from 'react-uid';
 
 
-// function setList(link, name, pic) {
-//   return "<DropdownItem tag='a' href="+ link+ " ><img id='profileDropdownPic' src="+pic +" alt="+name + " ></img>"+name+"</DropdownItem>";
-//  }
 
 
 function UserProfile() {
@@ -48,15 +46,18 @@ function UserProfile() {
       favoriteStyles: [],
       image: "../images/patrick.jpg",
       isArtist: false,
-      followingIDs:0,
-      followerIDs:0,
+      followingIDs:[],
+      followerIDs:[],
       comment:""}
       );
+    
+
+    
 
     let lst = [];
     const [success,setSuccess] = useState(false);
     useEffect(()=>{
-      getUser(myid).then(json => 
+      getUser(id).then(json => 
         { console.log(json)
           let data = json;
           const favoriteStyles = [];
@@ -75,27 +76,32 @@ function UserProfile() {
           data.birthDate = data.birthDate.slice(0,10);
 
           setValues(data); 
-          // console.log(values)
-          // let str = "";
-          // for(const u_id in values.followingIDs){
-          //   getUser(values.followingIDs[u_id]).then((ele) =>
-          //   {
-          //     let pic = ele.profilePic;
-          //     if(ele.profilePic == undefined | ele.profilePic == ""){
-          //       pic = profilepic;
-          //     }
-          //     const link = "/userprofile/" + ele._id;
-          //     const name = ele.userName;
-          //     const dict = {"pic":pic, "link":link, "name":name};
-          //     str += setList(link, name, pic);
-          //   }
-          //   )
-          // }
-          // console.log(str)
-          // document.getElementById("iii").innerHTML = str;
+          console.log(values.followerIDs)
+          
         });
+      
     }, [buttonPopUp])
     
+
+    const [following, setFollowing] = useState();
+    useEffect(()=>{
+        getUserFollowing(id).then((json)=>{
+          console.log(json)
+          setFollowing(json)
+        })
+        console.log(following, 1111)
+        
+    },[success])
+
+    const [follower, setFollower] = useState();
+    useEffect(()=>{
+        getUserFollower(id).then((json)=>{
+          console.log(json)
+          setFollower(json)
+        })
+        console.log(follower, 2222)
+        
+    },[success])
 
     const onDismiss = ()=>{
       setSuccess(false);
@@ -118,26 +124,21 @@ function UserProfile() {
                  <CardImg src={profilepic} id="profileCirclePic" alt='profile' />  }  
               <h5>{values.userName}</h5>
               <CardText>{values.comment}</CardText>
-            <UncontrolledDropdown className="btn-group" id="followingDD">
+            <UncontrolledDropdown className="btn-group" id = "followingDD">
              <DropdownToggle tag="a"
               data-toggle="dropdown">
               Following: {values.followingIDs.length}
               </DropdownToggle>
-              <DropdownMenu id = "iii">
-              {/* <DropdownItem tag="a" href="/userprofile/krab" >
-              <img id="profileDropdownPic" src={krabs} alt='krabs' ></img>
-              Mr.krab
-              </DropdownItem>
-              
-              <DropdownItem  tag="a" href="/artistprofile">
-              <img id="profileDropdownPic" src={profilepic} alt='profilepic' ></img>
-              Spongebob
-              </DropdownItem> */}
-              
+              <DropdownMenu >
+                {following? following.map(element => (
+                <DropdownItem tag="a" href={element["uLink"]} key={element["uLink"]}>
+                  <img id="profileDropdownPic" src={element["uPic"]? element["uPic"]:profilepic} alt={element["uName"]} ></img>
+                    {element["uName"]}
+                 </DropdownItem>)):null}
+                
               </DropdownMenu>
             </UncontrolledDropdown>
-            
-            
+            <span> </span>
             <UncontrolledDropdown className="btn-group">
              <DropdownToggle tag="a"
               data-toggle="dropdown">
@@ -145,10 +146,12 @@ function UserProfile() {
               </DropdownToggle>
               
               <DropdownMenu >
-                <DropdownItem tag="a" href="/userprofile/gary" >
-                  <img id="profileDropdownPic" src={gary} alt='gary' ></img>
-                    Gary
-                 </DropdownItem>
+                {follower? follower.map(element => (
+                <DropdownItem tag="a" href={element["uLink"]} key={element["uLink"]}>
+                  <img id="profileDropdownPic" src={element["uPic"]? element["uPic"]:profilepic} alt={element["uName"]} ></img>
+                    {element["uName"]}
+                 </DropdownItem>)):null}
+                
               </DropdownMenu>
             </UncontrolledDropdown>
 

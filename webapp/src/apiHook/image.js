@@ -50,16 +50,14 @@ async function getImageById(imageID)
     });
 }
 
-async function updateImageById(imageID, decs, title)
-{
+async function updateImageById(imageID, data)
+{   
+    console.log(JSON.stringify(data))
     const url = host + "/api/images/" + imageID;
 
     const request = new Request(url, {
-        method: "UPDATE",
-        body: {
-            decs: decs,
-            title:title
-        },
+        method: "PUT",
+        body: JSON.stringify(data),
         headers: {
             "Content-Type": "application/json",
         } 

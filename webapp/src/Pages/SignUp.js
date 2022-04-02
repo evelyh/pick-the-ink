@@ -161,26 +161,26 @@ export class Login extends Component {
           <form onSubmit={ this.signUserUp } id={"signup-form"}>
             <div className={"input-container"}>
               <div className={"col-md-6"}>
-                  <Label for={"firstName"}>First Name</Label>
-                  <Input type={"text"}
-                         placeholder={"First Name"}
-                         name={"firstName"}
-                         id={"firstName"}
-                         value={ this.state.firstName }
-                         onChange={ this.handleInputChange }
-                         required={true}
-                  />
+                <Label for={"firstName"}>First Name</Label>
+                <Input type={"text"}
+                       placeholder={"First Name"}
+                       name={"firstName"}
+                       id={"firstName"}
+                       value={ this.state.firstName }
+                       onChange={ this.handleInputChange }
+                       required={true}
+                />
               </div>
               <div className={"col-md-6"}>
-                  <Label for={"lastName"}>Last Name</Label>
-                  <Input type={"text"}
-                         placeholder={"Last Name"}
-                         name={"lastName"}
-                         id={"lastName"}
-                         value={ this.state.lastName }
-                         onChange={ this.handleInputChange }
-                         required={true}
-                  />
+                <Label for={"lastName"}>Last Name</Label>
+                <Input type={"text"}
+                       placeholder={"Last Name"}
+                       name={"lastName"}
+                       id={"lastName"}
+                       value={ this.state.lastName }
+                       onChange={ this.handleInputChange }
+                       required={true}
+                />
               </div>
 
               <div className={"col-md-6"}>

@@ -95,7 +95,9 @@ module.exports = function (app){
             return;
         }
 
-        Image.findByIdAndUpdate(imageId, {new: true, useFindAndModify: false})
+        log(req.body)
+
+        Image.findByIdAndUpdate(imageId, req.body)
                 .then(img => {
                     if (!img) {
                         res.status(404).send();
@@ -106,7 +108,8 @@ module.exports = function (app){
                     }
                 })
                 .catch(error => {
-                    res.status(500).send(); // server error, could not delete.
+                    res.status(500).send();
+                    log(error);
                 });
     });
 
