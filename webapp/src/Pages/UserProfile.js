@@ -57,10 +57,7 @@ function UserProfile() {
     let lst = [];
     const [success,setSuccess] = useState(false);
     useEffect(()=>{
-
-      
-
-      getUser(myid).then(json => 
+      getUser(id).then(json => 
         { console.log(json)
           let data = json;
           const favoriteStyles = [];

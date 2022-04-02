@@ -25,7 +25,7 @@ async function getUser(id) {
             // return a promise that resolves with the JSON body
            return res.json() 
        } else {
-            alert('Could not get current logged in User')
+           return false;
        }                
     }).catch((error) => {
         log(error)
