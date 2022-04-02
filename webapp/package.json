@@ -7,10 +7,14 @@
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.3",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^0.26.1",
     "bootstrap": "^5.1.3",
     "classnames": "2.2.6",
     "flatlist-react": "^1.5.0",
+    "moment": "2.29.1",
     "multiselect-react-dropdown": "^2.0.21",
+    "node-sass": "5.0.0",
+    "nouislider": "14.6.4",
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",
     "react-cookie": "^4.1.1",
@@ -26,8 +30,9 @@
     "react-scripts": "5.0.0",
     "react-uid": "^2.3.1",
     "reactstrap": "8.9.0",
-    "simple-react-footer": "^1.0.2",
-    "web-vitals": "^2.1.4"
+    "sass": "^1.49.9",
+    "web-vitals": "^2.1.4",
+    "simple-react-footer": "^1.0.2"
   },
   "scripts": {
     "start": "react-scripts start",
