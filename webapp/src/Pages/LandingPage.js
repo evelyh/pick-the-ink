@@ -12,9 +12,19 @@ import pic1 from '../assets/img/gallery_pic2.jpg'
 
 export class LandingPage extends Component {
 
+  state = {
+    country: '',
+    region: '',
+    start: '',
+    end: '',
+    styles: [],
+    artists:[],
+    allStyles: [],
+    imageObjList: []
+  }
+
   handleSubmit = async (event) =>{
       event.preventDefault();
-      console.log(this.state);
       var location, timeslots, artists;
       var artistsFromTimeslots = [];
       var styles = [];
@@ -27,8 +37,7 @@ export class LandingPage extends Component {
 
       if(this.state.styles){
         for(let i = 0; i < this.state.styles.length; i++){
-          const style = await getStyles({style: this.state.styles[i]['name']});
-          styles.push(style[0]._id);
+          styles.push(this.state.styles[0]._id);
         }
           data["styleIDs"] = styles;
       }
@@ -43,27 +52,16 @@ export class LandingPage extends Component {
       }
 
       artists = await getArtists(data);
-      for(let h = 0; h < artists.length; h++){
-        if(!artistsFromTimeslots.includes(artists[h]._id.str)){
-          artists.remove(artists[h]);
+      if(artistsFromTimeslots.length !== 0){
+        for(let h = 0; h < artists.length; h++){
+          if(!artistsFromTimeslots.includes(artists[h]._id.str)){
+            var ind = artists.indexOf(artists[h]);
+            artists.splice(ind, 1);
+          }
         }
       }
-
-      console.log(artists)
       this.setState({artists: artists})
       
-  }
-
-
-  state = {
-    country: '',
-    region: '',
-    start: '',
-    end: '',
-    styles: [],
-    artists:[],
-    allStyles: [],
-    imageObjList: []
   }
 
   componentWillMount = async() =>{
@@ -95,16 +93,15 @@ export class LandingPage extends Component {
         var list = (this.state.imageObjList)[i]
         imageList[(this.state.artists[i]).userName] = list.map((image) =>
             <div key={image.images.img}>
-              <img src={image.images.img} />
+              <img src={image.images.img} title={image.images.title} alt={image.images.desc}/>
             </div>)
       }
     }
-    //{image.img} title = {image.title} alt={image.desc}
     const hostURL = "http://localhost:3000"
     const artistProfile = hostURL + "/artistprofile/"
     const artistList = this.state.artists.map((artist) => 
         <div className="card" key={artist.userName}>
-          <a className="username" href={artistProfile + artist._id} > {artist.userName} </a>
+          <a className="username" href={artistProfile+artist._id} > {artist.userName} </a>
           <p className='mb-3'> {artist.comment} </p>
           <Carousel class='carousel'>
               {imageList[artist.userName]}
