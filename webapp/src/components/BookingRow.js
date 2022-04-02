@@ -24,12 +24,12 @@ export class BookingRow extends Component {
     this.props.sendDateTime();
   }
 
-  sendDuration = () => {
+  sendDuration = (length) => {
     this.setState({
       showSendDuration: !this.state.showSendDuration,
     });
 
-    this.props.sendDuration();
+    this.props.sendDuration(length);
   }
 
   cancelBooking = () => {

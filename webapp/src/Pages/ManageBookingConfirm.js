@@ -5,48 +5,52 @@ import "../assets/css/managebooking.css"
 import BookingRow from "../components/BookingRow";
 import {uid} from "react-uid";
 import {Alert} from "reactstrap";
+import {loginStatus} from "../apiHook/loginSignUp";
 
 export class ManageBookingConfirm extends Component {
 
   state = {
-    userType: 0, // 0 = artist; 1 = customer;
+    isArtist: null,
     confirmedBookings: [
-      {
-        firstName: "Squidward",
-        lastName: "Tentacles",
-        email: "squid@spongebob.com",
-        dob: "1999-1-1",
-        phone: "(645) 634-8235",
-        interestedInGetting: "Custom Design",
-        details: "SpongeBob!",
-        size: "2cm x 7cm",
-        referencePic: "no pic",
-        otherDetails: "n/a",
-        bookingMonth: "Mar",
-        bookingDate: "10",
-        bookingTime: "15:00 - 18:00",
-        pendingConfirmation: false,
-        pendingDuration: false,
-      },
-      {
-        firstName: "Patrick",
-        lastName: "Star",
-        email: "patrick@spongebob.com",
-        dob: "1999-9-5",
-        phone: "(649) 624-0890",
-        interestedInGetting: "Custom Design",
-        details: "SpongeBob!",
-        size: "3cm x 8cm",
-        referencePic: "no pic",
-        otherDetails: "n/a",
-        bookingMonth: "Mar",
-        bookingDate: "12",
-        bookingTime: "10:00 - 12:00",
-        pendingConfirmation: false,
-        pendingDuration: false,
-      }
+      // phase 1 code
+      // {
+      //   firstName: "Squidward",
+      //   lastName: "Tentacles",
+      //   email: "squid@spongebob.com",
+      //   dob: "1999-1-1",
+      //   phone: "(645) 634-8235",
+      //   interestedInGetting: "Custom Design",
+      //   details: "SpongeBob!",
+      //   size: "2cm x 7cm",
+      //   referencePic: "no pic",
+      //   otherDetails: "n/a",
+      //   bookingMonth: "Mar",
+      //   bookingDate: "10",
+      //   bookingTime: "15:00 - 18:00",
+      //   pendingConfirmation: false,
+      //   pendingDuration: false,
+      // },
+      // {
+      //   firstName: "Patrick",
+      //   lastName: "Star",
+      //   email: "patrick@spongebob.com",
+      //   dob: "1999-9-5",
+      //   phone: "(649) 624-0890",
+      //   interestedInGetting: "Custom Design",
+      //   details: "SpongeBob!",
+      //   size: "3cm x 8cm",
+      //   referencePic: "no pic",
+      //   otherDetails: "n/a",
+      //   bookingMonth: "Mar",
+      //   bookingDate: "12",
+      //   bookingTime: "10:00 - 12:00",
+      //   pendingConfirmation: false,
+      //   pendingDuration: false,
+      // }
     ],
     bookingCancelled: false,
+    host: "http://localhost:5000",
+    userId: "",
   }
 
   removeRow = (confirmedBooking) => {
@@ -65,6 +69,45 @@ export class ManageBookingConfirm extends Component {
         bookingCancelled: false
       })
     }, 2000);
+  }
+
+  componentDidMount() {
+
+    // todo: redirect to home if not logged in
+
+    // get userType and userId
+    const loginStatus = loginStatus();
+    this.state.isArtist = loginStatus.isArtist;
+    this.state.userId = loginStatus.user;
+
+    // get bookings for that user
+    const url = this.state.host + "/api/bookings";
+    const requestBody = this.state.isArtist ? {
+      artistID: this.state.userId,
+      isConfirmed: true,
+    } : {
+      customerID: this.state.userId,
+      isConfirmed: true,
+    };
+
+    const request = new Request(url, {
+      method: "GET",
+      credentials: "same-origin",
+      headers: {
+        Accept: "*/*",
+        credentials: "same-origin",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    fetch(request)
+      .then(res => res.json())
+      .then(json => {
+        this.setState({
+          confirmedBookings: json,
+        })
+      });
   }
 
   render() {
