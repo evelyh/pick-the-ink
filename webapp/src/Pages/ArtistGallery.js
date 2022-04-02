@@ -2,8 +2,6 @@ import React from 'react'
 import { Header } from '../components/Header'
 import { Container } from 'react-bootstrap'
 import profilePic from '../assets/img/profilepic.jpg'
-import pic1 from '../assets/img/gallery_pic1.jpg'
-import pic2 from '../assets/img/gallery_pic2.jpg'
 import '../assets/css/userProfile.css'
 import { VscAdd } from "react-icons/vsc";
 import { IconContext } from "react-icons";
@@ -14,8 +12,6 @@ import PopUpAddGallery from "../components/PopUpAddGallery"
 import { useState, useEffect } from 'react'
 import { Card, CardImg, CardBody, CardTitle, CardText, Button } from 'reactstrap';
 import FlatList from 'flatlist-react';
-import _ from "lodash";
-import {v4 as uuidv4} from "uuid";
 import patrick from '../assets/img/patrick.jpg'
 import { 
   DropdownToggle,
@@ -23,8 +19,12 @@ import {
   DropdownItem,
   UncontrolledDropdown} from 'reactstrap'
 
-import {addImage, getImageById, updateArtistsGallery} from "../apiHook/image"
-import {getUser, getStyleById} from "../apiHook/profile"
+import {getImageById} from "../apiHook/image"
+import {getUser} from "../apiHook/profile"
+
+// todo: update the homelocation and profile pic
+// todo: update current userID
+// todo: change the redirect link
 
 function ArtistGallery() {
 
@@ -38,7 +38,7 @@ function ArtistGallery() {
     followerIDs: [],
     followingIDs: [],
     homeLocation: "Toronto",
-    image: "../images/profilepic.jpg",
+    image: "../assets/img/profilepic.jpg",
     gallery:[],
   });
 
@@ -58,6 +58,7 @@ function ArtistGallery() {
         json.followers = json.followerIDs.length;
         json.following = json.followingIDs.length;
         json.homeLocation = "Toronto";
+        json.image = "../assets/img/profilepic.jpg"
 
         json.gallery = [];
         for(let i = 0; i < json.artistSub.artworks.length; i++){
@@ -88,6 +89,7 @@ function ArtistGallery() {
         json.followers = json.followerIDs.length;
         json.following = json.followingIDs.length;
         json.homeLocation = "Toronto";
+        json.image = "../assets/img/profilepic.jpg"
 
         json.gallery = [];
         for(let i = 0; i < json.artistSub.artworks.length; i++){
@@ -103,52 +105,13 @@ function ArtistGallery() {
             console.log(json.gallery)
           })
         }
-        console.log("gallery")
-        console.log(json.gallery)
         setValues(json)
         setButtonPopUp(false);
       });
   }, [buttonPopUp])
 
-  const deleteById = (id, event) => {
-    event.preventDefault();
-    setValues({...values, gallery:_.cloneDeep(values.gallery.filter((item)=>{
-        return item.id !== id
-    }))})
-    console.log(_.cloneDeep(values.gallery.filter((item)=>{
-      return item.id !== id
-  })))
-    console.log(values.gallery)
-  }
 
-  const addNewPic = (newPic) => {
-    getUser(myID).then(json => 
-      { 
-        console.log(json)
-        var newArtWorks = json.artistSub.artworks.concat(newPic._id)
-        json.artistSub.artworks = newArtWorks
-
-        updateArtistsGallery(json).catch(error => {
-          console.log(error);
-        });
-      });
-    const newImg = {
-      id: newPic._id,
-      desc: newPic.desc,
-      title: newPic.title,
-      img: newPic.img
-    }
-    const newGallery = values.gallery.concat(newImg);
-    setValues({gallery: newGallery});
-  }
-
-  // const addNewPic = async (imgID) => {
-  //   const img = await getImageById(imgID);
-  //   const newGallery = values.gallery.concat(img);
-  //   setValues({gallery: newGallery});
-  // }
-
-  const renderItem = (galleryPic, index) => {
+  const renderItem = (galleryPic, id) => {
 
     return(
       <div key={galleryPic.id} className="cardItem">
@@ -160,7 +123,7 @@ function ArtistGallery() {
           <PopUpEditGallery 
             values={values}
             title = {galleryPic.title}
-            index = {index}
+            id = {id}
             description = {galleryPic.desc}
             setValues = {setValues}
             trigger={buttonPopUpEdit} 
@@ -170,25 +133,23 @@ function ArtistGallery() {
           </PopUpEditGallery> 
           <PopUpDelGallery 
             values={values}
-            index = {index}
-            id = {galleryPic.id}
+            id = {id}
+            myID = {myID}
             setValues = {setValues}
-            onDelete = {deleteById}
             trigger={buttonPopUpDel} 
             setTrigger={setButtonPopUpDel}
             >
               Del
           </PopUpDelGallery> 
             {isUser &&
-              <Button id="edit" className="btn-round btn-icon" color="primary" size='sm' onClick={()=> setButtonPopUpEdit(index)}>Edit</Button>}
+              <Button id="edit" className="btn-round btn-icon" color="primary" size='sm' onClick={()=> setButtonPopUpEdit(id)}>Edit</Button>}
             {isUser &&
-              <Button id="del" className="btn-round btn-icon" color="danger" size='sm' onClick={()=> setButtonPopUpDel(index)}>Delete</Button>}
+              <Button id="del" className="btn-round btn-icon" color="danger" size='sm' onClick={()=> setButtonPopUpDel(id)}>Delete</Button>}
         </CardBody>
       </Card>
       </div>
     );
   }
-    const newid = uuidv4();
     return (
       <div>
         <div>
@@ -199,10 +160,7 @@ function ArtistGallery() {
 
         <div className="container">
           {isUser &&<PopUpAddGallery
-            values={values}
-            setValues = {setValues}
-            id = {newid}
-            onAdd = {addNewPic}
+            myID={myID}
             trigger={buttonPopUpAdd} 
             setTrigger={setButtonPopUpAdd}
           >Add</PopUpAddGallery>}
