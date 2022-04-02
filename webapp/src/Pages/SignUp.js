@@ -18,7 +18,7 @@ export class SignUp extends Component {
     dob: "",
     username: "",
     password: "",
-    success: false,
+    success: null,
     showPassword: false,
     artist: false,
     license: "",
@@ -27,6 +27,10 @@ export class SignUp extends Component {
     showFail: false,
     loggedIn: null,
     redirect: false,
+    formContainer: {
+      // display: "none",
+    }
+
   }
 
   handleInputChange = (event) => {
@@ -52,74 +56,87 @@ export class SignUp extends Component {
   signUserUp = async (event) => {
 
     event.preventDefault();
-    document.getElementById("signup-form").checkValidity();
+    const valid = document.getElementById("signup-form").checkValidity();
     document.getElementById("signup-form").reportValidity();
 
-    // upload files to cloud
-    let licenseId = "";
-    await addImage({img: this.state.license}).then((json) => {
-      licenseId = json._id;
-    });
-    let identificationId = "";
-    await addImage({img: this.state.physicalId}).then((json) => {
-      identificationId = json._id;
-    })
+    if (valid){
+      // upload files to cloud
+      let licenseId = "";
+      await addImage({img: this.state.license}).then((json) => {
+        licenseId = json._id;
+      });
+      let identificationId = "";
+      await addImage({img: this.state.physicalId}).then((json) => {
+        identificationId = json._id;
+      })
 
-    // sign user up with the info given
+      // sign user up with the info given
 
-    const requestBody = {
-      userName: this.state.username,
-      password: this.state.password,
-      email: this.state.mail,
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      birthDate: this.state.dob,
-      isArtist: (this.state.artist === "on"),
-      phoneNum: this.state.phone,
-      artistSub: {
-        license: licenseId,
-        physicalID: identificationId,
-      },
-    };
+      const requestBody = {
+        userName: this.state.username,
+        password: this.state.password,
+        email: this.state.mail,
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        birthDate: this.state.dob,
+        isArtist: (this.state.artist === "on"),
+        phoneNum: this.state.phone,
+        artistSub: {
+          license: licenseId,
+          physicalID: identificationId,
+        },
+      };
 
-    const url = this.state.host + "/api/users";
-    const request = new Request(url, {
-      method: "POST",
-      credentials: 'same-origin',
-      body: JSON.stringify(requestBody),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: '*/*',
+      const url = this.state.host + "/api/users";
+      const request = new Request(url, {
+        method: "POST",
         credentials: 'same-origin',
-      },
-    });
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: '*/*',
+          credentials: 'same-origin',
+        },
+      });
 
-    fetch(request).then((res) => {
-      console.log(res)
-      if (res.ok) {
-        this.setState({
-          success: true,
-        });
-        setTimeout(() => {
+      fetch(request).then((res) => {
+        console.log(res)
+        if (res.ok) {
           this.setState({
-            success: false,
-            redirect: true,
-          })
-        }, 3000);
-      } else {
-        // bad request
-        this.setState({
-          showFail: true,
-        });
-        setTimeout(() => {
+            success: true,
+          });
+          setTimeout(() => {
+            this.setState({
+              success: false,
+              redirect: true,
+            })
+          }, 3000);
+        } else {
+          // bad request
           this.setState({
-            showFail: false,
-          })
-        }, 2000);
-      }
-    }).catch((error) => {
-      console.log(error);
-    })
+            showFail: true,
+          });
+          setTimeout(() => {
+            this.setState({
+              showFail: false,
+            })
+          }, 2000);
+        }
+      }).catch((error) => {
+        console.log(error);
+      })
+
+    } else{
+      // bad request
+      this.setState({
+        showFail: true,
+      });
+      setTimeout(() => {
+        this.setState({
+          showFail: false,
+        })
+      }, 2000);
+    }
 
   }
 
@@ -165,10 +182,8 @@ export class SignUp extends Component {
         {this.checkRedirection()}
 
         <Header loggedIn={false}/>
-        <Alert isOpen={this.state.showFail} color={"danger"}>Sign up failed, please check</Alert>
-        <Alert isOpen={this.state.success} color={"success"}>Sign up successful! Redirecting you to Login...</Alert>
 
-        <div className={"login-form-container"}>
+        <div className={"signup-form-container"} style={this.state.formContainer}>
 
           <NavTabTwo
             leftLink={"/login"}
@@ -278,14 +293,14 @@ export class SignUp extends Component {
               <Input type={"file"}
                      name={"license"}
                      id={"license"}
-                     required={this.state.artist}
+                     required={this.state.artist === "on"}
                      onChange={this.handleFileChange}
               />
               <Label for={"physicalId"}>ID: </Label>
               <Input type={"file"}
                      name={"physicalId"}
                      id={"physicalId"}
-                     required={this.state.artist}
+                     required={this.state.artist === "on"}
                      onChange={this.handleFileChange}
               />
             </div>
@@ -297,6 +312,9 @@ export class SignUp extends Component {
 
 
         </div>
+        <Alert isOpen={this.state.showFail} color={"danger"}>Sign up failed, please check</Alert>
+        <Alert isOpen={this.state.success} color={"success"}>Sign up successful! Redirecting you to Login...</Alert>
+
 
 
       </div>
