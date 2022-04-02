@@ -188,7 +188,7 @@ module.exports = function(app) {
   // Login and Logout routes
 
   // login users
-  app.post("/api/users/login", mongoChecker, async (req, res) => {
+  app.post("/users/login", mongoChecker, async (req, res) => {
     const username = req.body.userName;
     const password = req.body.password;
 
@@ -217,7 +217,7 @@ module.exports = function(app) {
   })
 
   // for checking login status
-  app.get("/api/users/login", (req, res) => {
+  app.get("/users/login", (req, res) => {
     if (req.session.user){
       res.send({"loggedIn": true, user: req.session.user, isArtist: req.session.isArtist});
     } else{
@@ -226,7 +226,7 @@ module.exports = function(app) {
   })
 
   // logout users
-  app.get("/api/users/logout", mongoChecker, async (req, res) => {
+  app.get("/users/logout", mongoChecker, async (req, res) => {
     // remove session
     req.session.destroy((error) => {
       if (error){
