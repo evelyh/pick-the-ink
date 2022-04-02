@@ -51,7 +51,7 @@ export class BookingRow extends Component {
   render() {
 
     const {
-      confirmedBooking, userType
+      confirmedBooking, isArtist
     } = this.props;
 
     return (
@@ -64,13 +64,13 @@ export class BookingRow extends Component {
             <i className={"icons nc-icon nc-alert-circle-i"} onClick={() => this.setState({showBookingDetails: true})}/>
             {/*<i className={"icons nc-icon nc-settings"}/> todo: implement booking toggles */}
 
-            {confirmedBooking.pendingDuration && userType === 0 ?
+            {confirmedBooking.pendingDuration && isArtist ?
               <i title={"Send Duration Estimate"}
                  className={"icons nc-icon nc-send"}
                  onClick={() => this.setState({showSendDuration: true})}
               /> : null
             }
-            {(confirmedBooking.pendingDateTime && userType === 1) || (confirmedBooking.pendingConfirmation) ?
+            {(confirmedBooking.pendingDateTime && (!isArtist)) || (confirmedBooking.pendingConfirmation) ?
               <i title={"Suggest Date/time"}
                  className={"icons nc-icon nc-calendar-60"}
                  onClick={() => this.setState({showSendDateTime: true})}
@@ -82,7 +82,7 @@ export class BookingRow extends Component {
                  onClick={() => this.setState({showConfirmBooking: true})}
               /> : null
             }
-            {userType === 0 || confirmedBooking.pendingDuration ?
+            {isArtist || confirmedBooking.pendingDuration ?
               <i title={"Cancel booking"}
                  className={"icons nc-icon nc-simple-remove"}
                  onClick={() => this.setState({showCancelBooking: true})}
@@ -92,7 +92,7 @@ export class BookingRow extends Component {
 
           <PopUpBookingDetails
             booking={confirmedBooking}
-            userType={userType}
+            isArtist={isArtist}
             trigger={this.state.showBookingDetails}
             setTrigger={() => this.setState({showBookingDetails: !this.state.showBookingDetails})}
           />
@@ -119,7 +119,7 @@ export class BookingRow extends Component {
             trigger={this.state.showSendDateTime}
             setTrigger={() => this.setState({showSendDateTime: !this.state.showSendDateTime})}
             sendDateTime={this.sendDateTime}
-            userType={userType}
+            isArtist={isArtist}
           />
 
         </tr>

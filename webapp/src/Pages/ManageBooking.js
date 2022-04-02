@@ -5,7 +5,7 @@ import "../assets/css/managebooking.css"
 import {Alert, Button, Modal} from "reactstrap";
 import BookingRow from "../components/BookingRow";
 import {uid} from "react-uid";
-import {loginStatus} from "../apiHook/loginSignUp";
+import {Navigate} from "react-router-dom";
 
 
 export class ManageBooking extends Component {
@@ -17,47 +17,10 @@ export class ManageBooking extends Component {
     bookingCancelled: false,
     durationSent: false,
     datetimeSent: false,
-    pendingBookings: [
-      // phase 1 code
-      // {
-      //   firstName: "Sailor",
-      //   lastName: "Moon",
-      //   email: "champion.of.justice@moon.com",
-      //   dob: "1992-6-30",
-      //   phone: "(645) 634-8235",
-      //   interestedInGetting: "Custom Design",
-      //   details: "On behalf of the moon, I will right wrongs and triumph over evil, and that means you!",
-      //   size: "3cm x 7cm",
-      //   referencePic: "no pic",
-      //   otherDetails: "n/a",
-      //   bookingMonth: "",
-      //   bookingDate: "",
-      //   bookingTime: "Pending",
-      //   pendingDuration: true,
-      //   pendingConfirmation: false,
-      //   pendingDateTime: false,
-      // },
-      // {
-      //   firstName: "Tuxedo",
-      //   lastName: "Mask",
-      //   email: "tux.mask@moon.com",
-      //   dob: "1992-6-30",
-      //   phone: "(645) 634-8235",
-      //   interestedInGetting: "Custom Design",
-      //   details: "Tuxedo La Smoking Bomber!",
-      //   size: "3cm x 7cm",
-      //   referencePic: "no pic",
-      //   otherDetails: "n/a",
-      //   bookingMonth: "Mar",
-      //   bookingDate: "26",
-      //   bookingTime: "14:00 - 16:00",
-      //   pendingDuration: false,
-      //   pendingConfirmation: true,
-      //   pendingDateTime: false,
-      // }
-    ],
+    pendingBookings: [],
     host: "http://localhost:5000",
     userId: "",
+    loggedIn: true,
   }
   // todo: change BookingRow implementation details
   // todo: go through front-end jsx to change details for all front-end code
@@ -76,7 +39,7 @@ export class ManageBooking extends Component {
   }
 
   // *******changed in phase 2
-  sendDuration = (length, pendingBooking) => {
+  sendDuration = async (length, pendingBooking) => {
 
     // PATCH request to update duration of booking
     const url = this.state.host + "/api/bookings/" + pendingBooking._id;
@@ -95,9 +58,9 @@ export class ManageBooking extends Component {
       },
     });
 
-    fetch(request)
+    await fetch(request)
       .then((res) => {
-        if (res.ok){
+        if (res.ok) {
           this.setState({
             durationSent: true,
           });
@@ -106,7 +69,7 @@ export class ManageBooking extends Component {
               durationSent: false,
             })
           }, 2000);
-        } else{
+        } else {
           throw new Error("status not ok");
         }
       })
@@ -124,13 +87,13 @@ export class ManageBooking extends Component {
   }
 
   // ******* changed in phase 2
-  removeRow = (mode, pendingBooking) => {
+  removeRow = async (mode, pendingBooking) => {
 
     const filteredBookings = this.state.pendingBookings.filter((booking) => {
       return booking !== pendingBooking;
     });
 
-    if (mode === "confirm"){
+    if (mode === "confirm") {
 
       // PATCH request to confirm booking on backend
       const url = this.state.host + "/api/bookings/" + pendingBooking._id;
@@ -149,9 +112,9 @@ export class ManageBooking extends Component {
         },
       });
 
-      fetch(request)
+      await fetch(request)
         .then((res) => {
-          if (res.ok){
+          if (res.ok) {
             this.setState({
               bookingConfirmed: true,
               pendingBookings: filteredBookings,
@@ -161,7 +124,7 @@ export class ManageBooking extends Component {
                 bookingConfirmed: false,
               })
             }, 2000);
-          } else{
+          } else {
             throw new Error("status not ok");
           }
         })
@@ -176,8 +139,7 @@ export class ManageBooking extends Component {
             })
           }, 2000);
         })
-    }
-    else if (mode === "cancel"){
+    } else if (mode === "cancel") {
 
       // DELETE request to cancel booking
       const url = this.state.host + "/api/bookings/" + pendingBooking._id;
@@ -191,9 +153,9 @@ export class ManageBooking extends Component {
         },
       });
 
-      fetch(request)
+      await fetch(request)
         .then((res) => {
-          if (res.ok){
+          if (res.ok) {
             this.setState({
               bookingCancelled: true,
               pendingBookings: filteredBookings,
@@ -203,7 +165,7 @@ export class ManageBooking extends Component {
                 bookingCancelled: false,
               })
             }, 2000);
-          } else{
+          } else {
             throw new Error("status not ok");
           }
         })
@@ -221,14 +183,39 @@ export class ManageBooking extends Component {
     }
   }
 
-  componentDidMount() {
-    // get userType and userId
-    const loginStatus = loginStatus();
-    this.state.isArtist = loginStatus.isArtist;
-    this.state.userId = loginStatus.user;
+  async componentDidMount() {
+    // get login status
+    let url = this.state.host + "/users/login";
+    let request = new Request(url, {
+      method: "GET",
+      credentials: 'same-origin',
+      headers: {
+        Accept: 'application/json',
+        credentials: 'same-origin',
+        "Content-Type": "application/json",
+      },
+    });
+
+    await fetch(request)
+      .then(res => res.json())
+      .then(json => {
+        console.log(json)
+        this.setState({
+          loggedIn: json.loggedIn,
+          isArtist: json.isArtist,
+          userId: json.user,
+        });
+      });
+
+    console.log(this.state)
+
+    // this.state.loggedIn = status.loggedIn;
+    // console.log(status)
+    // this.state.isArtist = status.isArtist;
+    // this.state.userId = status.user;
 
     // get bookings for that user
-    const url = this.state.host + "/api/bookings";
+    url = this.state.host + "/api/bookings";
     const requestBody = this.state.isArtist ? {
       artistID: this.state.userId,
       isConfirmed: false,
@@ -236,8 +223,9 @@ export class ManageBooking extends Component {
       customerID: this.state.userId,
       isConfirmed: false,
     };
+    console.log(requestBody)
 
-    const request = new Request(url, {
+    request = new Request(url, {
       method: "GET",
       credentials: "same-origin",
       headers: {
@@ -248,26 +236,38 @@ export class ManageBooking extends Component {
       body: JSON.stringify(requestBody),
     });
 
-    fetch(request)
+    await fetch(request)
       .then(res => res.json())
       .then(json => {
+        console.log("fetch bookings")
+        console.log(json)
         this.setState({
           pendingBookings: json,
         })
       });
   }
 
+  checkRedirection = () => {
+    console.log("inside checkRedirection: ")
+    console.log(this.state.loggedIn);
+    if (!this.state.loggedIn){
+        return <Navigate to={"/"} />;
+    }
+  }
+
   render() {
     return (
       <div>
+        {this.checkRedirection()}
+
         <Header loggedIn={true}/>
 
         <div className={"managebooking-body"}>
           <h1 className={"page-head"}>Manage Booking</h1>
 
           <NavTabTwo
-            leftLink={"/artist-managebooking"}
-            rightLink={"/artist-managebooking-confirm"}
+            leftLink={"/managebooking"}
+            rightLink={"/managebooking-confirm"}
             leftActive={true}
             rightActive={false}
             leftText={"Pending"}
@@ -287,9 +287,9 @@ export class ManageBooking extends Component {
                 <BookingRow
                   key={uid(pendingBooking)}
                   confirmedBooking={pendingBooking}
-                  userType={this.state.userType}
+                  isArtist={this.state.isArtist}
                   removeRow={(mode) => this.removeRow(mode, pendingBooking)}
-                  sendDuration={(length) => this.sendDuration(length, pendingBooking)} // todo: change in bookingrow
+                  sendDuration={(length) => this.sendDuration(length, pendingBooking)}
                   sendDateTime={() => this.sendDateTime()}
                 />
               )

@@ -25,7 +25,7 @@ export class PopUpSendDateTime extends Component {
       trigger,
       setTrigger,
       sendDateTime,
-      userType
+      isArtist
     } = this.props;
 
     return (trigger) ? (
@@ -37,7 +37,7 @@ export class PopUpSendDateTime extends Component {
             </h5>
           </div>
           <div className={"modal-body"}>
-            {userType === 0 ?
+            {isArtist ?
               <span>Suggest an alternate datetime for this appointment.</span>
               :
               <span>Pick a suitable datetime for this appointment. The artist is available at the following times: <br/>

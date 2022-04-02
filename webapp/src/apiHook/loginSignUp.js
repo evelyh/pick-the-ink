@@ -63,8 +63,8 @@ function loginStatus(){
     .then(res => res.json())
     .then(json => {
       return json;
-    })};
-
+    })
+}
  
 async function getlogin(){
   const url = host + "/users/login";

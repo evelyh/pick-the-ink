@@ -5,7 +5,7 @@ import "../assets/css/managebooking.css"
 import BookingRow from "../components/BookingRow";
 import {uid} from "react-uid";
 import {Alert} from "reactstrap";
-import {loginStatus} from "../apiHook/loginSignUp";
+import {Navigate} from "react-router-dom";
 
 export class ManageBookingConfirm extends Component {
 
@@ -51,37 +51,84 @@ export class ManageBookingConfirm extends Component {
     bookingCancelled: false,
     host: "http://localhost:5000",
     userId: "",
+    loggedIn: true,
   }
 
-  removeRow = (confirmedBooking) => {
+  removeRow = async (confirmedBooking) => {
 
     const filteredBookings = this.state.confirmedBookings.filter((booking) => {
       return booking !== confirmedBooking;
     });
 
-    this.setState({
-      bookingCancelled: true,
-      confirmedBookings: filteredBookings,
+    // DELETE request to cancel booking
+    const url = this.state.host + "/api/bookings/" + confirmedBooking._id;
+    const request = new Request(url, {
+      method: "DELETE",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        credentials: "same-origin",
+      },
     });
 
-    setTimeout(() => {
-      this.setState({
-        bookingCancelled: false
+    await fetch(request)
+      .then((res) => {
+        if (res.ok) {
+          this.setState({
+            bookingCancelled: true,
+            confirmedBookings: filteredBookings,
+          });
+          setTimeout(() => {
+            this.setState({
+              bookingCancelled: false,
+            })
+          }, 2000);
+        } else {
+          throw new Error("status not ok");
+        }
       })
-    }, 2000);
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          genericError: true,
+        });
+        setTimeout(() => {
+          this.setState({
+            genericError: false,
+          })
+        }, 2000);
+      })
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    // get login status
+    let url = this.state.host + "/users/login";
+    let request = new Request(url, {
+      method: "GET",
+      credentials: 'same-origin',
+      headers: {
+        Accept: 'application/json',
+        credentials: 'same-origin',
+        "Content-Type": "application/json",
+      },
+    });
 
-    // todo: redirect to home if not logged in
+    await fetch(request)
+      .then(res => res.json())
+      .then(json => {
+        console.log(json)
+        this.setState({
+          loggedIn: json.loggedIn,
+          isArtist: json.isArtist,
+          userId: json.user,
+        });
+      });
 
-    // get userType and userId
-    const loginStatus = loginStatus();
-    this.state.isArtist = loginStatus.isArtist;
-    this.state.userId = loginStatus.user;
+    console.log(this.state)
 
     // get bookings for that user
-    const url = this.state.host + "/api/bookings";
+    url = this.state.host + "/api/bookings";
     const requestBody = this.state.isArtist ? {
       artistID: this.state.userId,
       isConfirmed: true,
@@ -89,8 +136,9 @@ export class ManageBookingConfirm extends Component {
       customerID: this.state.userId,
       isConfirmed: true,
     };
+    console.log(requestBody)
 
-    const request = new Request(url, {
+    request = new Request(url, {
       method: "GET",
       credentials: "same-origin",
       headers: {
@@ -101,27 +149,38 @@ export class ManageBookingConfirm extends Component {
       body: JSON.stringify(requestBody),
     });
 
-    fetch(request)
+    await fetch(request)
       .then(res => res.json())
       .then(json => {
+        console.log("fetch bookings")
+        console.log(json)
         this.setState({
-          confirmedBookings: json,
+          pendingBookings: json,
         })
       });
+  }
+
+  checkRedirection = () => {
+    console.log("inside checkRedirection: ")
+    console.log(this.state.loggedIn);
+    if (!this.state.loggedIn){
+      return <Navigate to={"/"} />;
+    }
   }
 
   render() {
 
     return (
       <div>
+        {this.checkRedirection()}
         <Header loggedIn={true}/>
 
         <div className={"managebooking-body"}>
           <h1 className={"page-head"}>Manage Booking</h1>
 
           <NavTabTwo
-            leftLink={"/artist-managebooking"}
-            rightLink={"/artist-managebooking-confirm"}
+            leftLink={"/managebooking"}
+            rightLink={"/managebooking-confirm"}
             leftActive={false}
             rightActive={true}
             leftText={"Pending"}
@@ -132,7 +191,7 @@ export class ManageBookingConfirm extends Component {
             <tr>
               <th className={"date-head"}>Date</th>
               <th className={"time-head"}>Time</th>
-              <th>{ this.state.userType === 0 ? "Customer" : "Artist"}</th>
+              <th>{ this.state.isArtist === 0 ? "Customer" : "Artist"}</th>
               <th>Actions</th>
             </tr>
 
@@ -141,7 +200,7 @@ export class ManageBookingConfirm extends Component {
                 <BookingRow
                   key={uid(confirmedBooking)}
                   confirmedBooking={confirmedBooking}
-                  userType={this.state.userType}
+                  isArtist={this.state.isArtist}
                   removeRow={() => this.removeRow(confirmedBooking)}
                 />
               )
