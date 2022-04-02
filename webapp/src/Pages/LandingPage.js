@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Header } from '../components/Header.js'
+import { Footer } from '../components/Footer.js'
 import { Container, Button, Form } from 'react-bootstrap'
 import { Multiselect } from 'multiselect-react-dropdown';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
@@ -155,7 +156,11 @@ export class LandingPage extends Component {
             <div className='cardContainer'> 
                 {artistList}
             </div>
+
+            <div> <Footer/> </div>
           </Container>
+
+
       </div>
       )
     }
