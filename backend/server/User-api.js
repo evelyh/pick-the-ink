@@ -17,6 +17,7 @@ module.exports = function(app) {
       return;
     }
 
+
     try {
       const user = new User({
         userName: req.body.userName,
@@ -195,7 +196,8 @@ module.exports = function(app) {
         // add user id and username to session
         req.session.user = user._id;
         req.session.username = user.userName;
-        req.session.userType = user.userType;
+        req.session.isArtist = user.isArtist;
+        // res.redirect("/explore");
         res.status(200).send("Login successful");
       }
     } catch (error){
@@ -212,7 +214,7 @@ module.exports = function(app) {
   // for checking login status
   app.get("/users/login", (req, res) => {
     if (req.session.user){
-      res.send({"loggedIn": true, user: req.session.user, userType: req.session.userType});
+      res.send({"loggedIn": true, user: req.session.user, isArtist: req.session.isArtist});
     } else{
       res.send({"loggedIn": false});
     }
