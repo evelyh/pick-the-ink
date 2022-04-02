@@ -1,4 +1,5 @@
-import { React, useState }  from 'react';
+import React from 'react';
+import { useState }  from 'react';
 import '../assets/css/artistsGallery.css';
 import { Button } from "reactstrap";
 import {
@@ -6,12 +7,14 @@ import {
     Label,
     Input,
   } from "reactstrap";
+import { addImage, updateArtistsGallery } from 'apiHook/image';
+import { getUser } from 'apiHook/profile';
 
 export default function PopUpAddGallery(props){
 
     console.log("Adding");
 
-    const [newPic, setNewPic] = useState({id: props.id, title: " ", description: " ", img: undefined})
+    const [newPic, setNewPic] = useState({id: props.id, title: " ", desc: " ", img: undefined})
 
     const onChange = (val, field) =>{
         // setNewPic({...newPic, [field]: val});
@@ -23,9 +26,29 @@ export default function PopUpAddGallery(props){
     const onChangeImg = (event) =>{
         if (event.target.files && event.target.files[0]) {
             let img = event.target.files[0];
-            setNewPic({...newPic, img: URL.createObjectURL(img)});
+            setNewPic({...newPic, img: img});
+            // handleSubmit(newPic);
         }
     }
+
+    // async function handleSubmit(data){
+    //     console.log(data)
+    //     data.preventDefault(); 
+    //     const res1 = await addImage(data);
+    //     console.log(res1)
+    //     if(res1 === 200){
+    //         props.setTrigger(false);
+    //     } 
+
+    //     const res = await updateArtistsGallery();
+    // }
+
+    // onSubmit={(e) => {
+    //     e.preventDefault();
+    //     console.log(e.target)
+    //     props.onAdd(newPic);
+    //     props.setTrigger(undefined) 
+    // }}
 
     return (props.trigger) ? (
         <div id="popupAdd" className='popup'>
@@ -55,15 +78,19 @@ export default function PopUpAddGallery(props){
                         type="text"
                         placeholder ="Enter description"
                         value = {props.description}
-                        onChange={val => onChange(val.target.value,  "description")}
+                        onChange={val => onChange(val.target.value,  "desc")}
                         />
                     </FormGroup>
-                    <Button className="btn-round btn-icon" color="success" size='sm' 
-                    onClick={()=>{
+                    <Button 
+                    className="btn-round btn-icon" 
+                    color="success" 
+                    size='sm'
+                    onClick={async (e)=>{
+                        e.preventDefault();
                         console.log(newPic)
-                        setNewPic({...newPic, id: props.id});
-                        props.onAdd(newPic);
-                        console.log(newPic)
+                        addImage(newPic).then((data) =>{
+                            props.onAdd(data)
+                        });
                         props.setTrigger(undefined);}}>
                         Submit
                     </Button>

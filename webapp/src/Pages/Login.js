@@ -20,7 +20,7 @@ export class Login extends Component {
     passwordType: "password",
     showPassword: false,
     host: "http://localhost:5000",
-    loggedIn: false,
+    loggedIn: null,
   }
 
   handleInputChange = (event) => {
@@ -48,9 +48,13 @@ export class Login extends Component {
     const url = this.state.host + "/users/login";
     const request = new Request(url, {
       method: "POST",
+      credentials: 'same-origin',
       body: JSON.stringify(requestBody),
       headers: {
         "Content-Type": "application/json",
+        Accept: '*/*',
+        credentials: 'same-origin',
+        redirect: "follow",
       },
     });
 
@@ -70,32 +74,10 @@ export class Login extends Component {
           })
         }, 2000);
       }
+      return res;
     }).catch((error) => {
       console.log(error);
     })
-
-    // phase 1 code
-    // const userFound = this.state.username === "user" && this.state.password === "user";
-    // const isAdmin = this.state.username === "admin" && this.state.password === "admin";
-    // if (userFound){
-    //   this.setState({
-    //     username: "",
-    //     password: "",
-    //     valid: true
-    //   });
-    // } else{
-    //   this.setState({
-    //     valid: false
-    //   })
-    // }
-    //
-    // if (isAdmin){
-    //   this.setState({
-    //     username: "",
-    //     password: "",
-    //     admin: true,
-    //   })
-    // }
   }
 
   // implement if have enough time
@@ -107,16 +89,27 @@ export class Login extends Component {
   }
 
   componentDidMount() {
-    const url = this.state.host + "/users/login";
-    const request = new Request(url, {
-      method: "GET",
-    });
+    if (this.state.loggedIn === null){
+      const url = this.state.host + "/users/login";
+      const request = new Request(url, {
+        method: "GET",
+        credentials: 'same-origin',
+        headers: {
+          Accept: 'application/json',
+          credentials: 'same-origin',
+          "Content-Type": "application/json",
+        },
+      });
 
-    fetch(request).then((res) => {
-      this.setState({
-        loggedIn: res.data.loggedIn,
-      })
-    })
+      fetch(request)
+        .then(res => res.json())
+        .then(json => {
+          console.log(json)
+          this.setState({
+            loggedIn: json.loggedIn,
+          });
+        });
+    }
   }
 
   checkRedirection = () => {
@@ -138,6 +131,7 @@ export class Login extends Component {
   }
 
   render() {
+    this.componentDidMount();
     return (
       <div>
         {this.checkRedirection()}
@@ -157,11 +151,11 @@ export class Login extends Component {
             rightText={"Sign Up"}
           />
 
-          <form onSubmit={ this.checkCredentials }>
+          <form onSubmit={this.checkCredentials}>
             <div className={"input-container"}>
               <Label for={"username"}>Username</Label>
-              <Input value={ this.state.username }
-                     onChange={ this.handleInputChange }
+              <Input value={this.state.username}
+                     onChange={this.handleInputChange}
                      type="text"
                      name="username"
                      id={"username"}
@@ -169,9 +163,9 @@ export class Login extends Component {
                      required={true}
               />
               <Label for={"password"}>Password</Label>
-              <Input value={ this.state.password }
-                     onChange={ this.handleInputChange }
-                     type={ this.state.showPassword ? "text" : "password" }
+              <Input value={this.state.password}
+                     onChange={this.handleInputChange}
+                     type={this.state.showPassword ? "text" : "password"}
                      name="password"
                      id={"password"}
                      placeholder="Password"
@@ -179,13 +173,13 @@ export class Login extends Component {
                      className={"password"}
               />
               <Button className={"btn-round btn-icon passwordToggle"}
-                      onClick={ this.togglePassword }
+                      onClick={this.togglePassword}
                       color={"neutral"}
                       size={"sm"}>show</Button>
             </div>
 
             <div className={"button-container"}>
-              <Button type={"submit"} onClick={ this.checkCredentials }> Login </Button>
+              <Button type={"submit"} onClick={this.checkCredentials}> Login </Button>
               {/* todo: implement forget password*/}
               {/*<Button onClick={ this.forgetPassword } className="btn-link" size={"sm"}> Forgot Password? </Button>*/}
             </div>

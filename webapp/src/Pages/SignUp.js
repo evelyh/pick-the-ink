@@ -22,7 +22,8 @@ export class Login extends Component {
     artist: false,
     host: "http://localhost:5000",
     showFail: false,
-    loggedIn: false,
+    loggedIn: null,
+    redirect: false,
   }
 
   handleInputChange = (event) => {
@@ -35,6 +36,10 @@ export class Login extends Component {
   }
 
   signUserUp = (event) => {
+
+    event.preventDefault();
+    document.getElementById("signup-form").checkValidity();
+    document.getElementById("signup-form").reportValidity();
 
     // todo: connect to backend
     // sign user up with the info given
@@ -54,20 +59,32 @@ export class Login extends Component {
       }
     };
 
+    console.log(requestBody);
+
     const url = this.state.host + "/api/users";
     const request = new Request(url, {
       method: "POST",
+      credentials: 'same-origin',
       body: JSON.stringify(requestBody),
       headers: {
         "Content-Type": "application/json",
+        Accept: '*/*',
+        credentials: 'same-origin',
       },
     });
 
     fetch(request).then((res) => {
+      console.log(res)
       if (res.ok){
         this.setState({
           success: true,
         });
+        setTimeout(() => {
+          this.setState({
+            success: false,
+            redirect: true,
+          })
+        }, 3000);
       } else{
         // bad request
         this.setState({
@@ -83,33 +100,37 @@ export class Login extends Component {
       console.log(error);
     })
 
-
-    // phase 1 code
-    // // set state if backend sends back 201
-    // if (this.state.username !== ""){
-    //   this.setState({
-    //     success: true
-    //   });
-    // }
-    // return null;
   }
 
   componentDidMount() {
-    const url = this.state.host + "/users/login";
-    const request = new Request(url, {
-      method: "GET",
-    });
+    if (this.state.loggedIn === null){
+      const url = this.state.host + "/users/login";
+      const request = new Request(url, {
+        method: "GET",
+        credentials: 'same-origin',
+        headers: {
+          Accept: 'application/json',
+          credentials: 'same-origin',
+          "Content-Type": "application/json",
+        },
+      });
 
-    fetch(request).then((res) => {
-      this.setState({
-        loggedIn: res.data.loggedIn,
-      })
-    })
+      fetch(request)
+        .then(res => res.json())
+        .then(json => {
+          console.log(json)
+          this.setState({
+            loggedIn: json.loggedIn,
+          });
+        });
+    }
   }
 
   checkRedirection = () => {
-    if (this.state.success || this.state.loggedIn){
+    if (this.state.loggedIn){
       return <Navigate to={"/explore"} />;
+    } else if (this.state.redirect){
+      return <Navigate to={"/login"} />;
     }
   }
 
@@ -124,6 +145,7 @@ export class Login extends Component {
 
         <Header loggedIn={false}/>
         <Alert isOpen={this.state.showFail} color={"danger"}>Sign up failed, please check</Alert>
+        <Alert isOpen={this.state.success} color={"success"}>Sign up successful! Redirecting you to Login...</Alert>
 
         <div className={"login-form-container"}>
 
@@ -136,7 +158,7 @@ export class Login extends Component {
             rightText={"Sign Up"}
           />
 
-          <form onSubmit={ this.signUserUp }>
+          <form onSubmit={ this.signUserUp } id={"signup-form"}>
             <div className={"input-container"}>
               <div className={"col-md-6"}>
                   <Label for={"firstName"}>First Name</Label>
