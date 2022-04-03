@@ -43,7 +43,6 @@ export class ManageBooking extends Component {
   sendDuration = async (length, pendingBooking) => {
 
     // PATCH request to update duration of booking
-    // const url = this.state.host + "/api/bookings/" + pendingBooking._id;
     const requestBody = {
       duration: length,
     };
@@ -67,44 +66,6 @@ export class ManageBooking extends Component {
         })
       }, 2000);
     }
-
-    // const request = new Request(url, {
-    //   method: "PATCH",
-    //   credentials: "same-origin",
-    //   body: JSON.stringify(requestBody),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Accept: "*/*",
-    //     credentials: "same-origin",
-    //   },
-    // });
-    //
-    // await fetch(request)
-    //   .then((res) => {
-    //     if (res.ok) {
-    //       this.setState({
-    //         durationSent: true,
-    //       });
-    //       setTimeout(() => {
-    //         this.setState({
-    //           durationSent: false,
-    //         })
-    //       }, 2000);
-    //     } else {
-    //       throw new Error("status not ok");
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     this.setState({
-    //       genericError: true,
-    //     });
-    //     setTimeout(() => {
-    //       this.setState({
-    //         genericError: false,
-    //       })
-    //     }, 2000);
-    //   })
   }
 
   removeRow = async (mode, pendingBooking) => {
@@ -138,53 +99,7 @@ export class ManageBooking extends Component {
             genericError: false,
           })
         }, 2000);
-
       }
-
-      // PATCH request to confirm booking on backend
-      // const url = this.state.host + "/api/bookings/" + pendingBooking._id;
-      // const requestBody = {
-      //   isConfirmed: true,
-      // }
-      //
-      // const request = new Request(url, {
-      //   method: "PATCH",
-      //   credentials: "same-origin",
-      //   body: JSON.stringify(requestBody),
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Accept: "*/*",
-      //     credentials: "same-origin",
-      //   },
-      // });
-      //
-      // await fetch(request)
-      //   .then((res) => {
-      //     if (res.ok) {
-      //       this.setState({
-      //         bookingConfirmed: true,
-      //         pendingBookings: filteredBookings,
-      //       });
-      //       setTimeout(() => {
-      //         this.setState({
-      //           bookingConfirmed: false,
-      //         })
-      //       }, 2000);
-      //     } else {
-      //       throw new Error("status not ok");
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //     this.setState({
-      //       genericError: true,
-      //     });
-      //     setTimeout(() => {
-      //       this.setState({
-      //         genericError: false,
-      //       })
-      //     }, 2000);
-      //   })
     } else if (mode === "cancel") {
 
       const canceled = await cancelBooking(pendingBooking._id);
@@ -209,46 +124,6 @@ export class ManageBooking extends Component {
         }, 2000);
 
       }
-
-      // DELETE request to cancel booking
-      // const url = this.state.host + "/api/bookings/" + pendingBooking._id;
-      // const request = new Request(url, {
-      //   method: "DELETE",
-      //   credentials: "same-origin",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Accept: "*/*",
-      //     credentials: "same-origin",
-      //   },
-      // });
-      //
-      // await fetch(request)
-      //   .then((res) => {
-      //     if (res.ok) {
-      //       this.setState({
-      //         bookingCancelled: true,
-      //         pendingBookings: filteredBookings,
-      //       });
-      //       setTimeout(() => {
-      //         this.setState({
-      //           bookingCancelled: false,
-      //         })
-      //       }, 2000);
-      //     } else {
-      //       throw new Error("status not ok");
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //     this.setState({
-      //       genericError: true,
-      //     });
-      //     setTimeout(() => {
-      //       this.setState({
-      //         genericError: false,
-      //       })
-      //     }, 2000);
-      //   })
     }
   }
 
@@ -258,7 +133,6 @@ export class ManageBooking extends Component {
     this.setState(loginStats);
 
     // get bookings for that user
-    // let url = this.state.host + "/api/get-bookings";
     const requestBody = this.state.isArtist ? {
       artistID: this.state.userId,
       isConfirmed: false,
@@ -266,26 +140,6 @@ export class ManageBooking extends Component {
       customerID: this.state.userId,
       isConfirmed: false,
     };
-    //
-    // let request = new Request(url, {
-    //   method: "POST",
-    //   credentials: "same-origin",
-    //   headers: {
-    //     Accept: "*/*",
-    //     credentials: "same-origin",
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(requestBody),
-    // });
-    //
-    // await fetch(request)
-    //   .then(res => res.json())
-    //   .then(json => {
-    //     console.log("fetch bookings", json)
-    //     this.setState({
-    //       pendingBookings: json.isConfirmedBooking,
-    //     })
-    //   });
 
     const fetchedBookings = await getBookings(requestBody);
     this.setState({
