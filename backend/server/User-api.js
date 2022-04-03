@@ -113,7 +113,7 @@ module.exports = function(app) {
       if (!result) {
         res.status(404).send('Resource not found')
       } else {
-        res.send({result})
+        res.send(result)
       }
     }catch(error) {
       log(error)
@@ -123,7 +123,7 @@ module.exports = function(app) {
 
 
   //modify user info by id
-  app.patch("/api/users/:id", async(req, res) => {
+  app.put("/api/users/:id", async(req, res) => {
     const id = req.params.id
 
     if (!ObjectID.isValid(id)) {

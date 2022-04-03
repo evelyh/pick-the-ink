@@ -1,15 +1,13 @@
-import {addImage} from './image.js'
-import {login, getlogin} from './loginSignUp'
+import {addImageUserProfile} from './image.js'
+import {login, getLoginStatus} from './loginSignUp'
 const log = console.log
 log('Loaded front-end javascript.')
 
 const hostURL = "http://localhost:5000";
 
 
-
-
 async function getUser(id) {
-
+    
     const url = hostURL + '/api/users/' + id;
 
     const request = new Request(url, {
@@ -82,18 +80,18 @@ async function getUserFollower(id) {
     return arr;
 }
 
-getUserFollowing("624769ffa025c967d7d132a0")
-
 async function postUser(data) {
     const id = data._id;
     delete data._id;
     delete data.__v;
     delete data.password;
     const favoriteStyles = [];
-
-    console.log(data.profilePic)
-    if(data.profilePic != undefined && typeof(data.profilePic) == File){
-        await addImage(data.profilePic).then(json => data.profilePic = json["img"]);
+    if(data.profilePic != undefined && typeof(data.profilePic) == 'object'){
+        await addImageUserProfile(data.profilePic).then(json => 
+            {
+                console.log(json, 66666)
+                data.profilePic = json["img"]}
+            );
     }else{
         delete data.profilePic;
     }
