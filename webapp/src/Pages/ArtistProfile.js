@@ -10,9 +10,11 @@ import { Card, CardBody, CardImg,CardText,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  UncontrolledDropdown,Button} from 'reactstrap'
+  UncontrolledDropdown,
+  Button,
+  Row} from 'reactstrap'
 import PopUpAppointmentForm from 'components/PopUpAppointmentForm'
-
+import ArtistNavBar from '../components/ArtistNavBar'
 
 function ArtistProfile() {
 
@@ -47,6 +49,7 @@ function ArtistProfile() {
         <div>
           <Header loggedIn={true}/>
         </div>
+        <div><ArtistNavBar></ArtistNavBar></div>
         <PopUpArtistProfileForm info={values} setInfo = {setValues} success={success} setSuccess={setSuccess} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpArtistProfileForm>
         {isUser ? null : <PopUpAppointmentForm info={values} setInfo = {setValues} trigger={buttonPopUpBook} setTrigger={setButtonPopUpBook}>My Popup</PopUpAppointmentForm>}
 
@@ -84,14 +87,14 @@ function ArtistProfile() {
             
             {isUser? null: <Button size='sm'
                 type="button" onClick={()=> setButtonPopUpBook(true)}>Book an appointment</Button>}
-            <Button
+            {/* <Button
                 size='sm'
                 type="button"
                 onClick={(e) => {
                   e.preventDefault();
                   window.location.href='http://localhost:3000/artistgallery';
                   }}
-            > Gallery</Button>
+            > Gallery</Button> */}
             </div>
             <div className="col-7">
             <Alert variant="success" show={success}>
@@ -162,6 +165,20 @@ function ArtistProfile() {
               </Container>
             </div>
           </div>
+        </div>
+        <div>
+        <footer className="footer footer-black footer-white">
+          <Container>
+            <Row>
+              <div className="credits ml-auto">
+              <span className="copyright">
+                © {new Date().getFullYear()}, made with{" "}
+                <i className="fa fa-heart heart" /> by Creative Team09
+              </span>
+              </div>
+            </Row>
+          </Container>
+        </footer>
         </div>
       </div>
       )

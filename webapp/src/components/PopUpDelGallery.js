@@ -8,22 +8,22 @@ import { updateArtistsGallery, deleteImageById } from "../apiHook/image";
 export default function PopUpDelGallery(props){
 
     const deleteById = async (id) => {
-
+        console.log("MYID"+props.myID)
         await getUser(props.myID).then(async (res) => {
-          console.log(id)
-          console.log(res)
           var idx = -1;
-          for (var i = 0; i < res.artistSub.artworks.length; i++)
+          console.log(res.result)
+          console.log(res.result.artistSub.artworks[1])
+          for (var i = 0; i < res.result.artistSub.artworks.length; i++)
           {
-            if(res.artistSub.artworks[i] === id)
+            if(res.result.artistSub.artworks[i] === id)
             {
               idx = i;
               break;
             }
           }
           if (idx !== -1){
-            res.artistSub.artworks.splice(idx, 1);
-            await updateArtistsGallery(res).catch(error => {
+            res.result.artistSub.artworks.splice(idx, 1);
+            await updateArtistsGallery(res.result).catch(error => {
               console.log(error);
             });
     

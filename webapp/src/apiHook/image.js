@@ -165,6 +165,8 @@ async function updateArtistsGallery(data)
 {
     const url = host + '/api/users/' + data._id;
 
+    log("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+    log(data)
     const request = new Request(url, {
         method: "PUT",
         headers: {
