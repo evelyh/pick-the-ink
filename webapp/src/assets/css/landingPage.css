@@ -35,8 +35,8 @@
   border-radius: "16px";
 }
 
-card:hover {
-  transform: scale(1.01);
+#card:hover {
+  transform: none;
 }
 
 #carousel {
@@ -45,7 +45,11 @@ card:hover {
   border-radius: 16px;
 }
 
-#username {
+.label {
+  font-weight: "bold";
+}
+
+#cardname {
   font-size: "18px";
   font-weight: "bold";
 }

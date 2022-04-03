@@ -1,81 +1,102 @@
-import React, { Component, useState} from 'react'
-import HeaderAdmin from 'components/HeaderAdmin'
+import React, { Component, useEffect, useState} from 'react'
+import HeaderAdmin from '../components/HeaderAdmin'
 import { Container, Button} from 'react-bootstrap'
+import AdminLogin from './AdminLogin.js'
+import {getAllUsers, getUserLicense, getUserPhyID, verifyArtist} from '../apiHook/admin.js'
+import useToken from '../components/UseToken.js'
+import { getImageById } from 'apiHook/image'
 
 function Admin () {
-  const [data, setData] = useState([
-    { username: "Spongebob", accountStatus: "active", artistStatus: "approved"},
-    { username: "Gary", accountStatus: "suspended", artistStatus: "N/A"},
-    { username: "PatrickYahhh", accountStatus: "active", artistStatus:"applied"},
-    { username: "Mr.krab", accountStatus: "active", artistStatus:"rejected",},
-  ]);
+  const [data, setData] = useState([]);
 
-  const handleSuspend = (i, e) =>{
+  const { token, setToken } = useToken();
+
+  const [success, setSuccess] = useState(false)
+  useEffect(() => {
+      getAllUsers().then(json => {
+        setData(json)
+      })
+  }, [success])
+
+  const handleLicense = (i, e) =>{
     e.preventDefault();
-    const newData = [...data];
-    newData[i].accountStatus = "suspended";
-    setData(newData);
+    console.log(i)
+    getUserLicense(data[i]._id).then(imageID => {
+      getImageById(imageID).then(img => {
+        console.log(img)
+          var win = window.open(img.images.img, '_blank')
+          win.focus()
+      })
+    })
   }
 
-  const handleActivate = (i, e) =>{
+  const handlePhyID = (i, e) =>{
     e.preventDefault();
-    const newData = [...data];
-    newData[i].accountStatus = "active";
-    setData(newData);
+    getUserPhyID(data[i]._id).then(imageID => {
+      getImageById(imageID).then(img => {
+          var win = window.open(img.images.img, '_blank')
+          win.focus()
+      })
+    })
   }
 
-  const handleApprove = (i, e) =>{
+  const handleApprove = async (i, e) =>{
     e.preventDefault();
-    const newData = [...data];
-    newData[i].artistStatus = "approved";
-    setData(newData);
+    verifyArtist({userID: data[i]._id, verify: true}).then(json => {
+        if(json){
+          setSuccess(!success)
+        }
+    })
   }
 
-  const handleReject = (i, e) =>{
+  const handleReject = async (i, e) =>{
     e.preventDefault();
-    const newData = [...data];
-    newData[i].artistStatus = "rejected";
-    setData(newData);
+    verifyArtist({userID: data[i]._id, verify: false}).then(json => {
+      if(json){
+        setSuccess(!success)
+      }
+  })
   }
 
-    return (
+  if(!token){
+    return <AdminLogin setToken={setToken}></AdminLogin>
+  }
+
+  return (
       <div>
         <div><HeaderAdmin/></div>        
         <Container>
-          <h4>Accounts Overview</h4>
+          <h4>Artists Account Status Overview</h4>
           <div className="App">
-      <table class="table mt-3">
+      <table className="table mt-3">
         <thead>
         <tr>
           <th scope="col">Username</th>
-          <th scope="col">Account Status</th>
-          <th scope="col">Actions</th>
-          <th scope="col">Artist Status</th>
+          <th scope="col">Verified</th>
           <th scope="col">Actions</th>
         </tr>
         </thead>
       <tbody>
-        {data.map((_, index) => {
-          return (
-            <tr key={index} scope="row">
-              <td>{data[index].username}</td>
-              <td>{data[index].accountStatus}</td>
-              <td>
-                <button type="button" class="btn btn-outline-danger btn-sm" onClick={handleSuspend.bind(this, index)}> 
-                Suspend </button>
-                <button type="button" class="btn btn-outline-success btn-sm" onClick={handleActivate.bind(this, index)}> 
-                Activate </button>
-              </td>
-              <td>{data[index].artistStatus}</td>
-              <td>
-              <button type="button" class="btn btn-outline-info btn-sm"> View </button>
-              <button type="button" class="btn btn-outline-success btn-sm" onClick={handleApprove.bind(this, index)}> 
-              Approve </button>
-              <button type="button" class="btn btn-outline-danger btn-sm" onClick={handleReject.bind(this, index)}> 
-              Reject </button>
-              </td>
-            </tr>
-          )
+        {data.map((item, index) => {
+          if(item.artistSub != null){
+            return (
+              <tr key={item.userName} scope="row">
+                <td>{item.userName}</td>
+                <td>{JSON.stringify(item.artistSub.approved)}</td>
+                <td>
+                <button type="button" className="btn btn-outline-info btn-sm" onClick={handleLicense.bind(this, index)}> 
+                View License</button>
+                <button type="button" className="btn btn-outline-info btn-sm" onClick={handlePhyID.bind(this, index)}> 
+                View Identification</button>
+                <button type="button" className="btn btn-outline-success btn-sm" onClick={handleApprove.bind(this, index)}> 
+                Approve </button>
+                <button type="button" className="btn btn-outline-danger btn-sm" onClick={handleReject.bind(this, index)}> 
+                Reject </button>
+                </td>
+              </tr>
+            )
+          }
+
         })}</tbody>
       </table>
     </div>

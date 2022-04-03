@@ -1,9 +1,10 @@
 
 const hostURL = "http://localhost:5000";
 
-const url = hostURL + '/api/styles';
+
 
 async function getAllStyles() {
+    const url = hostURL + '/api/styles';
     const request = new Request(url, {
         method: 'get',
         headers: {
