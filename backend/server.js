@@ -8,11 +8,7 @@ const app = express();
 const bodyParser = require('body-parser')
 app.use(bodyParser.json());
 const cors = require("cors");
-app.use(cors({
-	origin: ["http://localhost:3000"], // todo: add hosts
-	methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
-	withCredentials: true,
-}));
+app.use(cors());
 
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());

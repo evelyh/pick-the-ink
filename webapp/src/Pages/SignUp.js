@@ -3,11 +3,12 @@ import Header from "../components/Header";
 import NavTabTwo from "../components/NavTabTwo";
 import { Navigate } from "react-router-dom";
 import {Alert, Button, Input, Label} from "reactstrap";
-
+import {addImage} from "../apiHook/image";
+import {getLoginStatus, signup} from "../apiHook/loginSignUp";
 // styles
 import "../assets/css/loginSignUp.css";
 
-export class Login extends Component {
+export class SignUp extends Component {
 
   state = {
     firstName: "",
@@ -17,13 +18,19 @@ export class Login extends Component {
     dob: "",
     username: "",
     password: "",
-    success: false,
+    success: null,
     showPassword: false,
     artist: false,
+    license: "",
+    physicalId: "",
     host: "http://localhost:5000",
     showFail: false,
     loggedIn: null,
     redirect: false,
+    formContainer: {
+      // display: "none",
+    }
+
   }
 
   handleInputChange = (event) => {
@@ -35,50 +42,92 @@ export class Login extends Component {
     });
   }
 
-  signUserUp = (event) => {
+  handleFileChange = (event) => {
+    if (event.target.files && event.target.files[0]){
+      const name = event.target.name;
+
+      this.setState({
+        [name]: event.target.files[0],
+      });
+    }
+  }
+
+  signUserUp = async (event) => {
 
     event.preventDefault();
-    document.getElementById("signup-form").checkValidity();
+    const valid = document.getElementById("signup-form").checkValidity();
     document.getElementById("signup-form").reportValidity();
 
-    // todo: connect to backend
-    // sign user up with the info given
+    if (valid){
+      // upload files to cloud
+      let licenseId = "";
+      await addImage({img: this.state.license}).then((json) => {
+        licenseId = json._id;
+      });
+      let identificationId = "";
+      await addImage({img: this.state.physicalId}).then((json) => {
+        identificationId = json._id;
+      })
 
-    const requestBody = {
-      userName: this.state.username,
-      password: this.state.password,
-      email: this.state.mail,
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      birthDate: this.state.dob,
-      isArtist: this.state.artist,
-      phoneNum: this.state.phone,
-      artistSub: { // todo: handle file uploads
-        license: "something",
-        physicalID: "something else",
-      }
-    };
+      // sign user up with the info given
 
-    console.log(requestBody);
+      const requestBody = {
+        userName: this.state.username,
+        password: this.state.password,
+        email: this.state.mail,
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        birthDate: this.state.dob,
+        isArtist: (this.state.artist === "on"),
+        phoneNum: this.state.phone,
+        artistSub: {
+          license: licenseId,
+          physicalID: identificationId,
+        },
+      };
 
-    const url = this.state.host + "/api/users";
-    const request = new Request(url, {
-      method: "POST",
-      credentials: 'same-origin',
-      body: JSON.stringify(requestBody),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: '*/*',
-        credentials: 'same-origin',
-      },
-    });
+      // const url = this.state.host + "/api/users";
+      // const request = new Request(url, {
+      //   method: "POST",
+      //   credentials: 'same-origin',
+      //   body: JSON.stringify(requestBody),
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Accept: '*/*',
+      //     credentials: 'same-origin',
+      //   },
+      // });
+      //
+      // fetch(request).then((res) => {
+      //   console.log(res)
+      //   if (res.ok) {
+      //     this.setState({
+      //       success: true,
+      //     });
+      //     setTimeout(() => {
+      //       this.setState({
+      //         success: false,
+      //         redirect: true,
+      //       })
+      //     }, 3000);
+      //   } else {
+      //     // bad request
+      //     this.setState({
+      //       showFail: true,
+      //     });
+      //     setTimeout(() => {
+      //       this.setState({
+      //         showFail: false,
+      //       })
+      //     }, 2000);
+      //   }
+      // }).catch((error) => {
+      //   console.log(error);
+      // })
 
-    fetch(request).then((res) => {
-      console.log(res)
-      if (res.ok){
-        this.setState({
-          success: true,
-        });
+      const signupStats = signup(requestBody);
+      if (signupStats.success){
+        this.setState(signupStats);
         setTimeout(() => {
           this.setState({
             success: false,
@@ -86,44 +135,32 @@ export class Login extends Component {
           })
         }, 3000);
       } else{
-        // bad request
-        this.setState({
-          showFail: true,
-        });
+        this.setState(signupStats);
         setTimeout(() => {
           this.setState({
             showFail: false,
           })
         }, 2000);
       }
-    }).catch((error) => {
-      console.log(error);
-    })
+
+    } else{
+      // bad request
+      this.setState({
+        showFail: true,
+      });
+      setTimeout(() => {
+        this.setState({
+          showFail: false,
+        })
+      }, 2000);
+    }
 
   }
 
-  componentDidMount() {
-    if (this.state.loggedIn === null){
-      const url = this.state.host + "/users/login";
-      const request = new Request(url, {
-        method: "GET",
-        credentials: 'same-origin',
-        headers: {
-          Accept: 'application/json',
-          credentials: 'same-origin',
-          "Content-Type": "application/json",
-        },
-      });
-
-      fetch(request)
-        .then(res => res.json())
-        .then(json => {
-          console.log(json)
-          this.setState({
-            loggedIn: json.loggedIn,
-          });
-        });
-    }
+  async componentDidMount() {
+    // check login status
+    const loginStats = await getLoginStatus();
+    this.setState(loginStats);
   }
 
   checkRedirection = () => {
@@ -144,10 +181,8 @@ export class Login extends Component {
         {this.checkRedirection()}
 
         <Header loggedIn={false}/>
-        <Alert isOpen={this.state.showFail} color={"danger"}>Sign up failed, please check</Alert>
-        <Alert isOpen={this.state.success} color={"success"}>Sign up successful! Redirecting you to Login...</Alert>
 
-        <div className={"login-form-container"}>
+        <div className={"signup-form-container"} style={this.state.formContainer}>
 
           <NavTabTwo
             leftLink={"/login"}
@@ -257,13 +292,15 @@ export class Login extends Component {
               <Input type={"file"}
                      name={"license"}
                      id={"license"}
-                     required={this.state.artist}
+                     required={this.state.artist === "on"}
+                     onChange={this.handleFileChange}
               />
-              <Label for={"id"}>ID: </Label>
+              <Label for={"physicalId"}>ID: </Label>
               <Input type={"file"}
-                     name={"id"}
-                     id={"id"}
-                     required={this.state.artist}
+                     name={"physicalId"}
+                     id={"physicalId"}
+                     required={this.state.artist === "on"}
+                     onChange={this.handleFileChange}
               />
             </div>
 
@@ -274,6 +311,9 @@ export class Login extends Component {
 
 
         </div>
+        <Alert isOpen={this.state.showFail} color={"danger"}>Sign up failed, please check</Alert>
+        <Alert isOpen={this.state.success} color={"success"}>Sign up successful! Redirecting you to Login...</Alert>
+
 
 
       </div>
@@ -281,4 +321,4 @@ export class Login extends Component {
   }
 }
 
-export default Login
+export default SignUp
