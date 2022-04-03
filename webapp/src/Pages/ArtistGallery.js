@@ -1,6 +1,7 @@
 import React from 'react'
 import { Header } from '../components/Header'
 import { Container } from 'react-bootstrap'
+import { Row } from "reactstrap";
 import profilePic from '../assets/img/profilepic.jpg'
 import '../assets/css/userProfile.css'
 import { VscAdd } from "react-icons/vsc";
@@ -13,11 +14,13 @@ import { useState, useEffect } from 'react'
 import { Card, CardImg, CardBody, CardTitle, CardText, Button } from 'reactstrap';
 import FlatList from 'flatlist-react';
 import patrick from '../assets/img/patrick.jpg'
-import { 
+import {
+  Alert,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown} from 'reactstrap'
+import ArtistNavBar from '../components/ArtistNavBar'
 
 import {getImageById} from "../apiHook/image"
 import {getUser} from "../apiHook/profile"
@@ -26,9 +29,14 @@ import {getUser} from "../apiHook/profile"
 // todo: update current userID
 // todo: change the redirect link
 
+function useForceUpdate(){
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue(value => value + 1); // update the state to force render
+}
+
 function ArtistGallery() {
 
-  const myID = "624765be4de0da31f0fca2f4";
+  const myID = "624843d830301e0a340c70d5";
 
   const [values, setValues] = useState({
     userName: "SpongeBob",
@@ -42,33 +50,52 @@ function ArtistGallery() {
     gallery:[],
   });
 
+  const [dummy, setdummy] = useState(false);
+
   const [buttonPopUp, setButtonPopUp] = useState(false);
   const [buttonPopUpEdit, setButtonPopUpEdit] = useState(undefined);
+  const [editShow, setEditShow] = useState(false);
   const [buttonPopUpDel, setButtonPopUpDel] = useState(undefined);
+  const [delShow, setDelShow] = useState(false);
   const [buttonPopUpAdd, setButtonPopUpAdd] = useState(false);
+  const [addShow, setAddShow] = useState(false);
 
   const [isUser] = useState(true);
 
   const [mounted, setMounted] = useState(false)
 
+  const onDismissEdit = () => {
+    setEditShow(!editShow);
+  }
+
+  const onDismissDel = () => {
+    setDelShow(!delShow);
+  }
+
+  const onDismissAdd = () => {
+    setAddShow(!addShow);
+  }
+
   if(!mounted){
     getUser(myID).then(async (json) => 
       { 
+        json = json.result;
         console.log(json)
-        json.followers = json.followerIDs.length;
-        json.following = json.followingIDs.length;
         json.homeLocation = "Toronto";
         json.image = "../assets/img/profilepic.jpg"
+        json.followers = json.followerIDs.length
+        json.following = json.followingIDs.length
 
         json.gallery = [];
         for(let i = 0; i < json.artistSub.artworks.length; i++){
+          console.log("i"+i)
           await getImageById(json.artistSub.artworks[i]).then(res => {
-            console.log(res)
             const newImg = {
               id: res.images._id,
               title: res.images.title,
               img: res.images.img,
-              desc: res.images.desc
+              desc: res.images.desc,
+              created_at: res.images.created_at
             }
             json.gallery = json.gallery.concat(newImg);
             console.log(json.gallery)
@@ -81,33 +108,39 @@ function ArtistGallery() {
       });
   }
 
-  useEffect(async () => {
+  useEffect(() => {
     setMounted(true)
-    await getUser(myID).then(json => 
+    async function a()
+    {await getUser(myID).then(async json => 
       { 
         console.log(json)
-        json.followers = json.followerIDs.length;
-        json.following = json.followingIDs.length;
-        json.homeLocation = "Toronto";
-        json.image = "../assets/img/profilepic.jpg"
+        var resp = json.result;
+        resp.homeLocation = "Toronto";
+        resp.image = "../assets/img/profilepic.jpg"
+        resp.followers = resp.followerIDs.length
+        resp.following = resp.followingIDs.length
 
-        json.gallery = [];
-        for(let i = 0; i < json.artistSub.artworks.length; i++){
-          getImageById(json.artistSub.artworks[i]).then(res => {
-            console.log(res)
+        resp.gallery = [];
+
+        for(let j = 0; j < resp.artistSub.artworks.length; j++){
+          console.log("j"+j)
+          await getImageById(resp.artistSub.artworks[j]).then(res => {
             const newImg = {
               id: res.images._id,
               title: res.images.title,
               img: res.images.img,
               desc: res.images.desc
             }
-            json.gallery = json.gallery.concat(newImg);
-            console.log(json.gallery)
+            resp.gallery = resp.gallery.concat(newImg);
+            console.log(resp.gallery)
           })
         }
-        setValues(json)
+        setValues(resp)
         setButtonPopUp(false);
-      });
+      }).catch(error => {
+        console.log(error);
+      });}
+      a()
   }, [buttonPopUp])
 
 
@@ -126,16 +159,17 @@ function ArtistGallery() {
             id = {id}
             description = {galleryPic.desc}
             setValues = {setValues}
+            setAlert = {setEditShow}
             trigger={buttonPopUpEdit} 
             setTrigger={setButtonPopUpEdit}
+            relaod = {setdummy}
             >
-              Edit 
+              Edit
           </PopUpEditGallery> 
           <PopUpDelGallery 
-            values={values}
             id = {id}
             myID = {myID}
-            setValues = {setValues}
+            setAlert = {setDelShow}
             trigger={buttonPopUpDel} 
             setTrigger={setButtonPopUpDel}
             >
@@ -155,12 +189,17 @@ function ArtistGallery() {
         <div>
           <Header loggedIn={true}/>
         </div>
+        <div><ArtistNavBar></ArtistNavBar></div>
+        <Alert isOpen={delShow} color={"danger"} toggle={onDismissDel}>Deleted successfully</Alert>
+        <Alert isOpen={addShow} color={"sucess"} toggle={onDismissAdd}>Added successfully</Alert>
+        <Alert isOpen={editShow} color={"sucess"} toggle={onDismissEdit}>Edited successfully</Alert>
         {!isUser &&
         <PopUpAppointmentForm info={values} setInfo = {setValues} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpAppointmentForm>}
 
         <div className="container">
           {isUser &&<PopUpAddGallery
             myID={myID}
+            setAlert={setAddShow}
             trigger={buttonPopUpAdd} 
             setTrigger={setButtonPopUpAdd}
           >Add</PopUpAddGallery>}
@@ -208,7 +247,7 @@ function ArtistGallery() {
                 type="button"
                 onClick={()=> setButtonPopUp(true)}>Book an appointment</Button>}
 
-            <Button
+            {/* <Button
                 id="bt-pro"
                 size='sm'
                 type="button"
@@ -216,7 +255,7 @@ function ArtistGallery() {
                   e.preventDefault();
                   window.location.href='http://localhost:3000/artistprofile';
                   }}
-            > profile</Button>
+            > profile</Button> */}
               </Container>
             </div>
             <div className='col-6'>
@@ -237,8 +276,22 @@ function ArtistGallery() {
             </div>
           </div>
         </div>
+        <div>
+        <footer className="footer footer-black footer-white">
+          <Container>
+            <Row>
+              <div className="credits ml-auto">
+              <span className="copyright">
+                © {new Date().getFullYear()}, made with{" "}
+                <i className="fa fa-heart heart" /> by Creative Team09
+              </span>
+              </div>
+            </Row>
+          </Container>
+        </footer>
+        </div>
       </div>
     )
 }
 
-export default ArtistGallery
+export default ArtistGallery;

@@ -50,10 +50,8 @@ function UserProfile() {
       followerIDs:[],
       comment:""}
       );
-    
 
-    
-
+      
     let lst = [];
     const [success,setSuccess] = useState(false);
     useEffect(()=>{

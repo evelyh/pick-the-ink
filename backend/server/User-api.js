@@ -123,7 +123,7 @@ module.exports = function(app) {
 
 
   //modify user info by id
-  app.patch("/api/users/:id", async(req, res) => {
+  app.put("/api/users/:id", async(req, res) => {
     const id = req.params.id
 
     if (!ObjectID.isValid(id)) {
