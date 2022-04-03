@@ -1,109 +1,100 @@
 const host = "http://localhost:5000";
-const log = console.log
+
+// check login status
+// return {loggedIn, isArtist, userId}
+async function getLoginStatus() {
+  const url = host + "/users/login";
+  const request = new Request(url, {
+    method: "GET",
+    // credentials: 'same-origin',
+    headers: {
+      Accept: 'application/json',
+      "Content-Type": "application/json",
+    },
+  });
+
+  return await fetch(request)
+    .then(res => res.json())
+    .then(json => {
+      console.log(json)
+      return {
+        loggedIn: json.loggedIn,
+        isArtist: json.isArtist,
+        userId: json.user,
+      };
+    });
+}
+
+// logs user in
+// return {invalid}
+async function login(requestBody) {
+  const url = host + "/users/login";
+  const request = new Request(url, {
+    method: "POST",
+    credentials: 'same-origin',
+    body: JSON.stringify(requestBody),
+    headers: {
+      "Content-Type": "application/json",
+      Accept: '*/*',
+    },
+  });
+
+  return await fetch(request)
+    .then((res) => {
+      if (res.ok){
+        return{
+          invalid: false,
+        };
+      } else{
+        // bad request
+        return {
+          invalid: true,
+        };
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      return {
+        invalid: true,
+      };
+    })
+}
+
 // sign user up
-function signUp(data){
+// return {success} when success
+//        {showFail} when failed
+async function signup(requestBody){
   const url = host + "/api/users";
   const request = new Request(url, {
     method: "POST",
-    body: JSON.stringify(data),
+    credentials: 'same-origin',
+    body: JSON.stringify(requestBody),
     headers: {
       "Content-Type": "application/json",
+      Accept: '*/*',
     },
   });
 
-  fetch(request).then((res) => {
-    if (res.ok){
-      return res.json();
-    } else{
-      // bad request
-      alert("Sign up failed, please check all fields");
-    }
-  }).catch((error) => {
-    console.log(error);
-  })
+  return await fetch(request)
+    .then((res) => {
+      console.log(res)
+      if (res.ok) {
+        return {
+          success: true,
+        };
+      } else {
+        // bad request
+        return {
+          showFail: true,
+        };
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      return {
+        showFail: true,
+      };
+    })
 }
 
-// log user in
-async function login(data){
-  const url = host + "/users/login";
-  const request = new Request(url, {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  return await fetch(request).then(res => {
-    if (res.status === 200) {
-        console.log('Successfully logged in') 
-        return res.json()
-    } else {
-        console.log('[Unsuccessful] logged in')
-        return res.status
-    }
-}).
-catch((error) => {
-    log(error)
-})
-}
-
-// check login user status
-function loginStatus(){
-  const url = host + "/users/login";
-  const request = new Request(url, {
-    method: "GET",
-    credentials: "same-origin",
-    headers: {
-      Accept: "*/*",
-    }
-  });
-
-  fetch(request)
-    .then(res => res.json())
-    .then(json => {
-      return json;
-    });
-  }
- 
-async function getlogin(){
-  const url = host + "/users/login";
-  const request = new Request(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  return await fetch(request).then(res => {
-    if (res.status === 200) {
-        console.log('Successfully logged in') 
-        return res.json()
-    } else {
-        console.log('[Unsuccessful] logged in')
-        return res.status
-    }
-}).
-catch((error) => {
-    log(error)
-})};
-
-// sign user out
-function logout(){
-  const url = host + "/users/logout";
-  const request = new Request(url, {
-    method: "GET",
-  });
-
-  fetch(request).then((res) => {
-    if (res.ok){
-      return res.json();
-    } else{
-      alert("Logout failed. Please try again later");
-    }
-  }).catch((error) => {
-    console.log(error);
-  })
-};
-
-export { signUp, logout, login , getlogin, loginStatus}
+export { getLoginStatus, login, signup }

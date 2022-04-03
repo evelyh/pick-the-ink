@@ -29,10 +29,8 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage loggedIn={false} />} />
         <Route path={"/explore"} element={<LandingPage loggedIn={true}/>} />
-        <Route path="/managebooking" element={<ManageBookingClient />}/>
-        <Route path="/managebooking-confirm" element={<ManageBookingClientConfirm />}/>
-        <Route path="/artist-managebooking" element={<ManageBooking />}/>
-        <Route path="/artist-managebooking-confirm" element={<ManageBookingConfirm />}/>
+        <Route path="/managebooking" element={<ManageBooking />}/>
+        <Route path="/managebooking-confirm" element={<ManageBookingConfirm />}/>
         <Route path="/userprofile/:id" element={<UserProfile />} />
         <Route path="/userprofile/krab" element={<UserProfileKrab />} />
         <Route path="/userprofile/gary" element={<UserProfileGary />} />

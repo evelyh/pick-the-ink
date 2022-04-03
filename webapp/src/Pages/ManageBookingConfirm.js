@@ -5,83 +5,57 @@ import "../assets/css/managebooking.css"
 import BookingRow from "../components/BookingRow";
 import {uid} from "react-uid";
 import {Alert} from "reactstrap";
-import {loginStatus} from "../apiHook/loginSignUp";
+import {Navigate} from "react-router-dom";
+import {cancelBooking, getBookings} from "../apiHook/manageBooking";
+import {getLoginStatus} from "../apiHook/loginSignUp";
 
 export class ManageBookingConfirm extends Component {
 
   state = {
     isArtist: null,
-    confirmedBookings: [
-      // phase 1 code
-      // {
-      //   firstName: "Squidward",
-      //   lastName: "Tentacles",
-      //   email: "squid@spongebob.com",
-      //   dob: "1999-1-1",
-      //   phone: "(645) 634-8235",
-      //   interestedInGetting: "Custom Design",
-      //   details: "SpongeBob!",
-      //   size: "2cm x 7cm",
-      //   referencePic: "no pic",
-      //   otherDetails: "n/a",
-      //   bookingMonth: "Mar",
-      //   bookingDate: "10",
-      //   bookingTime: "15:00 - 18:00",
-      //   pendingConfirmation: false,
-      //   pendingDuration: false,
-      // },
-      // {
-      //   firstName: "Patrick",
-      //   lastName: "Star",
-      //   email: "patrick@spongebob.com",
-      //   dob: "1999-9-5",
-      //   phone: "(649) 624-0890",
-      //   interestedInGetting: "Custom Design",
-      //   details: "SpongeBob!",
-      //   size: "3cm x 8cm",
-      //   referencePic: "no pic",
-      //   otherDetails: "n/a",
-      //   bookingMonth: "Mar",
-      //   bookingDate: "12",
-      //   bookingTime: "10:00 - 12:00",
-      //   pendingConfirmation: false,
-      //   pendingDuration: false,
-      // }
-    ],
+    confirmedBookings: [],
     bookingCancelled: false,
     host: "http://localhost:5000",
     userId: "",
+    loggedIn: true,
   }
 
-  removeRow = (confirmedBooking) => {
+  removeRow = async (confirmedBooking) => {
 
     const filteredBookings = this.state.confirmedBookings.filter((booking) => {
       return booking !== confirmedBooking;
     });
 
-    this.setState({
-      bookingCancelled: true,
-      confirmedBookings: filteredBookings,
-    });
-
-    setTimeout(() => {
+    // DELETE request to cancel booking
+    const bookingCanceled = await cancelBooking(confirmedBooking._id);
+    if (bookingCanceled){
       this.setState({
-        bookingCancelled: false
-      })
-    }, 2000);
+        bookingCancelled: true,
+        confirmedBookings: filteredBookings,
+      });
+      setTimeout(() => {
+        this.setState({
+          bookingCancelled: false,
+        })
+      }, 2000);
+    } else{
+      this.setState({
+        genericError: true,
+      });
+      setTimeout(() => {
+        this.setState({
+          genericError: false,
+        })
+      }, 2000);
+    }
   }
 
-  componentDidMount() {
-
-    // todo: redirect to home if not logged in
-
-    // get userType and userId
-    const loginStatus = loginStatus();
-    this.state.isArtist = loginStatus.isArtist;
-    this.state.userId = loginStatus.user;
+  async componentDidMount() {
+    // get login status
+    const loginStats = await getLoginStatus();
+    this.setState(loginStats);
 
     // get bookings for that user
-    const url = this.state.host + "/api/bookings";
     const requestBody = this.state.isArtist ? {
       artistID: this.state.userId,
       isConfirmed: true,
@@ -89,39 +63,33 @@ export class ManageBookingConfirm extends Component {
       customerID: this.state.userId,
       isConfirmed: true,
     };
-
-    const request = new Request(url, {
-      method: "GET",
-      credentials: "same-origin",
-      headers: {
-        Accept: "*/*",
-        credentials: "same-origin",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
+    const fetchedBookings = await getBookings(requestBody);
+    this.setState({
+      confirmedBookings: fetchedBookings,
     });
 
-    fetch(request)
-      .then(res => res.json())
-      .then(json => {
-        this.setState({
-          confirmedBookings: json,
-        })
-      });
+  }
+
+  checkRedirection = () => {
+    console.log("inside checkRedirection: ", this.state.loggedIn)
+    if (!this.state.loggedIn){
+      return <Navigate to={"/"} />;
+    }
   }
 
   render() {
 
     return (
       <div>
+        {this.checkRedirection()}
         <Header loggedIn={true}/>
 
         <div className={"managebooking-body"}>
           <h1 className={"page-head"}>Manage Booking</h1>
 
           <NavTabTwo
-            leftLink={"/artist-managebooking"}
-            rightLink={"/artist-managebooking-confirm"}
+            leftLink={"/managebooking"}
+            rightLink={"/managebooking-confirm"}
             leftActive={false}
             rightActive={true}
             leftText={"Pending"}
@@ -132,7 +100,7 @@ export class ManageBookingConfirm extends Component {
             <tr>
               <th className={"date-head"}>Date</th>
               <th className={"time-head"}>Time</th>
-              <th>{ this.state.userType === 0 ? "Customer" : "Artist"}</th>
+              <th>{ this.state.isArtist ? "Customer" : "Artist"}</th>
               <th>Actions</th>
             </tr>
 
@@ -141,7 +109,7 @@ export class ManageBookingConfirm extends Component {
                 <BookingRow
                   key={uid(confirmedBooking)}
                   confirmedBooking={confirmedBooking}
-                  userType={this.state.userType}
+                  isArtist={this.state.isArtist}
                   removeRow={() => this.removeRow(confirmedBooking)}
                 />
               )

@@ -9,12 +9,15 @@ export class PopUpSendDuration extends Component {
     duration: 0,
   }
 
+  sendDuration = () => {
+    this.props.sendDuration(this.state.duration);
+  }
+
   render() {
 
     const {
       trigger,
       setTrigger,
-      sendDuration,
     } = this.props;
 
     return (trigger) ? (
@@ -41,7 +44,7 @@ export class PopUpSendDuration extends Component {
               color={"default"}
               data-dismiss={"modal"}
               type={"button"}
-              onClick={sendDuration}>
+              onClick={this.sendDuration}>
               SEND
             </Button>
             <Button

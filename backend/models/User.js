@@ -9,46 +9,44 @@ var validateEmail = function(email) {
 };
 
 const ArtistSchema = new mongoose.Schema({
-    artworks: {
-        type: [mongoose.SchemaTypes.ObjectId],
-        required: false,
-        ref: "Image"
-    },
-    homeLocation: {
-        type: mongoose.SchemaTypes.ObjectId,
-		    required: false,
-        ref: "Location"
-    },
-    artStyles: {
-        type: [mongoose.SchemaTypes.ObjectId],
-		    required: false,
-        ref: "Style"
-    },
-    bookingCancellable: {
-        type: Boolean,
-        required: true,
-        default: true
-    },
-    bookingModifiable: {
-        type: Boolean,
-        required: true,
-        default: true
-    },
-    physicalID:{
-        type: mongoose.SchemaTypes.ObjectId,
-        required: true,
-        ref: "Image"
-    },
-    license: {
-        type: mongoose.SchemaTypes.ObjectId,
-        required: true,
-        ref: "Image"
-    },
-    approved: {
-        type: Boolean,
-        required: true,
-        default: false
-    }
+  artworks: {
+    type: [mongoose.SchemaTypes.ObjectId],
+    required: false,
+    ref: "Image"
+  },
+  homeLocation: {
+    type: mongoose.SchemaTypes.ObjectId,
+    required: false,
+    ref: "Location"
+  },
+  artStyles: {
+    type: [mongoose.SchemaTypes.ObjectId],
+    required: false,
+    ref: "Style"
+  },
+  bookingCancellable: {
+    type: Boolean,
+    required: true,
+    default: true
+  },
+  bookingModifiable: {
+    type: Boolean,
+    required: true,
+    default: true
+  },
+  physicalID:{
+    type: String,
+    required: true
+  },
+  license: {
+    type: String,
+    required: true
+  },
+  approved: {
+    type: Boolean,
+    required: true,
+    default: false
+  }
 });
 
 const UserSchema = new mongoose.Schema({
@@ -94,7 +92,8 @@ const UserSchema = new mongoose.Schema({
   },
   phoneNum: {
     type: String,
-    required: false
+    required: false,
+    default: null,
   },
   comment: {
     type: String,
