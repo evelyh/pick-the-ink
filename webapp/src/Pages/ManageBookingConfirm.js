@@ -48,74 +48,12 @@ export class ManageBookingConfirm extends Component {
         })
       }, 2000);
     }
-
-    // // DELETE request to cancel booking
-    // const url = this.state.host + "/api/bookings/" + confirmedBooking._id;
-    // const request = new Request(url, {
-    //   method: "DELETE",
-    //   credentials: "same-origin",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Accept: "*/*",
-    //     credentials: "same-origin",
-    //   },
-    // });
-    //
-    // await fetch(request)
-    //   .then((res) => {
-    //     if (res.ok) {
-    //       this.setState({
-    //         bookingCancelled: true,
-    //         confirmedBookings: filteredBookings,
-    //       });
-    //       setTimeout(() => {
-    //         this.setState({
-    //           bookingCancelled: false,
-    //         })
-    //       }, 2000);
-    //     } else {
-    //       throw new Error("status not ok");
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     this.setState({
-    //       genericError: true,
-    //     });
-    //     setTimeout(() => {
-    //       this.setState({
-    //         genericError: false,
-    //       })
-    //     }, 2000);
-    //   })
   }
 
   async componentDidMount() {
     // get login status
     const loginStats = await getLoginStatus();
     this.setState(loginStats);
-
-    // let url = this.state.host + "/users/login";
-    // let request = new Request(url, {
-    //   method: "GET",
-    //   credentials: 'same-origin',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     credentials: 'same-origin',
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    //
-    // await fetch(request)
-    //   .then(res => res.json())
-    //   .then(json => {
-    //     console.log(json)
-    //     this.setState({
-    //       loggedIn: json.loggedIn,
-    //       isArtist: json.isArtist,
-    //       userId: json.user,
-    //     });
-    //   });
 
     // get bookings for that user
     const requestBody = this.state.isArtist ? {
@@ -130,34 +68,6 @@ export class ManageBookingConfirm extends Component {
       confirmedBookings: fetchedBookings,
     });
 
-    // url = this.state.host + "/api/get-bookings";
-    // const requestBody = this.state.isArtist ? {
-    //   artistID: this.state.userId,
-    //   isConfirmed: true,
-    // } : {
-    //   customerID: this.state.userId,
-    //   isConfirmed: true,
-    // };
-    //
-    // request = new Request(url, {
-    //   method: "POST",
-    //   credentials: "same-origin",
-    //   headers: {
-    //     Accept: "*/*",
-    //     credentials: "same-origin",
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(requestBody),
-    // });
-    //
-    // await fetch(request)
-    //   .then(res => res.json())
-    //   .then(json => {
-    //     console.log("fetch bookings", json)
-    //     this.setState({
-    //       confirmedBookings: json.isConfirmedBooking,
-    //     })
-    //   });
   }
 
   checkRedirection = () => {

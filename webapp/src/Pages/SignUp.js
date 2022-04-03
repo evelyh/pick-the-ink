@@ -86,45 +86,6 @@ export class SignUp extends Component {
         },
       };
 
-      // const url = this.state.host + "/api/users";
-      // const request = new Request(url, {
-      //   method: "POST",
-      //   credentials: 'same-origin',
-      //   body: JSON.stringify(requestBody),
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Accept: '*/*',
-      //     credentials: 'same-origin',
-      //   },
-      // });
-      //
-      // fetch(request).then((res) => {
-      //   console.log(res)
-      //   if (res.ok) {
-      //     this.setState({
-      //       success: true,
-      //     });
-      //     setTimeout(() => {
-      //       this.setState({
-      //         success: false,
-      //         redirect: true,
-      //       })
-      //     }, 3000);
-      //   } else {
-      //     // bad request
-      //     this.setState({
-      //       showFail: true,
-      //     });
-      //     setTimeout(() => {
-      //       this.setState({
-      //         showFail: false,
-      //       })
-      //     }, 2000);
-      //   }
-      // }).catch((error) => {
-      //   console.log(error);
-      // })
-
       const signupStats = signup(requestBody);
       if (signupStats.success){
         this.setState(signupStats);

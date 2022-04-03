@@ -20,26 +20,6 @@ export class PopUpBookingDetails extends Component {
       this.setState({
         flashLink: flashUrl,
       });
-      console.log("after fetching image this.state", this.state);
-
-      // const flashUrl = this.state.host + "/api/images/" + this.props.booking.flashLink;
-      // const flashRequest = new Request(flashUrl, {
-      //   method: "GET",
-      //   credentials: "same-origin",
-      //   headers: {
-      //     Accept: "*/*",
-      //   }
-      // });
-      //
-      // await fetch(flashRequest)
-      //   .then(res => res.json())
-      //   .then(json => {
-      //     this.setState({
-      //       flashLink: json.images.img,
-      //     })
-      //   })
-      //   .catch((error) => {
-      //   })
     }
 
     if (this.props.booking.otherLink){
@@ -48,27 +28,6 @@ export class PopUpBookingDetails extends Component {
       this.setState({
         referencePic: referenceUrl,
       })
-
-
-      // const referenceUrl = this.state.host + "/api/images/" + this.props.booking.otherLink;
-      // const referenceRequest = new Request(referenceUrl, {
-      //   method: "GET",
-      //   credentials: "same-origin",
-      //   headers: {
-      //     Accept: "*/*",
-      //   }
-      // });
-      //
-      // await fetch(referenceRequest)
-      //   .then(res => res.json())
-      //   .then(json => {
-      //     this.setState({
-      //       referencePic: json.images.img,
-      //     })
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   })
     }
   }
 
