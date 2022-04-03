@@ -88,7 +88,8 @@ const UserSchema = new mongoose.Schema({
   },
   phoneNum: {
     type: String,
-    required: false
+    required: false,
+    default: null,
   },
   followingIDs: {
     type: [mongoose.SchemaTypes.ObjectId],

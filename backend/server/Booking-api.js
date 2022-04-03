@@ -76,13 +76,14 @@ module.exports = function(app) {
         }
     })
 
+    // THIS IS A GET, BUT EASIER TO MAKE IT TO WORK BY CHANGING TO POST THAN REWRITING AS QUERY
     // get all / get by artistID / get by customerID / get by isConfirmed
     // if do not have req.body, get all
     // req.body.artistID, get all bookings of that artist
     // req.body.customerID, get all bookings of that customer
     // req.body.artistID AND req.body.isConfirmed, get all bookings for confirmed/ (not confirmed) artist's bookings
     // req.body.customerID AND req.body.isConfirmed, get all bookings for confirmed/ (not confirmed) customer's bookings
-    app.get('/api/bookings', async (req, res) => {
+    app.post('/api/get-bookings', async (req, res) => {
         if (mongoose.connection.readyState != 1) {
             log('There is issue to mongoose connection')
             res.status(500).send('Internal server error')

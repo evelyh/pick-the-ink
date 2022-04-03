@@ -199,6 +199,7 @@ export class ManageBooking extends Component {
     await fetch(request)
       .then(res => res.json())
       .then(json => {
+        console.log("managebooking login status")
         console.log(json)
         this.setState({
           loggedIn: json.loggedIn,
@@ -207,15 +208,13 @@ export class ManageBooking extends Component {
         });
       });
 
-    console.log(this.state)
-
     // this.state.loggedIn = status.loggedIn;
     // console.log(status)
     // this.state.isArtist = status.isArtist;
     // this.state.userId = status.user;
 
     // get bookings for that user
-    url = this.state.host + "/api/bookings";
+    url = this.state.host + "/api/get-bookings";
     const requestBody = this.state.isArtist ? {
       artistID: this.state.userId,
       isConfirmed: false,
@@ -223,10 +222,9 @@ export class ManageBooking extends Component {
       customerID: this.state.userId,
       isConfirmed: false,
     };
-    console.log(requestBody)
 
     request = new Request(url, {
-      method: "GET",
+      method: "POST",
       credentials: "same-origin",
       headers: {
         Accept: "*/*",
@@ -239,17 +237,17 @@ export class ManageBooking extends Component {
     await fetch(request)
       .then(res => res.json())
       .then(json => {
-        console.log("fetch bookings")
-        console.log(json)
+        console.log("fetch bookings", json)
         this.setState({
-          pendingBookings: json,
+          pendingBookings: json.isConfirmedBooking,
         })
       });
+
+    console.log("this.state in managebooking after fetch: ", this.state)
   }
 
   checkRedirection = () => {
-    console.log("inside checkRedirection: ")
-    console.log(this.state.loggedIn);
+    console.log("inside checkRedirection: ", "logged in: ", this.state.loggedIn)
     if (!this.state.loggedIn){
         return <Navigate to={"/"} />;
     }
@@ -278,7 +276,7 @@ export class ManageBooking extends Component {
             <tr>
               <th className={"date-head"}>Date</th>
               <th className={"time-head"}>Time</th>
-              <th>{ this.state.isArtist ? "Artist" : "Customer"}</th>
+              <th>{ this.state.isArtist ? "Customer" : "Artist"}</th>
               <th>Actions</th>
             </tr>
 

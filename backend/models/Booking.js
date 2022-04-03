@@ -5,16 +5,17 @@ const Booking = mongoose.model("Booking", {
   artistID: {
     type: mongoose.SchemaTypes.ObjectId,
     required: true,
-    ref: "Artist", // todo: check if name matches
+    ref: "Artist",
   },
   customerID: {
     type: mongoose.SchemaTypes.ObjectId,
     required: true,
-    ref: "User", // todo: check if name matches
+    ref: "User",
   },
   timeslots: {
     type: [mongoose.SchemaTypes.ObjectId],
     ref: "Timeslot",
+    default: null,
   },
   isCancellable: {
     type: Boolean,
@@ -30,21 +31,29 @@ const Booking = mongoose.model("Booking", {
   },
   flashLink: { // link to image of flash
     type: mongoose.SchemaTypes.ObjectId,
+    required: false,
+    ref: "Image",
+    default: null,
   },
-  // todo: ^ maybe change image links to link to Image schema?
+
   customIdea: {
     type: String,
+    default: null,
   },
   size: {
     type: String,
-    required:true
+    required:true,
+    default: null,
   },
   placement: {
     type: String,
-    required:true
+    required:true,
+    default: null,
   },
   otherLink: { // image / screenshot
     type: mongoose.SchemaTypes.ObjectId,
+    ref: "Image",
+    default: null,
   },
   concerns: {
     type: String,
@@ -52,7 +61,7 @@ const Booking = mongoose.model("Booking", {
   duration: {
     type: Number,
     min: 1,
-    default: 1,
+    default: null,
   },
   isConfirmed: {
     type: Boolean,
