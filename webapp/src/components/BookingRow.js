@@ -163,7 +163,7 @@ export class BookingRow extends Component {
       <tr>
         <td><span className={"month"}>{this.state.bookingMonth}</span><br/><span
           className={"date"}>{this.state.bookingDate}</span></td>
-        <td><span className={"cell-details"}>{this.state.bookingTimeString ? this.state.bookingTimeString : (isArtist ? "Pending duration" : "Pending")}</span></td>
+        <td><span className={"cell-details"}>{this.state.bookingTimeString ? this.state.bookingTimeString : (isArtist && (!confirmedBooking.duration) ? "Pending duration" : "Pending")}</span></td>
         <td><span className={"cell-details"}>{isArtist ? this.state.customerName : this.state.artistName}</span></td>
         <td>
           <i title={"Booking Details"}
@@ -174,7 +174,7 @@ export class BookingRow extends Component {
           {/*   className={"icons nc-icon nc-settings"}*/}
           {/*/> todo: implement booking toggles*/}
 
-          {confirmedBooking.duration === null && isArtist ?
+          {(confirmedBooking.duration === null && isArtist) || (isArtist && (!this.state.bookingTimeString)) ?
             <i title={"Send Duration Estimate"}
                className={"icons nc-icon nc-send"}
                onClick={() => this.setState({showSendDuration: true})}

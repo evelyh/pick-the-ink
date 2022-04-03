@@ -3,10 +3,10 @@ import Header from "../components/Header";
 import NavTabTwo from "../components/NavTabTwo";
 import { Navigate } from "react-router-dom";
 import {Alert, Button, Input, Label} from "reactstrap";
-
+import {addImage} from "../apiHook/image";
+import {getLoginStatus, signup} from "../apiHook/loginSignUp";
 // styles
 import "../assets/css/loginSignUp.css";
-import {addImage} from "../apiHook/image";
 
 export class SignUp extends Component {
 
@@ -42,7 +42,6 @@ export class SignUp extends Component {
     });
   }
 
-  // todo: double check
   handleFileChange = (event) => {
     if (event.target.files && event.target.files[0]){
       const name = event.target.name;
@@ -87,44 +86,62 @@ export class SignUp extends Component {
         },
       };
 
-      const url = this.state.host + "/api/users";
-      const request = new Request(url, {
-        method: "POST",
-        credentials: 'same-origin',
-        body: JSON.stringify(requestBody),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: '*/*',
-          credentials: 'same-origin',
-        },
-      });
+      // const url = this.state.host + "/api/users";
+      // const request = new Request(url, {
+      //   method: "POST",
+      //   credentials: 'same-origin',
+      //   body: JSON.stringify(requestBody),
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Accept: '*/*',
+      //     credentials: 'same-origin',
+      //   },
+      // });
+      //
+      // fetch(request).then((res) => {
+      //   console.log(res)
+      //   if (res.ok) {
+      //     this.setState({
+      //       success: true,
+      //     });
+      //     setTimeout(() => {
+      //       this.setState({
+      //         success: false,
+      //         redirect: true,
+      //       })
+      //     }, 3000);
+      //   } else {
+      //     // bad request
+      //     this.setState({
+      //       showFail: true,
+      //     });
+      //     setTimeout(() => {
+      //       this.setState({
+      //         showFail: false,
+      //       })
+      //     }, 2000);
+      //   }
+      // }).catch((error) => {
+      //   console.log(error);
+      // })
 
-      fetch(request).then((res) => {
-        console.log(res)
-        if (res.ok) {
+      const signupStats = signup(requestBody);
+      if (signupStats.success){
+        this.setState(signupStats);
+        setTimeout(() => {
           this.setState({
-            success: true,
-          });
-          setTimeout(() => {
-            this.setState({
-              success: false,
-              redirect: true,
-            })
-          }, 3000);
-        } else {
-          // bad request
+            success: false,
+            redirect: true,
+          })
+        }, 3000);
+      } else{
+        this.setState(signupStats);
+        setTimeout(() => {
           this.setState({
-            showFail: true,
-          });
-          setTimeout(() => {
-            this.setState({
-              showFail: false,
-            })
-          }, 2000);
-        }
-      }).catch((error) => {
-        console.log(error);
-      })
+            showFail: false,
+          })
+        }, 2000);
+      }
 
     } else{
       // bad request
@@ -140,28 +157,10 @@ export class SignUp extends Component {
 
   }
 
-  componentDidMount() {
-    if (this.state.loggedIn === null){
-      const url = this.state.host + "/users/login";
-      const request = new Request(url, {
-        method: "GET",
-        credentials: 'same-origin',
-        headers: {
-          Accept: 'application/json',
-          credentials: 'same-origin',
-          "Content-Type": "application/json",
-        },
-      });
-
-      fetch(request)
-        .then(res => res.json())
-        .then(json => {
-          console.log(json)
-          this.setState({
-            loggedIn: json.loggedIn,
-          });
-        });
-    }
+  async componentDidMount() {
+    // check login status
+    const loginStats = await getLoginStatus();
+    this.setState(loginStats);
   }
 
   checkRedirection = () => {

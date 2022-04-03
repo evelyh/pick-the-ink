@@ -6,48 +6,14 @@ import BookingRow from "../components/BookingRow";
 import {uid} from "react-uid";
 import {Alert} from "reactstrap";
 import {Navigate} from "react-router-dom";
+import {cancelBooking, getBookings} from "../apiHook/manageBooking";
+import {getLoginStatus} from "../apiHook/loginSignUp";
 
 export class ManageBookingConfirm extends Component {
 
   state = {
     isArtist: null,
-    confirmedBookings: [
-      // phase 1 code
-      // {
-      //   firstName: "Squidward",
-      //   lastName: "Tentacles",
-      //   email: "squid@spongebob.com",
-      //   dob: "1999-1-1",
-      //   phone: "(645) 634-8235",
-      //   interestedInGetting: "Custom Design",
-      //   details: "SpongeBob!",
-      //   size: "2cm x 7cm",
-      //   referencePic: "no pic",
-      //   otherDetails: "n/a",
-      //   bookingMonth: "Mar",
-      //   bookingDate: "10",
-      //   bookingTime: "15:00 - 18:00",
-      //   pendingConfirmation: false,
-      //   pendingDuration: false,
-      // },
-      // {
-      //   firstName: "Patrick",
-      //   lastName: "Star",
-      //   email: "patrick@spongebob.com",
-      //   dob: "1999-9-5",
-      //   phone: "(649) 624-0890",
-      //   interestedInGetting: "Custom Design",
-      //   details: "SpongeBob!",
-      //   size: "3cm x 8cm",
-      //   referencePic: "no pic",
-      //   otherDetails: "n/a",
-      //   bookingMonth: "Mar",
-      //   bookingDate: "12",
-      //   bookingTime: "10:00 - 12:00",
-      //   pendingConfirmation: false,
-      //   pendingDuration: false,
-      // }
-    ],
+    confirmedBookings: [],
     bookingCancelled: false,
     host: "http://localhost:5000",
     userId: "",
@@ -61,74 +27,97 @@ export class ManageBookingConfirm extends Component {
     });
 
     // DELETE request to cancel booking
-    const url = this.state.host + "/api/bookings/" + confirmedBooking._id;
-    const request = new Request(url, {
-      method: "DELETE",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "*/*",
-        credentials: "same-origin",
-      },
-    });
-
-    await fetch(request)
-      .then((res) => {
-        if (res.ok) {
-          this.setState({
-            bookingCancelled: true,
-            confirmedBookings: filteredBookings,
-          });
-          setTimeout(() => {
-            this.setState({
-              bookingCancelled: false,
-            })
-          }, 2000);
-        } else {
-          throw new Error("status not ok");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
+    const bookingCanceled = await cancelBooking(confirmedBooking._id);
+    if (bookingCanceled){
+      this.setState({
+        bookingCancelled: true,
+        confirmedBookings: filteredBookings,
+      });
+      setTimeout(() => {
         this.setState({
-          genericError: true,
-        });
-        setTimeout(() => {
-          this.setState({
-            genericError: false,
-          })
-        }, 2000);
-      })
+          bookingCancelled: false,
+        })
+      }, 2000);
+    } else{
+      this.setState({
+        genericError: true,
+      });
+      setTimeout(() => {
+        this.setState({
+          genericError: false,
+        })
+      }, 2000);
+    }
+
+    // // DELETE request to cancel booking
+    // const url = this.state.host + "/api/bookings/" + confirmedBooking._id;
+    // const request = new Request(url, {
+    //   method: "DELETE",
+    //   credentials: "same-origin",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Accept: "*/*",
+    //     credentials: "same-origin",
+    //   },
+    // });
+    //
+    // await fetch(request)
+    //   .then((res) => {
+    //     if (res.ok) {
+    //       this.setState({
+    //         bookingCancelled: true,
+    //         confirmedBookings: filteredBookings,
+    //       });
+    //       setTimeout(() => {
+    //         this.setState({
+    //           bookingCancelled: false,
+    //         })
+    //       }, 2000);
+    //     } else {
+    //       throw new Error("status not ok");
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     this.setState({
+    //       genericError: true,
+    //     });
+    //     setTimeout(() => {
+    //       this.setState({
+    //         genericError: false,
+    //       })
+    //     }, 2000);
+    //   })
   }
 
   async componentDidMount() {
     // get login status
-    let url = this.state.host + "/users/login";
-    let request = new Request(url, {
-      method: "GET",
-      credentials: 'same-origin',
-      headers: {
-        Accept: 'application/json',
-        credentials: 'same-origin',
-        "Content-Type": "application/json",
-      },
-    });
+    const loginStats = await getLoginStatus();
+    this.setState(loginStats);
 
-    await fetch(request)
-      .then(res => res.json())
-      .then(json => {
-        console.log(json)
-        this.setState({
-          loggedIn: json.loggedIn,
-          isArtist: json.isArtist,
-          userId: json.user,
-        });
-      });
-
-    console.log(this.state)
+    // let url = this.state.host + "/users/login";
+    // let request = new Request(url, {
+    //   method: "GET",
+    //   credentials: 'same-origin',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     credentials: 'same-origin',
+    //     "Content-Type": "application/json",
+    //   },
+    // });
+    //
+    // await fetch(request)
+    //   .then(res => res.json())
+    //   .then(json => {
+    //     console.log(json)
+    //     this.setState({
+    //       loggedIn: json.loggedIn,
+    //       isArtist: json.isArtist,
+    //       userId: json.user,
+    //     });
+    //   });
 
     // get bookings for that user
-    url = this.state.host + "/api/bookings";
     const requestBody = this.state.isArtist ? {
       artistID: this.state.userId,
       isConfirmed: true,
@@ -136,33 +125,43 @@ export class ManageBookingConfirm extends Component {
       customerID: this.state.userId,
       isConfirmed: true,
     };
-    console.log(requestBody)
-
-    request = new Request(url, {
-      method: "GET",
-      credentials: "same-origin",
-      headers: {
-        Accept: "*/*",
-        credentials: "same-origin",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
+    const fetchedBookings = await getBookings(requestBody);
+    this.setState({
+      confirmedBookings: fetchedBookings,
     });
 
-    await fetch(request)
-      .then(res => res.json())
-      .then(json => {
-        console.log("fetch bookings")
-        console.log(json)
-        this.setState({
-          pendingBookings: json,
-        })
-      });
+    // url = this.state.host + "/api/get-bookings";
+    // const requestBody = this.state.isArtist ? {
+    //   artistID: this.state.userId,
+    //   isConfirmed: true,
+    // } : {
+    //   customerID: this.state.userId,
+    //   isConfirmed: true,
+    // };
+    //
+    // request = new Request(url, {
+    //   method: "POST",
+    //   credentials: "same-origin",
+    //   headers: {
+    //     Accept: "*/*",
+    //     credentials: "same-origin",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(requestBody),
+    // });
+    //
+    // await fetch(request)
+    //   .then(res => res.json())
+    //   .then(json => {
+    //     console.log("fetch bookings", json)
+    //     this.setState({
+    //       confirmedBookings: json.isConfirmedBooking,
+    //     })
+    //   });
   }
 
   checkRedirection = () => {
-    console.log("inside checkRedirection: ")
-    console.log(this.state.loggedIn);
+    console.log("inside checkRedirection: ", this.state.loggedIn)
     if (!this.state.loggedIn){
       return <Navigate to={"/"} />;
     }
@@ -191,7 +190,7 @@ export class ManageBookingConfirm extends Component {
             <tr>
               <th className={"date-head"}>Date</th>
               <th className={"time-head"}>Time</th>
-              <th>{ this.state.isArtist === 0 ? "Customer" : "Artist"}</th>
+              <th>{ this.state.isArtist ? "Customer" : "Artist"}</th>
               <th>Actions</th>
             </tr>
 

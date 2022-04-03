@@ -6,6 +6,8 @@ import {Alert, Button, Modal} from "reactstrap";
 import BookingRow from "../components/BookingRow";
 import {uid} from "react-uid";
 import {Navigate} from "react-router-dom";
+import {getLoginStatus} from "../apiHook/loginSignUp";
+import {cancelBooking, getBookings, updateBooking} from "../apiHook/manageBooking";
 
 
 export class ManageBooking extends Component {
@@ -38,43 +40,96 @@ export class ManageBooking extends Component {
     }, 2000);
   }
 
-  // *******changed in phase 2
   sendDuration = async (length, pendingBooking) => {
 
     // PATCH request to update duration of booking
-    const url = this.state.host + "/api/bookings/" + pendingBooking._id;
+    // const url = this.state.host + "/api/bookings/" + pendingBooking._id;
     const requestBody = {
       duration: length,
     };
+    const durationUpdated = await updateBooking(pendingBooking._id, requestBody);
+    if (durationUpdated){
+      this.setState({
+        durationSent: true,
+      });
+      setTimeout(() => {
+        this.setState({
+          durationSent: false,
+        })
+      }, 2000);
+    } else{
+      this.setState({
+        genericError: true,
+      });
+      setTimeout(() => {
+        this.setState({
+          genericError: false,
+        })
+      }, 2000);
+    }
 
-    const request = new Request(url, {
-      method: "PATCH",
-      credentials: "same-origin",
-      body: JSON.stringify(requestBody),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "*/*",
-        credentials: "same-origin",
-      },
+    // const request = new Request(url, {
+    //   method: "PATCH",
+    //   credentials: "same-origin",
+    //   body: JSON.stringify(requestBody),
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Accept: "*/*",
+    //     credentials: "same-origin",
+    //   },
+    // });
+    //
+    // await fetch(request)
+    //   .then((res) => {
+    //     if (res.ok) {
+    //       this.setState({
+    //         durationSent: true,
+    //       });
+    //       setTimeout(() => {
+    //         this.setState({
+    //           durationSent: false,
+    //         })
+    //       }, 2000);
+    //     } else {
+    //       throw new Error("status not ok");
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     this.setState({
+    //       genericError: true,
+    //     });
+    //     setTimeout(() => {
+    //       this.setState({
+    //         genericError: false,
+    //       })
+    //     }, 2000);
+    //   })
+  }
+
+  removeRow = async (mode, pendingBooking) => {
+
+    const filteredBookings = this.state.pendingBookings.filter((booking) => {
+      return booking !== pendingBooking;
     });
 
-    await fetch(request)
-      .then((res) => {
-        if (res.ok) {
+    if (mode === "confirm") {
+      // patch request to confirm booking
+      const requestBody = {
+        isConfirmed: true,
+      }
+      const confirmed = await updateBooking(pendingBooking._id, requestBody);
+      if (confirmed){
+        this.setState({
+          bookingConfirmed: true,
+          pendingBookings: filteredBookings,
+        });
+        setTimeout(() => {
           this.setState({
-            durationSent: true,
-          });
-          setTimeout(() => {
-            this.setState({
-              durationSent: false,
-            })
-          }, 2000);
-        } else {
-          throw new Error("status not ok");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
+            bookingConfirmed: false,
+          })
+        }, 2000);
+      } else{
         this.setState({
           genericError: true,
         });
@@ -83,138 +138,127 @@ export class ManageBooking extends Component {
             genericError: false,
           })
         }, 2000);
-      })
-  }
 
-  // ******* changed in phase 2
-  removeRow = async (mode, pendingBooking) => {
-
-    const filteredBookings = this.state.pendingBookings.filter((booking) => {
-      return booking !== pendingBooking;
-    });
-
-    if (mode === "confirm") {
-
-      // PATCH request to confirm booking on backend
-      const url = this.state.host + "/api/bookings/" + pendingBooking._id;
-      const requestBody = {
-        isConfirmed: true,
       }
 
-      const request = new Request(url, {
-        method: "PATCH",
-        credentials: "same-origin",
-        body: JSON.stringify(requestBody),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "*/*",
-          credentials: "same-origin",
-        },
-      });
-
-      await fetch(request)
-        .then((res) => {
-          if (res.ok) {
-            this.setState({
-              bookingConfirmed: true,
-              pendingBookings: filteredBookings,
-            });
-            setTimeout(() => {
-              this.setState({
-                bookingConfirmed: false,
-              })
-            }, 2000);
-          } else {
-            throw new Error("status not ok");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          this.setState({
-            genericError: true,
-          });
-          setTimeout(() => {
-            this.setState({
-              genericError: false,
-            })
-          }, 2000);
-        })
+      // PATCH request to confirm booking on backend
+      // const url = this.state.host + "/api/bookings/" + pendingBooking._id;
+      // const requestBody = {
+      //   isConfirmed: true,
+      // }
+      //
+      // const request = new Request(url, {
+      //   method: "PATCH",
+      //   credentials: "same-origin",
+      //   body: JSON.stringify(requestBody),
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Accept: "*/*",
+      //     credentials: "same-origin",
+      //   },
+      // });
+      //
+      // await fetch(request)
+      //   .then((res) => {
+      //     if (res.ok) {
+      //       this.setState({
+      //         bookingConfirmed: true,
+      //         pendingBookings: filteredBookings,
+      //       });
+      //       setTimeout(() => {
+      //         this.setState({
+      //           bookingConfirmed: false,
+      //         })
+      //       }, 2000);
+      //     } else {
+      //       throw new Error("status not ok");
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //     this.setState({
+      //       genericError: true,
+      //     });
+      //     setTimeout(() => {
+      //       this.setState({
+      //         genericError: false,
+      //       })
+      //     }, 2000);
+      //   })
     } else if (mode === "cancel") {
 
-      // DELETE request to cancel booking
-      const url = this.state.host + "/api/bookings/" + pendingBooking._id;
-      const request = new Request(url, {
-        method: "DELETE",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "*/*",
-          credentials: "same-origin",
-        },
-      });
-
-      await fetch(request)
-        .then((res) => {
-          if (res.ok) {
-            this.setState({
-              bookingCancelled: true,
-              pendingBookings: filteredBookings,
-            });
-            setTimeout(() => {
-              this.setState({
-                bookingCancelled: false,
-              })
-            }, 2000);
-          } else {
-            throw new Error("status not ok");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
+      const canceled = await cancelBooking(pendingBooking._id);
+      if (canceled){
+        this.setState({
+          bookingCancelled: true,
+          pendingBookings: filteredBookings,
+        });
+        setTimeout(() => {
           this.setState({
-            genericError: true,
-          });
-          setTimeout(() => {
-            this.setState({
-              genericError: false,
-            })
-          }, 2000);
-        })
+            bookingCancelled: false,
+          })
+        }, 2000);
+      } else{
+        this.setState({
+          genericError: true,
+        });
+        setTimeout(() => {
+          this.setState({
+            genericError: false,
+          })
+        }, 2000);
+
+      }
+
+      // DELETE request to cancel booking
+      // const url = this.state.host + "/api/bookings/" + pendingBooking._id;
+      // const request = new Request(url, {
+      //   method: "DELETE",
+      //   credentials: "same-origin",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Accept: "*/*",
+      //     credentials: "same-origin",
+      //   },
+      // });
+      //
+      // await fetch(request)
+      //   .then((res) => {
+      //     if (res.ok) {
+      //       this.setState({
+      //         bookingCancelled: true,
+      //         pendingBookings: filteredBookings,
+      //       });
+      //       setTimeout(() => {
+      //         this.setState({
+      //           bookingCancelled: false,
+      //         })
+      //       }, 2000);
+      //     } else {
+      //       throw new Error("status not ok");
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //     this.setState({
+      //       genericError: true,
+      //     });
+      //     setTimeout(() => {
+      //       this.setState({
+      //         genericError: false,
+      //       })
+      //     }, 2000);
+      //   })
     }
   }
 
   async componentDidMount() {
     // get login status
-    let url = this.state.host + "/users/login";
-    let request = new Request(url, {
-      method: "GET",
-      credentials: 'same-origin',
-      headers: {
-        Accept: 'application/json',
-        credentials: 'same-origin',
-        "Content-Type": "application/json",
-      },
-    });
-
-    await fetch(request)
-      .then(res => res.json())
-      .then(json => {
-        console.log("managebooking login status")
-        console.log(json)
-        this.setState({
-          loggedIn: json.loggedIn,
-          isArtist: json.isArtist,
-          userId: json.user,
-        });
-      });
-
-    // this.state.loggedIn = status.loggedIn;
-    // console.log(status)
-    // this.state.isArtist = status.isArtist;
-    // this.state.userId = status.user;
+    const loginStats = await getLoginStatus();
+    this.setState(loginStats);
 
     // get bookings for that user
-    url = this.state.host + "/api/get-bookings";
+    // let url = this.state.host + "/api/get-bookings";
     const requestBody = this.state.isArtist ? {
       artistID: this.state.userId,
       isConfirmed: false,
@@ -222,26 +266,31 @@ export class ManageBooking extends Component {
       customerID: this.state.userId,
       isConfirmed: false,
     };
+    //
+    // let request = new Request(url, {
+    //   method: "POST",
+    //   credentials: "same-origin",
+    //   headers: {
+    //     Accept: "*/*",
+    //     credentials: "same-origin",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(requestBody),
+    // });
+    //
+    // await fetch(request)
+    //   .then(res => res.json())
+    //   .then(json => {
+    //     console.log("fetch bookings", json)
+    //     this.setState({
+    //       pendingBookings: json.isConfirmedBooking,
+    //     })
+    //   });
 
-    request = new Request(url, {
-      method: "POST",
-      credentials: "same-origin",
-      headers: {
-        Accept: "*/*",
-        credentials: "same-origin",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
+    const fetchedBookings = await getBookings(requestBody);
+    this.setState({
+      pendingBookings: fetchedBookings,
     });
-
-    await fetch(request)
-      .then(res => res.json())
-      .then(json => {
-        console.log("fetch bookings", json)
-        this.setState({
-          pendingBookings: json.isConfirmedBooking,
-        })
-      });
 
     console.log("this.state in managebooking after fetch: ", this.state)
   }

@@ -4,6 +4,7 @@ import NavTabTwo from "../components/NavTabTwo";
 import { Navigate } from "react-router-dom";
 import {Alert, Button, Input, Label} from "reactstrap";
 import { withCookies } from "react-cookie";
+import {getLoginStatus, login} from "../apiHook/loginSignUp";
 // styles
 import "../assets/css/loginSignUp.css";
 
@@ -31,7 +32,7 @@ export class Login extends Component {
     });
   }
 
-  checkCredentials = (event) => {
+  checkCredentials = async (event) => {
 
     event.preventDefault();
 
@@ -44,38 +45,18 @@ export class Login extends Component {
       password: this.state.password,
     };
 
-    const url = this.state.host + "/users/login";
-    const request = new Request(url, {
-      method: "POST",
-      credentials: 'same-origin',
-      body: JSON.stringify(requestBody),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: '*/*',
-        credentials: 'same-origin',
-      },
-    });
+    const loginRequestStats = await login(requestBody);
+    if (loginRequestStats.invalid){
+      this.setState(loginRequestStats);
+      setTimeout(() => {
+        this.setState({
+          invalid: null,
+        })
+      }, 2000);
+    } else{
+      this.setState(loginRequestStats);
+    }
 
-    fetch(request).then((res) => {
-      if (res.ok){
-        this.setState({
-          invalid: false,
-        });
-      } else{
-        // bad request
-        this.setState({
-          invalid: true,
-        });
-        setTimeout(() => {
-          this.setState({
-            invalid: null,
-          })
-        }, 2000);
-      }
-      return res;
-    }).catch((error) => {
-      console.log(error);
-    })
   }
 
   // implement if have enough time
@@ -86,28 +67,10 @@ export class Login extends Component {
     });
   }
 
-  componentDidMount() {
-    if (this.state.loggedIn === null){
-      const url = this.state.host + "/users/login";
-      const request = new Request(url, {
-        method: "GET",
-        credentials: 'same-origin',
-        headers: {
-          Accept: 'application/json',
-          credentials: 'same-origin',
-          "Content-Type": "application/json",
-        },
-      });
-
-      fetch(request)
-        .then(res => res.json())
-        .then(json => {
-          console.log(json)
-          this.setState({
-            loggedIn: json.loggedIn,
-          });
-        });
-    }
+  async componentDidMount() {
+    // check login status
+    const loginStats = await getLoginStatus();
+    this.setState(loginStats);
   }
 
   checkRedirection = () => {
@@ -129,7 +92,6 @@ export class Login extends Component {
   }
 
   render() {
-    this.componentDidMount();
     return (
       <div>
         {this.checkRedirection()}

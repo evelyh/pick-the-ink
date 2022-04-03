@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import "../assets/css/managebooking.css"
 import {Alert, Button, Modal, Nav, NavItem, NavLink} from "reactstrap";
+import {getImageLink} from "../apiHook/manageBooking";
 
 export class PopUpBookingDetails extends Component {
 
@@ -11,54 +12,63 @@ export class PopUpBookingDetails extends Component {
   }
 
   async componentDidMount() {
-    console.log("inside booking details, before fetching this.props: ", this.props)
 
     if (this.props.booking.flashLink){
       // get flash link
-      const flashUrl = this.state.host + "/api/images/" + this.props.booking.flashLink;
-      const flashRequest = new Request(flashUrl, {
-        method: "GET",
-        credentials: "same-origin",
-        headers: {
-          Accept: "*/*",
-        }
+      const flashUrl = await getImageLink(this.props.booking.flashLink);
+      console.log("flashUrl", flashUrl)
+      this.setState({
+        flashLink: flashUrl,
       });
+      console.log("after fetching image this.state", this.state);
 
-      await fetch(flashRequest)
-        .then(res => res.json())
-        .then(json => {
-          console.log("flashlink fetch json", json)
-          this.setState({
-            flashLink: json.images.img,
-          })
-        })
-        .catch((error) => {
-          console.log("fetch flashLink error, ", error)
-        })
+      // const flashUrl = this.state.host + "/api/images/" + this.props.booking.flashLink;
+      // const flashRequest = new Request(flashUrl, {
+      //   method: "GET",
+      //   credentials: "same-origin",
+      //   headers: {
+      //     Accept: "*/*",
+      //   }
+      // });
+      //
+      // await fetch(flashRequest)
+      //   .then(res => res.json())
+      //   .then(json => {
+      //     this.setState({
+      //       flashLink: json.images.img,
+      //     })
+      //   })
+      //   .catch((error) => {
+      //   })
     }
 
     if (this.props.booking.otherLink){
       // get reference image
-      const referenceUrl = this.state.host + "/api/images/" + this.props.booking.otherLink;
-      const referenceRequest = new Request(referenceUrl, {
-        method: "GET",
-        credentials: "same-origin",
-        headers: {
-          Accept: "*/*",
-        }
-      });
+      const referenceUrl = await getImageLink(this.props.booking.otherLink);
+      this.setState({
+        referencePic: referenceUrl,
+      })
 
-      await fetch(referenceRequest)
-        .then(res => res.json())
-        .then(json => {
-          console.log("reference fetch json", json)
-          this.setState({
-            referencePic: json.images.img,
-          })
-        })
-        .catch((error) => {
-          console.log("fetch reference error, ", error)
-        })
+
+      // const referenceUrl = this.state.host + "/api/images/" + this.props.booking.otherLink;
+      // const referenceRequest = new Request(referenceUrl, {
+      //   method: "GET",
+      //   credentials: "same-origin",
+      //   headers: {
+      //     Accept: "*/*",
+      //   }
+      // });
+      //
+      // await fetch(referenceRequest)
+      //   .then(res => res.json())
+      //   .then(json => {
+      //     this.setState({
+      //       referencePic: json.images.img,
+      //     })
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   })
     }
   }
 
@@ -94,7 +104,7 @@ export class PopUpBookingDetails extends Component {
           {booking.size ? "Size: " + booking.size : "Size: n/a"} <br/>
           {booking.otherLink ? "Reference picture:" : null} {booking.otherLink ? <br/> : null} {booking.otherLink ? <img src={this.state.referencePic} alt={"Reference Picture"} /> : ""} {booking.otherLink ? <br/> : null}
           {booking.concerns ? "Other details / Concerns: " + booking.concerns : ""} {booking.concerns ? <br/> : null}
-          {booking.pendingDateTime ? <span className={"duration-needed"}>Duration needed: {booking.duration}</span> : (isArtist ? <span className={"duration-needed"}>Pending duration, please send duration needed</span> : "Duration needed: Pending confirmation from artist")}
+          {booking.duration ? <span className={"duration-needed"}>Duration needed: {booking.duration}</span> : (isArtist ? <span className={"duration-needed"}>Pending duration, please send duration needed</span> : "Duration needed: Pending confirmation from artist")}
         </div>
         <div className={"modal-footer"}>
           <Button
