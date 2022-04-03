@@ -2,8 +2,6 @@ import React from 'react'
 import {useParams} from "react-router-dom";
 import { Header } from '../components/Header'
 import { Container, Alert, CloseButton, ListGroup} from 'react-bootstrap'
-import gary from '../assets/img/gary.jpg'
-import krabs from '../assets/img/krabs.jpg'
 import profilepic from '../assets/img/profilepic.jpg'
 import '../assets/css/userProfile.css'
 import PopUpProfileForm from '../components/PopUpProfileForm'
@@ -14,15 +12,17 @@ import { Card, CardBody, CardImg,CardText,
   DropdownItem,
   UncontrolledDropdown,Button} from 'reactstrap'
 import {getStyleById, getUser, postUser, getUserFollowing, getUserFollower} from "../apiHook/profile"
-import { uid } from 'react-uid';
+import { login } from 'apiHook/loginSignUp';
 
 
 
 
 function UserProfile() {
-    const { id } = useParams();
+    let { id } = useParams();
     const myid = "624769ffa025c967d7d132a0";
-    
+    if(id == undefined){
+      id = myid;
+    }
     let isUser =false;
     if(myid == id){
       isUser = true;
@@ -50,15 +50,11 @@ function UserProfile() {
       followerIDs:[],
       comment:""}
       );
-    
-
-    
-
-    let lst = [];
+  
     const [success,setSuccess] = useState(false);
     useEffect(()=>{
-      getUser(id).then(json => 
-        { console.log(json)
+      getUser(myid).then(json => 
+        {
           let data = json;
           const favoriteStyles = [];
           document.getElementById("style").innerHTML = "";
@@ -89,7 +85,6 @@ function UserProfile() {
           console.log(json)
           setFollowing(json)
         })
-        console.log(following, 1111)
         
     },[success])
 
@@ -99,7 +94,6 @@ function UserProfile() {
           console.log(json)
           setFollower(json)
         })
-        console.log(follower, 2222)
         
     },[success])
 

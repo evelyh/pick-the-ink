@@ -32,13 +32,14 @@ export default function PopUpAddGallery(props){
     const addNewPic = (newPic) => {
         getUser(props.myID).then(json => 
         {
-        console.log(json)
-        var newArtWorks = json.artistSub.artworks.concat(newPic._id)
-        json.artistSub.artworks = newArtWorks
+            var newArtWorks = json.result.artistSub.artworks.concat(newPic._id)
+            json.result.artistSub.artworks = newArtWorks
 
-        updateArtistsGallery(json).catch(error => {
+            updateArtistsGallery(json.result).catch(error => {
+                console.log(error);
+            });
+        }).catch(error => {
             console.log(error);
-        });
         });
         window.location.reload();
     }
@@ -46,8 +47,11 @@ export default function PopUpAddGallery(props){
     const onSubmit=(e) => {
         addImage(newPic).then((data) =>{
             addNewPic(data);
+        }).catch(error => {
+            console.log(error);
         });
         props.setTrigger(undefined);
+        props.setAlert(true);
     }
 
     return (props.trigger) ? (

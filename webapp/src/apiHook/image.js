@@ -98,6 +98,32 @@ async function deleteImageById(imageID)
     });
 }
 
+async function addImageUserProfile(img) {
+    // the URL for the request
+    const url = host + '/api/images';
+    // The data we are going to send in our request
+
+    let formData = new FormData()
+    formData.append('img', img)
+
+    return await fetch(url,
+    {
+        body: formData,
+        method: "post"
+    }).then(function(res) {
+            if (res.status === 200) {
+                // If student was added successfully, tell the user.
+                console.log('Successfully added image') 
+                return res.json();
+            } else {
+                // If server couldn't add the student, tell the user.
+                console.log('[Unsuccessful] add image')
+            }
+        }).catch((error) => {
+            log(error)
+        })
+}
+
 async function addImage(data) {
 
     console.log(data);
@@ -139,6 +165,8 @@ async function updateArtistsGallery(data)
 {
     const url = host + '/api/users/' + data._id;
 
+    log("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+    log(data)
     const request = new Request(url, {
         method: "PUT",
         headers: {
@@ -162,4 +190,4 @@ async function updateArtistsGallery(data)
     });
 }
 
-export {getAllImage, getImageById, updateImageById, deleteImageById, addImage, updateArtistsGallery}
+export {getAllImage, getImageById, updateImageById, deleteImageById, addImage, updateArtistsGallery, addImageUserProfile}

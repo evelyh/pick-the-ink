@@ -3,6 +3,28 @@
   width: 150px;
 }
 
+#navbar-container{
+  margin-left: 0px;
+}
+
+#NavBar{
+  position: relative;
+  height: 50px;
+}
+
+#profile-but{
+  margin-left: 0px;
+  left:5px;
+  color: black;
+}
+
+.nav-link { color: black }
+
+#gallery-but{
+  position: relative;
+  margin-left: 30%;
+}
+
 .basicInfo {
   position: relative;
   width: 130px;

@@ -28,9 +28,6 @@ function PopUpEditGallery(props) {
 
     const onSubmit = async (event) => {
         event.preventDefault();
-        // const data = new FormData(event.target);
-        // console.log(data);
-        console.log(updatedPic)
         const id = props.id
         await getImageById(id).then(async (res) => {
             var flag = false
@@ -40,15 +37,14 @@ function PopUpEditGallery(props) {
             }
             if(updatedPic.title !== undefined){
                 res.images.title = updatedPic.title
-                console.log(res)
                 flag = true
             }
             if(flag){
-                const result = await updateImageById(id, res.images)
-                console.log(result)
+                updateImageById(id, res.images).catch((error) => console.log(error))
             }
         })
-        window.location.reload();
+        // window.location.reload();
+        props.reload(true);
     }
 
     const onCancel = (event) => {
@@ -91,6 +87,8 @@ function PopUpEditGallery(props) {
                     onClick={(e)=>{
                         onSubmit(e);
                         props.setTrigger(undefined);
+                        props.setAlert(true);
+                        props.reload(true);
                         }}>
                         Submit
                     </Button>
