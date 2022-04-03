@@ -59,15 +59,18 @@ export class SignUp extends Component {
     document.getElementById("signup-form").reportValidity();
 
     if (valid){
-      // upload files to cloud
       let licenseId = "";
-      await addImage({img: this.state.license}).then((json) => {
-        licenseId = json._id;
-      });
       let identificationId = "";
-      await addImage({img: this.state.physicalId}).then((json) => {
-        identificationId = json._id;
-      })
+      if (this.state.artist === "on"){
+        console.log("inside if artist")
+        // upload files to cloud
+        await addImage({img: this.state.license}).then((json) => {
+          licenseId = json._id;
+        });
+        await addImage({img: this.state.physicalId}).then((json) => {
+          identificationId = json._id;
+        })
+      }
 
       // sign user up with the info given
 
@@ -86,9 +89,10 @@ export class SignUp extends Component {
         },
       };
 
-      const signupStats = signup(requestBody);
+      const signupStats = await signup(requestBody);
       if (signupStats.success){
         this.setState(signupStats);
+        console.log("after success post user")
         setTimeout(() => {
           this.setState({
             success: false,
@@ -97,6 +101,7 @@ export class SignUp extends Component {
         }, 3000);
       } else{
         this.setState(signupStats);
+        console.log("after failed post user",this.state);
         setTimeout(() => {
           this.setState({
             showFail: false,

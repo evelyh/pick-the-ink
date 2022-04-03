@@ -72,7 +72,6 @@ async function signup(requestBody){
     headers: {
       "Content-Type": "application/json",
       Accept: '*/*',
-      credentials: 'same-origin',
     },
   });
 
