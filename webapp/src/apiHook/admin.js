@@ -56,9 +56,10 @@ async function verifyArtist(data) {
         body: {"artistSub.approved": data.verify},
         headers: {
             "Access-Control-Allow-Origin": "*",
+            'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
+            'Content-Type': 'application/json',
+        }
     });
     return await fetch(request)
     .then((res) => { 

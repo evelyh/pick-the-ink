@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Header } from '../components/Header.js'
 import { Footer } from '../components/Footer.js'
-import { Container, Button, Form } from 'react-bootstrap'
+import { Container, Form } from 'react-bootstrap'
 import { Multiselect } from 'multiselect-react-dropdown';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; 
@@ -115,18 +115,21 @@ export class LandingPage extends Component {
       <div>
         <div><Header loggedIn={loggedIn}/> </div>
         <Container>
-              <h4 className="mb-4"><a id='title'> Welcome to PickINK! Get started by finding the right Tattoo Artists for you. </a></h4>
+              <h4 className="mb-3"><a id='title'> Welcome to PickINK! Get started by finding the right Tattoo Artists for you. </a></h4>
             <Form className='form-horizontal'>
-              <div className='row'>
-                <Form.Group className='col-3 mb-3' >                 
-                <Form.Label> Location of artists: </Form.Label>
+            <Form.Group className="col-3 mb-1 formField" >
+                  <Form.Text> Choose the place where you want the artists to be</Form.Text>
+            </Form.Group>
+              <div className='row mb-2'>
+                <Form.Group className='col-3' >                 
+                <Form.Label> Location: </Form.Label>
                 <CountryDropdown
                         whitelist = {['CA', 'US']}
                         className='countrySelector'
                         value={this.state.country}
                         onChange={(val) => this.setState({country: val})}></CountryDropdown> 
                 </Form.Group>
-                <Form.Group className='col-5 mb-3'>
+                <Form.Group className='col-5'>
                 <RegionDropdown
                       blankOptionLabel="Select Region"
                       blacklist={{US: ["Armed Forces Americas", "Armed Forces Pacific", "Armed Forces Europe, Canada, Africa and Middle East"]}}
@@ -136,11 +139,11 @@ export class LandingPage extends Component {
                       onChange={(val) => this.setState({region: val})}/>
                 </Form.Group>
               </div>
-                <Form.Group className="col-3 formField" >
+                <Form.Group className="col-3 mb-1 formField" >
                   <Form.Text> Choose the time period you're looking to book</Form.Text>
                 </Form.Group>
 
-                <div className = 'row'>
+                <div className = 'row mb-2'>
                   <Form.Group className="col-3 formField" >
                       <Form.Label>Start:</Form.Label>
                       <Form.Control type="date" placeholder='Start Date' onChange={(val) => this.setState({start: val.target.value})}/>
@@ -153,6 +156,11 @@ export class LandingPage extends Component {
                   
                   </div>
 
+                  <Form.Group className="mb-1 formField" >
+                    <Form.Text> Choose the styles you're into</Form.Text>
+                  </Form.Group>
+
+                  <div className = 'row'>
                   <Form.Group className="col-4 mb-3 formField" >
                       <Form.Label>Styles:</Form.Label>
                       <Multiselect options={this.state.allStyles} displayValue="name"
@@ -160,9 +168,9 @@ export class LandingPage extends Component {
                         onRemove={(val) => this.setState({styles: val})}>
                       </Multiselect>
                   </Form.Group>
-
-                  <Button className="mt-3 mb-3 button" id="button-14" type="submit" onClick={this.handleSubmit}>Apply</Button>
+                  </div>
               </Form>
+              <button className="mb-3 btn btn-primary" id="button-14" type="submit" onClick={this.handleSubmit}>Apply</button>
             <div className='cardContainer'> 
                 {artistList}
             </div>

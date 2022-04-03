@@ -11,7 +11,6 @@ export default function AdminLogin({setToken}) {
     const handleSubmit = async e =>{
         e.preventDefault();
         const token = await loginAdmin({username: username, password: password})
-        console.log(token)
         if(token.token){
             setToken(token);
         }else{
@@ -30,7 +29,7 @@ export default function AdminLogin({setToken}) {
 
         <div className='form-outline mb-4'>
             <label className="form-label">Password</label>
-            <input type="password" id="form2Example1" className="form-control" onChange={e => setPassword(e.target.value)}/>
+            <input type="password" id="form2Example2" className="form-control" onChange={e => setPassword(e.target.value)}/>
         </div>
 
         <div>

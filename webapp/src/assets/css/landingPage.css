@@ -9,11 +9,6 @@
   flex-direction: row;
 }
 
-.button {
-  position: relative;
-  left: 10%;
-}
-
 .cardContainer {
   display: grid;
   justify-content: center;

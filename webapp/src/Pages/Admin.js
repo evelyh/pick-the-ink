@@ -23,7 +23,6 @@ function Admin () {
     console.log(i)
     getUserLicense(data[i]._id).then(imageID => {
       getImageById(imageID).then(img => {
-        console.log(img)
           var win = window.open(img.images.img, '_blank')
           win.focus()
       })
@@ -42,20 +41,26 @@ function Admin () {
 
   const handleApprove = async (i, e) =>{
     e.preventDefault();
-    verifyArtist({userID: data[i]._id, verify: true}).then(json => {
-        if(json){
-          setSuccess(!success)
-        }
-    })
+    const newData = [...data];
+    newData[i].artistSub.approved = true
+    setData(newData)
+    // verifyArtist({userID: data[i]._id, verify: true}).then(json => {
+    //     if(json){
+    //       setSuccess(!success)
+    //     }
+    // })
   }
 
   const handleReject = async (i, e) =>{
     e.preventDefault();
-    verifyArtist({userID: data[i]._id, verify: false}).then(json => {
-      if(json){
-        setSuccess(!success)
-      }
-  })
+    const newData = [...data];
+    newData[i].artistSub.approved = false
+    setData(newData)
+    // verifyArtist({userID: data[i]._id, verify: false}).then(json => {
+    //   if(json){
+    //     setSuccess(!success)
+    //   }
+    // })
   }
 
   if(!token){
