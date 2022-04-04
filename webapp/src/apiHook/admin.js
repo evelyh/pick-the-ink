@@ -17,7 +17,7 @@ async function getAllUsers() {
             // return a promise that resolves with the JSON body
         return res.json() 
     } else {
-            alert('Could not get current logged in User')
+            alert('Could not get users')
     }                
     }).catch((error) => {
         console.log(error)
@@ -67,30 +67,7 @@ async function verifyArtist(data) {
             // return a promise that resolves with the JSON body
         return res.json() 
     } else {
-            alert('Could not get current logged in User')
-    }                
-    }).catch((error) => {
-        console.log(error)
-    })
-}
-
-async function checkUser(data) {
-    const url = `${hostURL}/api/users/${data.userID}`;
-    const request = new Request(url, {
-        method: 'put',
-        body: {"status": data.status},
-        headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json'
-        },
-    });
-    return await fetch(request)
-    .then((res) => { 
-        if (res.status === 200) {
-            // return a promise that resolves with the JSON body
-        return res.json() 
-    } else {
-            alert('Could not get current logged in User')
+            alert('Failed to modify user')
     }                
     }).catch((error) => {
         console.log(error)
@@ -98,5 +75,4 @@ async function checkUser(data) {
 }
 
 
-
-export {loginAdmin, getAllUsers, getUserLicense, getUserPhyID, verifyArtist, checkUser}
+export {loginAdmin, getAllUsers, getUserLicense, getUserPhyID, verifyArtist}

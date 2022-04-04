@@ -24,7 +24,7 @@ async function getTimeslotsById(id) {
             // return a promise that resolves with the JSON body
            return res.json() 
        } else {
-            console.log('Could not get Bookings by ID')
+            console.log('Could not get timeslots')
        }                
     }).catch((error) => {
         log(error)
@@ -61,7 +61,7 @@ async function getTimeslotsByUser(data) {
             // return a promise that resolves with the JSON body
            return res.json() 
        } else {
-            console.log('Could not get Bookings by ID')
+            console.log('Could not get timeslots')
        }                
     }).catch((error) => {
         log(error)

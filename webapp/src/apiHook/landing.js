@@ -18,7 +18,7 @@ async function getAllStyles() {
             // return a promise that resolves with the JSON body
         return res.json() 
     } else {
-            alert('Could not get current logged in User')
+            alert('Could not get styles')
     }                
     }).catch((error) => {
         console.log(error)
@@ -39,7 +39,7 @@ async function getLocation(data){
             // return a promise that resolves with the JSON body
             return res.json() 
         }else{
-            alert('Could not get Bookings')
+            alert('Could not get locations')
         }                
     }).catch((error) => {
         console.log(error)
@@ -67,7 +67,7 @@ async function getStyles(data){
             // return a promise that resolves with the JSON body
             return res.json() 
         }else{
-            alert('Could not get Bookings')
+            alert('Could not get styles')
         }                
     }).catch((error) => {
         console.log(error)
@@ -90,7 +90,7 @@ async function getTimeslots(data){
             // return a promise that resolves with the JSON body
             return res.json() 
         }else{
-            alert('Could not get Bookings')
+            alert('Could not get timeslots')
         }                
     }).catch((error) => {
         console.log(error)
@@ -131,7 +131,7 @@ async function getArtists(data){
             // return a promise that resolves with the JSON body
             return res.json() 
         }else{
-            alert('Could not get Bookings')
+            alert('Could not get artists')
         }                
     }).catch((error) => {
         console.log(error)
