@@ -1,15 +1,13 @@
-import {addImage} from './image.js'
-import {login, getlogin} from './loginSignUp'
+import {addImageUserProfile} from './image.js'
+import {login, getLoginStatus} from './loginSignUp'
 const log = console.log
 log('Loaded front-end javascript.')
 
 const hostURL = "http://localhost:5000";
 
-
-
-
+console.log(getLoginStatus().then(json=> console.log(json)), 5555);
 async function getUser(id) {
-
+    
     const url = hostURL + '/api/users/' + id;
 
     const request = new Request(url, {
@@ -82,18 +80,18 @@ async function getUserFollower(id) {
     return arr;
 }
 
-getUserFollowing("624769ffa025c967d7d132a0")
-
 async function postUser(data) {
     const id = data._id;
     delete data._id;
     delete data.__v;
     delete data.password;
     const favoriteStyles = [];
-
-    console.log(data.profilePic)
-    if(data.profilePic != undefined && typeof(data.profilePic) == File){
-        await addImage(data.profilePic).then(json => data.profilePic = json["img"]);
+    if(data.profilePic != undefined && typeof(data.profilePic) == 'object'){
+        await addImageUserProfile(data.profilePic).then(json => 
+            {
+                console.log(json, 66666)
+                data.profilePic = json["img"]}
+            );
     }else{
         delete data.profilePic;
     }
@@ -133,6 +131,144 @@ async function postUser(data) {
     catch((error) => {
         log(error)
     })
+}
+
+async function followUser(follow, follower) {
+    
+    const fUser = await getUser(follow);
+    fUser.followerIDs.push(follower);
+    console.log(fUser.followerIDs, "follow")
+    const followurl = hostURL + '/api/users/' + follow;
+
+
+
+    const ferUser = await getUser(follower);
+    ferUser.followingIDs.push(follow);
+    console.log(ferUser.followingIDs, "follow")
+    const followerurl = hostURL + '/api/users/' + follower;
+
+    const followRequest = new Request(followurl, {
+        method: 'put', 
+        body: JSON.stringify({followerIDs: fUser.followerIDs}), 
+        headers: {
+        "Access-Control-Allow-Origin": "*",
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
+        },
+    });
+
+    const followerRequest = new Request(followerurl, {
+        method: 'put', 
+        body: JSON.stringify({followingIDs: ferUser.followingIDs}), 
+        headers: {
+        "Access-Control-Allow-Origin": "*",
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
+        },
+    });
+
+    await fetch(followRequest).then(res => {
+        if (res.status === 200) {
+            // If student was added successfully, tell the user.
+            console.log('Successfully follow user') 
+            return res.json()
+        } else {
+            // If server couldn't add the student, tell the user.
+            console.log('[Unsuccessful] follow user')
+            return res.status
+        }
+    }).
+    catch((error) => {
+        log(error)
+    })
+
+    await fetch(followerRequest).then(res => {
+        if (res.status === 200) {
+            // If student was added successfully, tell the user.
+            console.log('Successfully follower user') 
+            return res.json()
+        } else {
+            // If server couldn't add the student, tell the user.
+            console.log('[Unsuccessful] follower user')
+            return res.status
+        }
+    }).
+    catch((error) => {
+        log(error)
+    })
+
+}
+
+async function unfollowUser(follow, follower) {
+    
+    const fUser = await getUser(follow);
+    console.log(fUser.followerIDs, "unfollowUser")
+    fUser.followerIDs = fUser.followerIDs.filter(function(item) {
+        return item != follower
+    })
+    console.log(fUser.followerIDs, "unfollowUser")
+    const followurl = hostURL + '/api/users/' + follow;
+
+    
+    const ferUser = await getUser(follower);
+    console.log(ferUser.followerIDs, "unfollowUser")
+    ferUser.followingIDs = ferUser.followerIDs.filter(function(item) {
+        return item != follow
+    })
+    console.log(ferUser.followerIDs, "unfollowUser")
+    console.log(ferUser.followingIDs)
+    const followerurl = hostURL + '/api/users/' + follower;
+
+    const followRequest = new Request(followurl, {
+        method: 'put', 
+        body: JSON.stringify({followerIDs: fUser.followerIDs}), 
+        headers: {
+        "Access-Control-Allow-Origin": "*",
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
+        },
+    });
+
+    const followerRequest = new Request(followerurl, {
+        method: 'put', 
+        body: JSON.stringify({followingIDs: ferUser.followingIDs}), 
+        headers: {
+        "Access-Control-Allow-Origin": "*",
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
+        },
+    });
+
+    await fetch(followRequest).then(res => {
+        if (res.status === 200) {
+            // If student was added successfully, tell the user.
+            console.log('Successfully follow user') 
+            return res.json()
+        } else {
+            // If server couldn't add the student, tell the user.
+            console.log('[Unsuccessful] follow user')
+            return res.status
+        }
+    }).
+    catch((error) => {
+        log(error)
+    })
+
+    await fetch(followerRequest).then(res => {
+        if (res.status === 200) {
+            // If student was added successfully, tell the user.
+            console.log('Successfully follower user') 
+            return res.json()
+        } else {
+            // If server couldn't add the student, tell the user.
+            console.log('[Unsuccessful] follower user')
+            return res.status
+        }
+    }).
+    catch((error) => {
+        log(error)
+    })
+
 }
 
 async function getStyles() {
@@ -184,4 +320,4 @@ async function getStyleById(id) {
 
 
 
-export {getStyleById, getUser, getStyles, postUser, getUserFollowing, getUserFollower}
+export {getStyleById, getUser, getStyles, postUser, getUserFollowing, getUserFollower, followUser, unfollowUser}

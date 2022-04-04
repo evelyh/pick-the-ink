@@ -32,8 +32,7 @@ function App() {
         <Route path="/managebooking" element={<ManageBooking />}/>
         <Route path="/managebooking-confirm" element={<ManageBookingConfirm />}/>
         <Route path="/userprofile/:id" element={<UserProfile />} />
-        <Route path="/userprofile/krab" element={<UserProfileKrab />} />
-        <Route path="/userprofile/gary" element={<UserProfileGary />} />
+        <Route path="/userprofile" element={<UserProfile />} />
         <Route path="/artistprofile" element={<ArtistProfile />} />
         <Route path="/artistgallery" element={<ArtistGallery />}/>
         <Route path="/calendar" element={<Calendar />}/>

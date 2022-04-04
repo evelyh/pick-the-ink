@@ -45,7 +45,7 @@ export class Header extends Component {
             </Navbar.Collapse>
             <Navbar.Collapse className="justify-content-end">
               <Navbar.Text>
-                {loggedIn ? <span>Signed in as: <a href="/userprofile">PatrickYahhh</a></span> : <span><a href={"/login"}>Login</a> / <a href={"/"}>Sign In</a> </span>}
+                {loggedIn ? <span>Signed in as: <a href="/userprofile">PatrickYahhh</a></span> : <span><a href={"/login"}>Login</a> / <a href={"/signup"}>Sign Up</a> </span>}
               </Navbar.Text>
             </Navbar.Collapse>
             </Container>

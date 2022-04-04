@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Header } from '../components/Header.js'
 import { Footer } from '../components/Footer.js'
-import { Container, Button, Form } from 'react-bootstrap'
+import { Container, Form } from 'react-bootstrap'
 import { Multiselect } from 'multiselect-react-dropdown';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; 
@@ -9,6 +9,7 @@ import { Carousel } from 'react-responsive-carousel';
 import "../assets/css/landingPage.css";
 import {getAllStyles, getLocation, getTimeslots, getArtists} from "../apiHook/landing.js";
 import { getImageById } from '../apiHook/image.js';
+import { getLoginStatus } from '../apiHook/loginSignUp.js';
 
 export class LandingPage extends Component {
 
@@ -22,6 +23,7 @@ export class LandingPage extends Component {
     allStyles: [],
     imageObjList: []
   }
+
 
   handleSubmit = async (event) =>{
       event.preventDefault();
@@ -93,17 +95,17 @@ export class LandingPage extends Component {
         var list = (this.state.imageObjList)[i]
         imageList[(this.state.artists[i]).userName] = list.map((image) =>
             <div key={image.images.img}>
-              <img src={image.images.img} title={image.images.title} alt={image.images.desc}/>
+              <img id='img' src={image.images.img} title={image.images.title} alt={image.images.desc}/>
             </div>)
       }
     }
     const hostURL = "http://localhost:3000"
     const artistProfile = hostURL + "/artistprofile/"
     const artistList = this.state.artists.map((artist) => 
-        <div className="card" key={artist.userName}>
-          <a className="username" href={artistProfile+artist._id} style={{fontSize: 16, fontWeight: "bold"}} > @{artist.userName} </a>
-          <p className='mb-3 styles'> {artist.comment} </p>
-          <Carousel id='carousel'>
+        <div className="card" id="card" key={artist.userName}>
+          <a id="cardname" href={artistProfile+artist._id} style={{fontWeight: "bold", fontSize: "15px"}}> @{artist.userName} </a>
+          <p className='mb-3' id='styles' style={{fontSize: "14px"}}> {artist.comment} </p>
+          <Carousel showThumbs={false} id='carousel'>
               {imageList[artist.userName]}
           </Carousel>
         </div>)
@@ -112,47 +114,62 @@ export class LandingPage extends Component {
       <div>
         <div><Header loggedIn={loggedIn}/> </div>
         <Container>
-              <h4 className="mb-4"><a id='title'> Welcome to PickINK! Get started by finding the right Artists for you. </a></h4>
-            <Form>
-              <div className='row'>
-                <Form.Group className='col-4 mb-3' >                 
-                <Form.Label> Country: </Form.Label>
+              <h4 className="mb-3"><a id='title'> Welcome to PickINK! Get started by finding the right Tattoo Artists for you. </a></h4>
+            <Form className='form-horizontal'>
+            <Form.Group className="col-3 mb-1 formField" >
+                  <Form.Text> Choose the place where you want the artists to be</Form.Text>
+            </Form.Group>
+              <div className='row mb-2'>
+                <Form.Group className='col-3' >                 
+                <Form.Label> Location: </Form.Label>
                 <CountryDropdown
+                        whitelist = {['CA', 'US']}
                         className='countrySelector'
                         value={this.state.country}
                         onChange={(val) => this.setState({country: val})}></CountryDropdown> 
                 </Form.Group>
-                <Form.Group className='col-4 mb-3'>
-                 <Form.Label> Region: </Form.Label>
+                <Form.Group className='col-5'>
                 <RegionDropdown
+                      blankOptionLabel="Select Region"
+                      blacklist={{US: ["Armed Forces Americas", "Armed Forces Pacific", "Armed Forces Europe, Canada, Africa and Middle East"]}}
                       className='countrySelector'
                       country={this.state.country}
                       value={this.state.region}
                       onChange={(val) => this.setState({region: val})}/>
                 </Form.Group>
               </div>
-                <div className = 'row'>
+                <Form.Group className="col-3 mb-1 formField" >
+                  <Form.Text> Choose the time period you're looking to book</Form.Text>
+                </Form.Group>
+
+                <div className = 'row mb-2'>
                   <Form.Group className="col-3 formField" >
                       <Form.Label>Start:</Form.Label>
-                      <Form.Control type="date" onChange={(val) => this.setState({start: val.target.value})}/>
+                      <Form.Control type="date" placeholder='Start Date' onChange={(val) => this.setState({start: val.target.value})}/>
                   </Form.Group>
 
                   <Form.Group className="col-3 formField" >
                       <Form.Label>End:</Form.Label>
-                      <Form.Control type="date" onChange={(val) => this.setState({end: val.target.value})}/>
+                      <Form.Control type="date" placeholder='End Date' onChange={(val) => this.setState({end: val.target.value})}/>
                   </Form.Group>
+                  
                   </div>
 
-                  <Form.Group className="col-4 formField" >
+                  <Form.Group className="mb-1 formField" >
+                    <Form.Text> Choose the styles you're into</Form.Text>
+                  </Form.Group>
+
+                  <div className = 'row'>
+                  <Form.Group className="col-4 mb-3 formField" >
                       <Form.Label>Styles:</Form.Label>
                       <Multiselect options={this.state.allStyles} displayValue="name"
                         onSelect={(val) => this.setState({styles: val})}
                         onRemove={(val) => this.setState({styles: val})}>
                       </Multiselect>
                   </Form.Group>
-
-                  <Button className="mt-3 mb-3 button" id="button-14" type="submit" onClick={this.handleSubmit}>Apply</Button>
+                  </div>
               </Form>
+              <button className="mb-3 btn btn-primary" id="button-14" type="submit" onClick={this.handleSubmit}>Apply</button>
             <div className='cardContainer'> 
                 {artistList}
             </div>

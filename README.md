@@ -18,13 +18,16 @@
 ### *Login* `/login`
   - Logging in to the webapp
   - Fill in the username and passwords to login
-  - Credential:
-    - User:
+  - Sample Credential:
       - username: `user`
       - password: `user`
-    - Admin:
-      - username: `admin`
-      - password: `admin`  
+
+### *Admin Site* `/admin`
+- Admin can manage artist accounts by reviewing their IDs, tattoo practice license, and approve or reject their accounts as an artist.
+- Only credential:
+    - username: `admin`
+    - password: `admin`  
+- The login paths for admin and regular user are not interchangable.
 
 ### *Explore* `/explore`
 - Landing home page where allows users to browse artists and their selected work based on the filters including artists' locations, available dates, and styles they chose.
@@ -101,9 +104,8 @@
       - Go to the page `\artistgallery`, to check the artist's view of their own gallery
     - Our web app does not have any database in this stage, the two images on the artist's gallery page is hard coded for now to show a better and expected appearance of a normal gallery. Thus, these two images will show everytime you reload the page. All the bugs regrading to the hard coded will be fixed when we implement the databases in the following weeks. 
 
-### *Admin Dashboard* "/admin"
-- Admin can manage user accounts by suspending them or activating them.
-- Admin can also view, approve, or reject uploaded certificates by users who want to be certificated as artists.
+
+
 
 ## Reference
 - The UI template used to help us customize our page

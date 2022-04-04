@@ -8,6 +8,44 @@ module.exports = function (app){
     return typeof error === 'object' && error !== null && error.name === "MongoNetworkError"
   }
 
+  app.post("/api/admin", async(req, res) =>{
+    try{
+      const admin = new Admin({
+        userName: req.body.username,
+        password: req.body.password
+      })
+      const result = await admin.save()
+      res.send(result);
+    }catch (error){
+      console.log(error);
+      if (isMongoError(error)){
+        res.status(500).send("Internal server error");
+      } else{
+        res.status(400).send("Bad request");
+      }
+    }
+    
+  })
+
+  app.use("/admin/login", async (req, res) =>{
+    try{
+      const admin = await Admin.findOne({userName: req.body.username, password: req.body.password}, function(err,obj) { } );
+      if(!admin){
+        res.send({token: null});
+      }else{
+        res.send({token: 'loggedIn'})
+      }
+    }catch (error){
+      console.log(error);
+      if (isMongoError(error)){
+        res.status(500).send("Internal server error");
+      } else{
+        res.status(400).send("Bad request");
+      }
+    }
+
+  })
+
   // Get all admin / by username / by user id
   // todo: add middleware to check authorization to access info
   app.get("/api/admin", async (req, res) => {
