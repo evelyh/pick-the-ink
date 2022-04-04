@@ -11,25 +11,14 @@ import { Card, CardBody, CardImg,CardText,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,Button} from 'reactstrap'
-import {getStyleById, getUser, postUser, getUserFollowing, getUserFollower} from "../apiHook/profile"
-import { login } from 'apiHook/loginSignUp';
-
-
+import {getStyleById, getUser, getUserFollowing, getUserFollower, followUser, unfollowUser} from "../apiHook/profile"
+import {login, getLoginStatus} from '../apiHook/loginSignUp'
 
 
 function UserProfile() {
     let { id } = useParams();
-    const myid = "624769ffa025c967d7d132a0";
-    if(id == undefined){
-      id = myid;
-    }
-    let isUser =false;
-    if(myid == id){
-      isUser = true;
-    }else{
-      isUser = false;
-    }
-
+    let myid;
+    
     // Should get this data from the server
     const [buttonPopUp, setButtonPopUp] = useState(false);
     
@@ -50,39 +39,57 @@ function UserProfile() {
       followerIDs:[],
       comment:""}
       );
-  
+    const [isUser, setIsUser] = useState(false);
     const [success,setSuccess] = useState(false);
+    const [ifFollowed,setIfFollowed] = useState(false);
     useEffect(()=>{
-      getUser(myid).then(json => 
-        {
-          let data = json;
-          const favoriteStyles = [];
-          document.getElementById("style").innerHTML = "";
-          
-          
-          for(const s_id in data.favoriteStyles){
-            getStyleById(data.favoriteStyles[s_id]).then((ele)=> 
-            {favoriteStyles[s_id] = ele;
-              const li = document.createElement("li");
-              li.innerText = ele.name;
-              document.getElementById("style").appendChild(li);
-            });
-          }
-          data.favoriteStyles = favoriteStyles
-          data.birthDate = data.birthDate.slice(0,10);
+      getLoginStatus().then(json=>{
+        myid = json.userId;
+        if(id == undefined){
+          id = myid;
+        }
+        if(myid == id){
+          setIsUser(true);
+        }
+        getUser(id).then(json => 
+          {
+            let data = json;
+            const favoriteStyles = [];
+            document.getElementById("style").innerHTML = "";
+            
+            
+            for(const s_id in data.favoriteStyles){
+              getStyleById(data.favoriteStyles[s_id]).then((ele)=> 
+              {favoriteStyles[s_id] = ele;
+                const li = document.createElement("li");
+                li.innerText = ele.name;
+                document.getElementById("style").appendChild(li);
+              });
+            }
+            data.favoriteStyles = favoriteStyles
+            data.birthDate = data.birthDate.slice(0,10);
+  
+            setValues(data); 
+  
+            if(data.followerIDs.includes(myid)){
+              setIfFollowed(true);
+            }else{
+              setIfFollowed(false);
+            }
+            console.log(values.followerIDs)
+            
+          });
 
-          setValues(data); 
-          console.log(values.followerIDs)
-          
-        });
+
+      })
       
-    }, [buttonPopUp])
+      
+    }, [buttonPopUp, success])
     
-
+    
     const [following, setFollowing] = useState();
     useEffect(()=>{
         getUserFollowing(id).then((json)=>{
-          console.log(json)
           setFollowing(json)
         })
         
@@ -91,7 +98,6 @@ function UserProfile() {
     const [follower, setFollower] = useState();
     useEffect(()=>{
         getUserFollower(id).then((json)=>{
-          console.log(json)
           setFollower(json)
         })
         
@@ -100,6 +106,17 @@ function UserProfile() {
     const onDismiss = ()=>{
       setSuccess(false);
     };
+
+
+
+    const addFollow = ()=>{
+      followUser(id, myid);
+      setIfFollowed(true);
+    }
+    const removeFollow = ()=>{
+      unfollowUser(id, myid);
+      setIfFollowed(false);
+    }
 
 
     return (
@@ -116,8 +133,17 @@ function UserProfile() {
               <CardBody>  
                 {values.profilePic?  <CardImg src={values.profilePic} id="profileCirclePic" alt='profile' />  :
                  <CardImg src={profilepic} id="profileCirclePic" alt='profile' />  }  
-              <h5>{values.userName}</h5>
+              <h5>{values.userName} 
+              {!isUser? (
+                ifFollowed?<Button id='followButton' onClick={removeFollow}>Unfollow</Button>
+                :<Button id='followButton' onClick={addFollow}>Follow</Button>
+              )
+              :null}
+              
+              
+              </h5>
               <CardText>{values.comment}</CardText>
+              
             <UncontrolledDropdown className="btn-group" id = "followingDD">
              <DropdownToggle tag="a"
               data-toggle="dropdown">
