@@ -53,7 +53,7 @@ async function verifyArtist(data) {
     console.log(url)
     const request = new Request(url, {
         method: 'PUT',
-        body: {"artistSub.approved": data.verify},
+        body: JSON.stringify({"artistSub.approved": data.verify}),
         headers: {
             "Access-Control-Allow-Origin": "*",
             'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',

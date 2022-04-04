@@ -1,6 +1,6 @@
-import React, { Component, useEffect, useState} from 'react'
+import React, { useEffect, useState} from 'react'
 import HeaderAdmin from '../components/HeaderAdmin'
-import { Container, Button} from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import AdminLogin from './AdminLogin.js'
 import {getAllUsers, getUserLicense, getUserPhyID, verifyArtist} from '../apiHook/admin.js'
 import useToken from '../components/UseToken.js'
@@ -41,26 +41,20 @@ function Admin () {
 
   const handleApprove = async (i, e) =>{
     e.preventDefault();
-    const newData = [...data];
-    newData[i].artistSub.approved = true
-    setData(newData)
-    // verifyArtist({userID: data[i]._id, verify: true}).then(json => {
-    //     if(json){
-    //       setSuccess(!success)
-    //     }
-    // })
+    verifyArtist({userID: data[i]._id, verify: true}).then(json => {
+        if(json){
+          setSuccess(!success)
+        }
+    })
   }
 
   const handleReject = async (i, e) =>{
     e.preventDefault();
-    const newData = [...data];
-    newData[i].artistSub.approved = false
-    setData(newData)
-    // verifyArtist({userID: data[i]._id, verify: false}).then(json => {
-    //   if(json){
-    //     setSuccess(!success)
-    //   }
-    // })
+    verifyArtist({userID: data[i]._id, verify: false}).then(json => {
+      if(json){
+        setSuccess(!success)
+      }
+    })
   }
 
   if(!token){
