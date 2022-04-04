@@ -13,6 +13,7 @@ import { Card, CardBody, CardImg,CardText,
   UncontrolledDropdown,Button} from 'reactstrap'
 import {getStyleById, getUser, getUserFollowing, getUserFollower, followUser, unfollowUser} from "../apiHook/profile"
 import {login, getLoginStatus} from '../apiHook/loginSignUp'
+import PopUpTimeslotForm from 'components/PopUpTimeslotForm';
 
 
 function UserProfile() {
@@ -118,6 +119,7 @@ function UserProfile() {
       setIfFollowed(false);
     }
 
+    const [timeslotButtonPopUp, setTimeslotButtonPopUp] = useState(false);
 
     return (
       <div>
@@ -126,6 +128,7 @@ function UserProfile() {
           <Header loggedIn={true}/>
         </div>
         <PopUpProfileForm info={values} setInfo = {setValues} success={success} setSuccess={setSuccess} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpProfileForm>
+        <PopUpTimeslotForm trigger={timeslotButtonPopUp} setTrigger={setTimeslotButtonPopUp}>My Popup</PopUpTimeslotForm>
         <div className="container">
           <div className="row">
             <div className="col-3">
@@ -230,6 +233,7 @@ function UserProfile() {
                 :null}
               </div>
               { isUser ? <Button size='sm' onClick={()=> setButtonPopUp(true)}>Edit your profile</Button> :null }
+              { isUser ? <Button size='sm' onClick={()=> setTimeslotButtonPopUp(true)}>Choose available time</Button> :null }
               </Container>
             </div>
           </div>
