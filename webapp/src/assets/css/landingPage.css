@@ -10,8 +10,9 @@
 }
 
 .cardContainer {
+  min-height: 5rem;
   display: grid;
-  justify-content: center;
+  justify-content: left;
   border-radius: 12px;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, 19.5rem);

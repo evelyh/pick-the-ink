@@ -66,7 +66,7 @@ export class LandingPage extends Component {
       
   }
 
-  componentWillMount = async() =>{
+  async componentDidMount(){
     var allStyles = await getAllStyles();
     var artists = await getArtists({});
     this.setState({allStyles: allStyles, artists: artists})
@@ -83,7 +83,10 @@ export class LandingPage extends Component {
       }
     }
     this.setState({imageObjList: imgobjs});
+  }
 
+  placeholderText(){
+    return <div> <p> Sorry, there is no artist found for now.</p> </div>
   }
 
   render(){
@@ -109,6 +112,7 @@ export class LandingPage extends Component {
               {imageList[artist.userName]}
           </Carousel>
         </div>)
+    const text = this.placeholderText();
 
     return (
       <div>
@@ -171,7 +175,7 @@ export class LandingPage extends Component {
               </Form>
               <button className="mb-3 btn btn-primary" id="button-14" type="submit" onClick={this.handleSubmit}>Apply</button>
             <div className='cardContainer'> 
-                {artistList}
+                {(this.state.artists.length > 0) ? artistList : text}
             </div>
 
             <div> <Footer/> </div>
