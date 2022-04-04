@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Header } from '../components/Header.js'
-import { Footer } from '../components/Footer.js'
+import Footer from '../components/Footer.js'
 import { Container, Form } from 'react-bootstrap'
 import { Multiselect } from 'multiselect-react-dropdown';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
