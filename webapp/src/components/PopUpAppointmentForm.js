@@ -8,7 +8,7 @@ function PopUpAppointmentForm(props) {
 
     async function handleSubmit(data){
         data.preventDefault(); 
-        const result = await addBooking(form);
+        const result = await addBooking(form, "62476f27a025c967d7d132fa");
         console.log(result)
         if(result == 200){
             props.setTrigger(false);
