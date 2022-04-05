@@ -16,7 +16,7 @@ import { Card, CardBody, CardImg,CardText,
 import PopUpAppointmentForm from 'components/PopUpAppointmentForm'
 import ArtistNavBar from '../components/ArtistNavBar'
 import {useParams} from "react-router-dom";
-import {getStyleById, getUser, getUserFollowing, getUserFollower, followUser, unfollowUser} from "../apiHook/profile"
+import {getStyleById, getUser, getUserFollowing, getUserFollower, followUser, unfollowUser, getLocationById} from "../apiHook/profile"
 import {login, getLoginStatus} from '../apiHook/loginSignUp'
 import { getLocation } from 'apiHook/landing';
 import Footer from "../components/Footer"
@@ -45,7 +45,13 @@ function ArtistProfile() {
       isArtist: true,
       followingIDs:[],
       followerIDs:[],
-      comment:""
+      comment:"",
+      // artistSub:{
+      //   homeLocation:undefined,
+      //   artStyles:[],
+      //   licenseID: undefined,
+      //   physicalID: undefined
+      // }
     });
     const [buttonPopUp, setButtonPopUp] = useState(false);
     const [buttonPopUpBook, setButtonPopUpBook] = useState(false);
@@ -64,7 +70,7 @@ function ArtistProfile() {
         if(myid == id){
           setIsUser(true);
         }
-        getUser(id).then(json => 
+        getUser(id).then(async json => 
           {
             let data = json;
             const favoriteStyles = [];
@@ -96,11 +102,15 @@ function ArtistProfile() {
             if(data.artistSub.homeLocation !== undefined)
             {
               // data.homeLocation = data.artistSub.homeLocation;
-              getLocation(data.artistSub.homeLocation).then((location)=>{
-                data.homeLocation = location.country + " " + location.region
+              await getLocationById(data.artistSub.homeLocation).then((location)=>{
+                console.log("my Location: ")
+                log(location.location)
+                data.homeLocation = location.location.country + " " + location.location.region
+                log(data.homeLocation)
               })
             }
-  
+            log("final set:")
+            log(data);
             setValues(data); 
   
             if(data.followerIDs.includes(myid)){
@@ -166,7 +176,7 @@ function ArtistProfile() {
                             setTrigger={setButtonPopUpBook}>My Popup
                           </PopUpAppointmentForm>}
         
-        {isUser ?  <PopUpTimeslotForm
+        {isUser && values.homeLocation ?  <PopUpTimeslotForm
                       artistID={values._id}
                       locationID={values.homeLocation}
                       trigger={timeslotButtonPopUp} 
@@ -178,15 +188,8 @@ function ArtistProfile() {
             <div className="col-3">
             <Card id="profileCard" style={{width: '20rem'}}>
               <CardBody>
-              {values.profilePic ? 
-              <CardImg 
-                src={values.profilePic} 
-                id="profileCirclePic" 
-                alt='profile'/> :
-                 <CardImg 
-                  src={profilepic} 
-                  id="profileCirclePic" 
-                  alt='profile'/>} 
+              {values.profilePic?  <CardImg src={values.profilePic} id="profileCirclePic" alt='profile' />  :
+                 <CardImg src={profilepic} id="profileCirclePic" alt='profile' />}  
               <h5>
                 {values.userName}
                 {!isUser? (
