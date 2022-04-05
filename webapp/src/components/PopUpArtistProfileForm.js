@@ -248,8 +248,10 @@ import '../assets/css/userProfile.css'
 import { useState, useEffect} from 'react';
 import {Multiselect} from 'multiselect-react-dropdown';
 import { getStyles } from 'apiHook/profile';
-import {Form} from 'react-bootstrap'
-import {postUser} from "../apiHook/profile"
+import {Form} from 'react-bootstrap';
+import {postUser} from "../apiHook/profile";
+import {getLocation} from "../apiHook/landing";
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 
 
 function PopUpArtistProfileForm(props) {
@@ -269,7 +271,8 @@ function PopUpArtistProfileForm(props) {
         followingIDs:props.info.followingIDs,
         followerIDs:props.info.following,
         comment:props.info.comment,
-        artistSub: props.info.artistSub
+        artistSub: props.info.artistSub,
+        homeLocation: props.info.homeLocation
       });
 
     const onSubmit = async (event) => {
@@ -281,7 +284,33 @@ function PopUpArtistProfileForm(props) {
             event.stopPropagation();
         }else{
             event.preventDefault();
+
+            console.log("country:"+country)
+            console.log("region:"+region)
+            
+            if(country !== undefined && region !== undefined)
+            {const locationID = await getLocation({
+                country: country,
+                region: region
+            })
+
+            console.log("location: ")
+            console.log(locationID)
+
+            props.setInfo({...props.info, homeLocation: country + " " + region})
+
+            let copy = {...props.info.artistSub};
+            copy.homeLocation = locationID._id;
+            console.log(copy)
+            props.setInfo({...props.info, artistSub:copy});}
+
+            console.log("update")
+            console.log(props.info)
+
             await postUser(props.info);
+
+            console.log("submit")
+            console.log(props.info)
 
             props.setTrigger(false);
             props.setSuccess(true);
@@ -289,6 +318,8 @@ function PopUpArtistProfileForm(props) {
       };
 
     const [option, setOption]=useState();
+    const [country, setCountry] = useState();
+    const [region, setRegion] = useState();
 
     useEffect(()=>{
         getStyles().then(json => 
@@ -336,10 +367,7 @@ function PopUpArtistProfileForm(props) {
                     <Form.Text id="formUsername">(cannot have empty spaces in username)</Form.Text>
                     <Form.Control type="text" 
                     value={props.info.userName}
-                    onChange={e => {
-                        props.setInfo({...props.info, userName:e.target.value.replace(/\s/g, '')});
-                    }
-                        }
+                    onChange={e => props.setInfo({...props.info, userName:e.target.value.replace(/\s/g, '')})}
                     required/>
                     <Form.Control.Feedback type="invalid">
                     Please enter a username.
@@ -373,10 +401,34 @@ function PopUpArtistProfileForm(props) {
                     <Form.Label>Phone:</Form.Label>
                     <Form.Control type="phone" 
                     value={props.info.phoneNum}
-                    onChange={e => props.setInfo({...props.info, phoneNum:e.target.value})}
-                    type="tel"/>
+                    onChange={e => props.setInfo({...props.info, phoneNum:e.target.value})}/>
                     <Form.Control.Feedback type="invalid">
                     Please enter a valid phone number.
+                    </Form.Control.Feedback>
+                </Form.Group>
+
+                 <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Home Location:</Form.Label>
+                    <CountryDropdown
+                        whitelist = {['CA', 'US']}
+                        className='countrySelector'
+                        value={country}
+                        onChange={(val) => setCountry(val)}></CountryDropdown> 
+                </Form.Group>
+                <Form.Group className='col-5'>
+                    <RegionDropdown
+                        blankOptionLabel="Select Region"
+                        blacklist={{US: ["Armed Forces Americas", "Armed Forces Pacific", "Armed Forces Europe, Canada, Africa and Middle East"]}}
+                        className='countrySelector'
+                        country={country}
+                        value={region}
+                        onChange={(val) => setRegion(val)}/>
+                    {/* <Form.Control type="text" 
+                    value={props.info.homeLocation}
+                    onChange={e => props.setInfo({...props.info, homeLocation:e.target.value})}
+                    required/> */}
+                    <Form.Control.Feedback type="invalid">
+                    Please enter a valid home location.
                     </Form.Control.Feedback>
                 </Form.Group>
 
@@ -415,7 +467,6 @@ function PopUpArtistProfileForm(props) {
                     <Form.Control type="text" 
                     value={props.info.comment}
                     onChange={e => props.setInfo({...props.info, comment:e.target.value})}/>
-                    
                 </Form.Group>
                 
                 <button id="button-16" 

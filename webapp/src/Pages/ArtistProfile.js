@@ -18,6 +18,7 @@ import ArtistNavBar from '../components/ArtistNavBar'
 import {useParams} from "react-router-dom";
 import {getStyleById, getUser, getUserFollowing, getUserFollower, followUser, unfollowUser} from "../apiHook/profile"
 import {login, getLoginStatus} from '../apiHook/loginSignUp'
+import { getLocation } from 'apiHook/landing';
 import Footer from "../components/Footer"
 import PopUpTimeslotForm from 'components/PopUpTimeslotForm';
 
@@ -94,7 +95,10 @@ function ArtistProfile() {
 
             if(data.artistSub.homeLocation !== undefined)
             {
-              data.homeLocation = data.artistSub.homeLocation;
+              // data.homeLocation = data.artistSub.homeLocation;
+              getLocation(data.artistSub.homeLocation).then((location)=>{
+                data.homeLocation = location.country + " " + location.region
+              })
             }
   
             setValues(data); 
@@ -237,7 +241,7 @@ function ArtistProfile() {
                   }}
             > Gallery</Button> */}
 
-            { isUser ? <Button size='sm' onClick={()=> setTimeslotButtonPopUp(true)}>Post available time</Button> : null }
+            { (isUser && values.homeLocation) ? <Button size='sm' onClick={()=> setTimeslotButtonPopUp(true)}>Post available time</Button> : null }
             </div>
 
             <div className="col-7">
