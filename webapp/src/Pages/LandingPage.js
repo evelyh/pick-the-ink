@@ -109,8 +109,7 @@ export class LandingPage extends Component {
             </div>)
       }
     }
-    const hostURL = "http://localhost:3000"
-    const artistProfile = hostURL + "/artistprofile/"
+    const artistProfile = "/artistprofile/" 
     const artistList = this.state.artists.map((artist) => 
         <div className="card" id="card" key={artist.userName}>
           <a id="cardname" href={artistProfile+artist._id} style={{fontWeight: "bold", fontSize: "15px"}}> @{artist.userName} </a>

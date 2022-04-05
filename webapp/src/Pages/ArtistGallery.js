@@ -62,7 +62,7 @@ function ArtistGallery() {
   const [buttonPopUpAdd, setButtonPopUpAdd] = useState(false);
   // const [addShow, setAddShow] = useState(false);
 
-  const [isUser, setIsUser] = useState(true);
+  const [isUser, setIsUser] = useState(false);
   const [ifFollowed,setIfFollowed] = useState(false);
 
   const [mounted, setMounted] = useState(false)
@@ -143,8 +143,6 @@ function ArtistGallery() {
         if(myID == id){
           setIsUser(true);
         }
-        log("id: "+id)
-        log("myID: "+myID)
         await getUser(id).then(async json => 
         { 
           console.log(json)

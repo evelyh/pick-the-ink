@@ -149,6 +149,8 @@ function ArtistProfile() {
         <PopUpArtistProfileForm 
           info={values} 
           setInfo = {setValues} 
+          id={id}
+          myid={myid}
           success={success} 
           setSuccess={setSuccess} 
           trigger={buttonPopUp} 
