@@ -43,6 +43,7 @@ async function postTimeslot(artistID,locationID, date, start, end) {
          console.log(date+" " + i)
         const str = date+" 0" + i + ":00:00";
         const newDate = new Date(str);
+        console.log(newDate, artistID, locationID);
         const request = new Request(url, {
             method: 'post',
             body: JSON.stringify({"startTime":newDate, artistID:artistID, "locationID":locationID}),
