@@ -61,8 +61,7 @@ function ArtistGallery() {
   const [isUser, setIsUser] = useState(false);
   const [ifFollowed,setIfFollowed] = useState(false);
   const [success,setSuccess] = useState(false);
-
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
 
   if(!mounted){
     getLoginStatus().then(async userStatus=>{
@@ -83,9 +82,9 @@ function ArtistGallery() {
         // if(json.profilePic === "" || json.profilePic === undefined){
         //   json.profilePic = "../assets/img/profilepic.jpg"
         // }
-        log(json)
-        json.followers = json.followerIDs.length
-        json.following = json.followingIDs.length
+        // log(json)
+        // json.followers = json.followerIDs.length
+        // json.following = json.followingIDs.length
         if(json.artistSub.homeLocation !== undefined){
           json.homeLocation = json.artistSub.homeLocation
         }
@@ -130,11 +129,11 @@ function ArtistGallery() {
         myID = userStatus.userId;
         if(id == undefined){
           id = myID;
-          setUsername(this.values.userName)
+          setUsername(values.userName)
         }
         if(myID == id){
           setIsUser(true);
-          setUsername(this.values.userName)
+          setUsername(values.userName)
         }else{
           if(userStatus.loggedIn){
             getUser(userStatus.userId).then((json)=>setUsername(json.userName))
@@ -152,8 +151,8 @@ function ArtistGallery() {
           if(resp.artistSub.homeLocation !== undefined){
             resp.homeLocation = resp.artistSub.homeLocation
           }
-          resp.followers = resp.followerIDs.length
-          resp.following = resp.followingIDs.length
+          // resp.followers = resp.followerIDs.length
+          // resp.following = resp.followingIDs.length
 
           resp.gallery = [];
 
@@ -285,8 +284,7 @@ function ArtistGallery() {
                   {!isUser? (
                     ifFollowed?<Button id='followButton' onClick={removeFollow}>Unfollow</Button>
                     :<Button id='followButton' onClick={addFollow}>Follow</Button>
-                  ) 
-                  :null}
+                  ):null}
                 </h5>
                 <CardText>{values.comment}</CardText>
                 <UncontrolledDropdown className="btn-group" id="followingDD">
@@ -307,6 +305,7 @@ function ArtistGallery() {
                       </DropdownItem>)):null}
                   </DropdownMenu>
                 </UncontrolledDropdown>
+                <span> </span>
                 <UncontrolledDropdown className="btn-group">
                   <DropdownToggle tag="a"
                     data-toggle="dropdown">
