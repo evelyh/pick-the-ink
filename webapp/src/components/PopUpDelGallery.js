@@ -16,7 +16,7 @@ export default function PopUpDelGallery(props){
     const deleteById = async (id) => {
       await getLoginStatus().then(async (userStatus)=>{
         myID = userStatus.userId;
-        if(currid == undefined){
+        if(currid === undefined){
           currid = myID;
         }
         console.log("MYID"+myID)

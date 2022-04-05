@@ -67,11 +67,11 @@ function ArtistProfile() {
         myid = json.userId;
         if(id == undefined){
           id = myid;
-          setUsername(this.values.userName)
+          setUsername(values.userName)
         }
         if(myid == id){
           setIsUser(true);
-          setUsername(this.values.userName)
+          setUsername(values.userName)
         }else{
           if(json.loggedIn){
             getUser(json.userId).then((json)=>setUsername(json.userName))
