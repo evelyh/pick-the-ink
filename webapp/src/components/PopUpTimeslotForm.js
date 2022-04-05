@@ -11,7 +11,7 @@ function PopUpTimeslotForm(props) {
         data.preventDefault();
         console.log(date.format("YYYY/MM/DD"), starttime.format('HH'), endtime.format('HH'));
         // artistID, locationID, date, starttime, endtime
-        await postTimeslot("62476f27a025c967d7d132fa", "62476f27a025c967d7d132fa",date.format('YYYY-MM-DD'), starttime.format('HH'), endtime.format('HH'));
+        await postTimeslot(props.artistID, props.locationID,date.format('YYYY-MM-DD'), starttime.format('HH'), endtime.format('HH'));
         props.setTrigger(false);
     }
     const [date, setDate] = useState(new Date());

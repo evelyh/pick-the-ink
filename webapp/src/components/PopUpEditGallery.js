@@ -46,7 +46,7 @@ function PopUpEditGallery(props) {
                 updateImageById(id, res).catch((error) => console.log(error))
             }
         })
-        // window.location.reload();
+        window.location.reload();
     }
 
     const onCancel = (event) => {

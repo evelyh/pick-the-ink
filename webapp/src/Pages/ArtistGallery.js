@@ -49,6 +49,7 @@ function ArtistGallery() {
     profilePic: "",
     gallery:[],
     image: "../images/patrick.jpg",
+    artistSub: undefined
   });
 
   // const [dummy, setdummy] = useState(false);

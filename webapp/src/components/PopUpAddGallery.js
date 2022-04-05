@@ -61,7 +61,7 @@ export default function PopUpAddGallery(props){
                 console.log(error);
                 });
         })
-        // window.location.reload();
+        window.location.reload();
     }
 
     const onSubmit=(e) => {

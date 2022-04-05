@@ -19,9 +19,9 @@ import {useParams} from "react-router-dom";
 import {getStyleById, getUser, getUserFollowing, getUserFollower, followUser, unfollowUser} from "../apiHook/profile"
 import {login, getLoginStatus} from '../apiHook/loginSignUp'
 import Footer from "../components/Footer"
-
-const log = console.log()
 import PopUpTimeslotForm from 'components/PopUpTimeslotForm';
+
+const log = console.log
 
 function ArtistProfile() {
 
@@ -30,6 +30,7 @@ function ArtistProfile() {
 
     // Should get this data from the server
     const [values, setValues] = useState({
+      _id:"",
       profilePic: "",
       firstName: "",
       lastName: "",
@@ -68,7 +69,6 @@ function ArtistProfile() {
             const favoriteStyles = [];
             document.getElementById("style").innerHTML = "";
             
-            
             for(const s_id in data.favoriteStyles){
               getStyleById(data.favoriteStyles[s_id]).then((ele)=> 
               {favoriteStyles[s_id] = ele;
@@ -79,6 +79,7 @@ function ArtistProfile() {
             }
             data.favoriteStyles = favoriteStyles
             data.birthDate = data.birthDate.slice(0,10);
+            document.getElementById("artStyle").innerHTML = "";
 
             const artStyles = [];
             for(const ms_id in data.artistSub.artStyles){
@@ -86,7 +87,7 @@ function ArtistProfile() {
               {artStyles[ms_id] = ele;
                 const li = document.createElement("li");
                 li.innerText = ele.name;
-                document.getElementById("style").appendChild(li);
+                document.getElementById("artStyle").appendChild(li);
               });
             }
             data.artStyles = artStyles;
@@ -114,31 +115,94 @@ function ArtistProfile() {
       setSuccess(false);
     };
 
+    const [following, setFollowing] = useState();
+    useEffect(()=>{
+        getUserFollowing(id).then((json)=>{
+          setFollowing(json)
+        })
+        
+    },[success])
+
+    const [follower, setFollower] = useState();
+    useEffect(()=>{
+        getUserFollower(id).then((json)=>{
+          setFollower(json)
+        })
+        
+    },[success])
+
+    const addFollow = ()=>{
+      followUser(id, myid);
+      setIfFollowed(true);
+    }
+    const removeFollow = ()=>{
+      unfollowUser(id, myid);
+      setIfFollowed(false);
+    }
+
     return (
       <div>
         <div>
-          <Header loggedIn={true} isArtist={true}/>
+          <Header loggedIn={true} isArtist={true} userName={values.userName}/>
         </div>
         <div><ArtistNavBar></ArtistNavBar></div>
-        <PopUpArtistProfileForm info={values} setInfo = {setValues} success={success} setSuccess={setSuccess} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpArtistProfileForm>
-        {isUser ? null : <PopUpAppointmentForm info={values} setInfo = {setValues} trigger={buttonPopUpBook} setTrigger={setButtonPopUpBook}>My Popup</PopUpAppointmentForm>}
+        <PopUpArtistProfileForm 
+          info={values} 
+          setInfo = {setValues} 
+          success={success} 
+          setSuccess={setSuccess} 
+          trigger={buttonPopUp} 
+          setTrigger={setButtonPopUp}>My Popup
+        </PopUpArtistProfileForm>
+
+        {isUser ? null : <PopUpAppointmentForm 
+                            info={values} 
+                            setInfo = {setValues} 
+                            trigger={buttonPopUpBook} 
+                            setTrigger={setButtonPopUpBook}>My Popup
+                          </PopUpAppointmentForm>}
         
-        {isUser ?  <PopUpTimeslotForm trigger={timeslotButtonPopUp} setTrigger={setTimeslotButtonPopUp}>My Popup</PopUpTimeslotForm>:null}
+        {isUser ?  <PopUpTimeslotForm
+                      artistID={values._id}
+                      locationID={values.homeLocation}
+                      trigger={timeslotButtonPopUp} 
+                      setTrigger={setTimeslotButtonPopUp}>My Popup
+                   </PopUpTimeslotForm>:null}
         
         <div className="container">
           <div className="row">
             <div className="col-3">
             <Card id="profileCard" style={{width: '20rem'}}>
               <CardBody>
-              <CardImg src={profilepic} id="profileCirclePic" alt='profile' />  
-              <h5>{values.userName}</h5>
+              {values.profilePic ? 
+              <CardImg 
+                src={values.profilePic} 
+                id="profileCirclePic" 
+                alt='profile'/> :
+                 <CardImg 
+                  src={profilepic} 
+                  id="profileCirclePic" 
+                  alt='profile'/>} 
+              <h5>
+                {values.userName}
+                {!isUser? (
+                  ifFollowed?<Button id='followButton' onClick={removeFollow}>Unfollow</Button>
+                  :<Button id='followButton' onClick={addFollow}>Follow</Button>
+                ) 
+                :null}
+              </h5>
               <CardText>{values.comment}</CardText>
             <UncontrolledDropdown className="btn-group" id="profileDropdown">
              <DropdownToggle tag="a"
               data-toggle="dropdown">
               Following: {values.followingIDs.length}
               </DropdownToggle>
-              <DropdownMenu >
+              <DropdownMenu>
+                {following? following.map(element => (
+                <DropdownItem tag="a" href={element["uLink"]} key={element["uLink"]}>
+                  <img id="profileDropdownPic" src={element["uPic"]? element["uPic"]:profilepic} alt={element["uName"]} ></img>
+                    {element["uName"]}
+                 </DropdownItem>)):null}
               </DropdownMenu>
             </UncontrolledDropdown>
             <UncontrolledDropdown className="btn-group">
@@ -147,10 +211,15 @@ function ArtistProfile() {
               Followers: {values.followerIDs.length}
               </DropdownToggle>
               <DropdownMenu >
-              <DropdownItem tag="a" href="/userprofile/gary" >
+              {/* <DropdownItem tag="a" href="/userprofile/gary" >
               <img id="profileDropdownPic" src={patrick} alt='PatrickYahhh' ></img>
               PatrickYahhh
-              </DropdownItem>
+              </DropdownItem> */}
+                {follower? follower.map(element => (
+                  <DropdownItem tag="a" href={element["uLink"]} key={element["uLink"]}>
+                    <img id="profileDropdownPic" src={element["uPic"]? element["uPic"]:profilepic} alt={element["uName"]} ></img>
+                      {element["uName"]}
+                  </DropdownItem>)):null}
               </DropdownMenu>
             </UncontrolledDropdown>
 
@@ -168,16 +237,15 @@ function ArtistProfile() {
                   }}
             > Gallery</Button> */}
 
-            { isUser ? <Button size='sm' onClick={()=> setTimeslotButtonPopUp(true)}>Post available time</Button> :null }
+            { isUser ? <Button size='sm' onClick={()=> setTimeslotButtonPopUp(true)}>Post available time</Button> : null }
             </div>
+
             <div className="col-7">
             <Alert variant="success" show={success}>
               <p>Profile Update successfully <CloseButton id = "closeButton" variant="white" onClick={onDismiss}/> </p>
             </Alert>
               <Container id="profileContainer">
               <div className="row mb-3">
-                
-                
                 <label className="col-sm-3 col-form-label col-form-label">Username:</label>
                 <div className="col-sm-7">
                   <label className="col-sm-6 col-form-label col-form-label">{values.userName}</label>
@@ -237,7 +305,7 @@ function ArtistProfile() {
                     <li className="col-6 col-form-label col-form-label" key={index}>{values.artStyle[index]["name"]}</li>
                   ))} */}
                   {values.artStyles ?
-                  <div id = "style" className="col-sm-7"> </div>
+                  <div id = "artStyle" className="col-sm-7"> </div>
                   :null}
                 </div>
               </div>

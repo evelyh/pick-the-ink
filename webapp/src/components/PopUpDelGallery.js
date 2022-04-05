@@ -47,7 +47,7 @@ export default function PopUpDelGallery(props){
           }
         });
       })
-        // window.location.reload();
+        window.location.reload();
     }
 
     return (props.trigger !== undefined) ? (

@@ -125,7 +125,7 @@ function UserProfile() {
       <div>
        
         <div>
-          <Header loggedIn={true} isArtist={false}/>
+          <Header loggedIn={true} isArtist={false} userName={values.userName}/>
         </div>
         <PopUpProfileForm info={values} setInfo = {setValues} success={success} setSuccess={setSuccess} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpProfileForm>
         <PopUpTimeslotForm trigger={timeslotButtonPopUp} setTrigger={setTimeslotButtonPopUp}>My Popup</PopUpTimeslotForm>
