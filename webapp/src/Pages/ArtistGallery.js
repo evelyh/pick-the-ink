@@ -57,9 +57,11 @@ function ArtistGallery() {
   const [buttonPopUpEdit, setButtonPopUpEdit] = useState(undefined);
   const [buttonPopUpDel, setButtonPopUpDel] = useState(undefined);
   const [buttonPopUpAdd, setButtonPopUpAdd] = useState(false);
-
+  const [buttonPopUpBook, setButtonPopUpBook] = useState(false);
   const [isUser, setIsUser] = useState(false);
   const [ifFollowed,setIfFollowed] = useState(false);
+  const [follower, setFollower] = useState();
+  const [following, setFollowing] = useState();
   const [success,setSuccess] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -139,6 +141,14 @@ function ArtistGallery() {
             getUser(userStatus.userId).then((json)=>setUsername(json.userName))
           }
         }
+
+        getUserFollowing(id).then((res)=>{
+          setFollowing(res)
+        })
+
+        getUserFollower(id).then((res)=>{
+          setFollower(res)
+        }) 
         await getUser(id).then(async json => 
         { 
           console.log(json)
@@ -184,28 +194,22 @@ function ArtistGallery() {
       a()
   }, [buttonPopUp, success])
 
-  const [following, setFollowing] = useState();
-  useEffect(()=>{
-      getUserFollowing(id).then((json)=>{
-        setFollowing(json)
-      })     
-   },[success])
-
-  const [follower, setFollower] = useState();
-  useEffect(()=>{
-      getUserFollower(id).then((json)=>{
-        setFollower(json)
-      })
-      
-  },[success])
-
   const addFollow = ()=>{
-    followUser(id, myID);
-    setIfFollowed(true);
+    getLoginStatus().then(json=>{
+      if(json.loggedIn){
+        console.log(id, json.userId, 2222222222);
+        followUser(id, json.userId);
+        setIfFollowed(true);
+      }
+    })
   }
   const removeFollow = ()=>{
-    unfollowUser(id, myID);
-    setIfFollowed(false);
+    getLoginStatus().then(json=>{
+      if(json.loggedIn){
+        unfollowUser(id, json.userId);
+        setIfFollowed(false);
+      }
+    })
   }
 
   const renderItem = (galleryPic, imgID) => {
@@ -258,9 +262,13 @@ function ArtistGallery() {
         {/* <Alert isOpen={delShow} color={"danger"} toggle={onDismissDel}>Deleted successfully</Alert>
         <Alert isOpen={addShow} color={"sucess"} toggle={onDismissAdd}>Added successfully</Alert>
         <Alert isOpen={editShow} color={"sucess"} toggle={onDismissEdit}>Edited successfully</Alert> */}
-        {!isUser &&
-        <PopUpAppointmentForm info={values} setInfo = {setValues} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpAppointmentForm>}
-
+        {isUser ? null : <PopUpAppointmentForm 
+                            info={values} 
+                            setInfo = {setValues} 
+                            artistId={id}
+                            trigger={buttonPopUpBook} 
+                            setTrigger={setButtonPopUpBook}>My Popup
+                          </PopUpAppointmentForm>}
         <div className="container">
           {isUser &&<PopUpAddGallery
             myID={id}
@@ -293,11 +301,6 @@ function ArtistGallery() {
                     Following: {values.followingIDs.length}
                   </DropdownToggle>
                   <DropdownMenu>
-                    {/* <DropdownItem tag="a" href="/userprofile/">
-                      <img id="profileDropdownPic" src={patrick} alt='patrick' ></img>
-                      patrick
-                    </DropdownItem> */}
-
                     {following? following.map(element => (
                       <DropdownItem tag="a" href={element["uLink"]} key={element["uLink"]}>
                         <img id="profileDropdownPic" src={element["uPic"]? element["uPic"]:profilepic} alt={element["uName"]} ></img>
@@ -321,12 +324,8 @@ function ArtistGallery() {
                 </UncontrolledDropdown>
               </CardBody>
             </Card>
-            {!isUser &&
-                <Button id="bt-book"
-                style={{backgroundColor: 'black', borderRadius: "7px"}}
-                size='sm'
-                type="button"
-                onClick={()=> setButtonPopUp(true)}>Book an appointment</Button>}
+            {isUser? null: <Button size='sm'
+                type="button" onClick={()=> setButtonPopUpBook(true)}>Book an appointment</Button>}
               </Container>
             </div>
             <div className='col-6'>

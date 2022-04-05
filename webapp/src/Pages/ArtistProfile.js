@@ -59,9 +59,8 @@ function ArtistProfile() {
     const [isUser, setIsUser] = useState(false);
     const [ifFollowed,setIfFollowed] = useState(false);
     const [username, setUsername] = useState("");
-    const [following, setFollowing] = useState();
     const [follower, setFollower] = useState();
-
+    const [following, setFollowing] = useState();
 
     useEffect(()=>{
       getLoginStatus().then(json=>{
@@ -87,7 +86,6 @@ function ArtistProfile() {
         getUserFollower(id).then((res)=>{
           setFollower(res)
         }) 
-
         getUser(id).then(async json => 
           {
             let data = json;
@@ -147,27 +145,22 @@ function ArtistProfile() {
       setSuccess(false);
     };
 
-    // useEffect(()=>{
-    //     getUserFollowing(id).then((json)=>{
-    //       setFollowing(json)
-    //     })
-        
-    // },[success])
-
-    // useEffect(()=>{
-    //     getUserFollower(id).then((json)=>{
-    //       setFollower(json)
-    //     })
-        
-    // },[success])
-
     const addFollow = ()=>{
-      followUser(id, myid);
-      setIfFollowed(true);
+      getLoginStatus().then(json=>{
+        if(json.loggedIn){
+          console.log(id, json.userId, 2222222222);
+          followUser(id, json.userId);
+          setIfFollowed(true);
+        }
+      })
     }
     const removeFollow = ()=>{
-      unfollowUser(id, myid);
-      setIfFollowed(false);
+      getLoginStatus().then(json=>{
+        if(json.loggedIn){
+          unfollowUser(id, json.userId);
+          setIfFollowed(false);
+        }
+      })
     }
 
     return (
@@ -231,7 +224,6 @@ function ArtistProfile() {
                  </DropdownItem>)):null}
               </DropdownMenu>
             </UncontrolledDropdown>
-            <span> </span>
             <UncontrolledDropdown className="btn-group">
              <DropdownToggle tag="a"
               data-toggle="dropdown">
@@ -249,6 +241,7 @@ function ArtistProfile() {
                   </DropdownItem>)):null}
               </DropdownMenu>
             </UncontrolledDropdown>
+
             </CardBody>
             </Card>
             
