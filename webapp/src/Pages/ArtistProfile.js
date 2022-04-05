@@ -1,7 +1,6 @@
 import React from 'react'
 import { Header } from '../components/Header'
 import { Container, Alert, CloseButton} from 'react-bootstrap'
-import patrick from '../assets/img/patrick.jpg'
 import profilepic from '../assets/img/profilepic.jpg'
 import '../assets/css/userProfile.css'
 import PopUpArtistProfileForm from '../components/PopUpArtistProfileForm'
@@ -232,10 +231,6 @@ function ArtistProfile() {
               Followers: {values.followerIDs.length}
               </DropdownToggle>
               <DropdownMenu >
-              {/* <DropdownItem tag="a" href="/userprofile/gary" >
-              <img id="profileDropdownPic" src={patrick} alt='PatrickYahhh' ></img>
-              PatrickYahhh
-              </DropdownItem> */}
                 {follower? follower.map(element => (
                   <DropdownItem tag="a" href={element["uLink"]} key={element["uLink"]}>
                     <img id="profileDropdownPic" src={element["uPic"]? element["uPic"]:profilepic} alt={element["uName"]} ></img>

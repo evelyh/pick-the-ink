@@ -16,7 +16,7 @@
      - provide their specialized art styles
 
 ## Website pages
-  - `https://`
+  - `https://www.pickink.herokuapp.com`
 
 ### *Explore* `/ & /explore`
 - Landing home page where allows users to browse artists and their selected work based on the filters including artists' locations, available dates, and styles they chose.
@@ -109,7 +109,7 @@
 
 ### Backend
 
-- Backend Host URL: `https://`
+- Backend Host URL: `https://www.pickink.herokuapp.com`
 
 - **Admin model**: (No other methods allowed to check, add, or modify the admin information. There is only one account.)
     - `/admin/login`
