@@ -61,7 +61,7 @@ export class PopUpBookingDetails extends Component {
           {booking.choice.toLowerCase() === "flash" ? "" : "Custom design idea: " + (booking.customIdea ? booking.customIdea : "n/a")} {booking.choice.toLowerCase() === "flash" ? null : <br/>}
           {booking.choice.toLowerCase() === "flash" && booking.flashLink ? <img className={"modal-image"} src={this.state.flashLink} alt={"Flash design"}/> : ""}
           {booking.size ? "Size: " + booking.size : "Size: n/a"} <br/>
-          {booking.otherLink ? "Reference picture:" : null} {booking.otherLink ? <br/> : null} {booking.otherLink ? <img src={this.state.referencePic} alt={"Reference Picture"} /> : ""} {booking.otherLink ? <br/> : null}
+          {booking.otherLink ? "Reference picture:" : null} {booking.otherLink ? <br/> : null} {booking.otherLink ? <img className={"modal-image"} src={this.state.referencePic} alt={"Reference Picture"} /> : ""} {booking.otherLink ? <br/> : null}
           {booking.concerns ? "Other details / Concerns: " + booking.concerns : ""} {booking.concerns ? <br/> : null}
           {booking.duration ? <span className={"duration-needed"}>Duration needed: {booking.duration}</span> : (isArtist ? <span className={"duration-needed"}>Pending duration, please send duration needed</span> : "Duration needed: Pending confirmation from artist")}
         </div>

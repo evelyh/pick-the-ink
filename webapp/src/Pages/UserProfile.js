@@ -12,7 +12,7 @@ import { Card, CardBody, CardImg,CardText,
   DropdownItem,
   UncontrolledDropdown,Button} from 'reactstrap'
 import {getStyleById, getUser, getUserFollowing, getUserFollower, followUser, unfollowUser} from "../apiHook/profile"
-import {login, getLoginStatus} from '../apiHook/loginSignUp'
+import {getLoginStatus} from '../apiHook/loginSignUp'
 import PopUpTimeslotForm from 'components/PopUpTimeslotForm';
 import Footer from 'components/Footer';
 
@@ -234,7 +234,7 @@ function UserProfile() {
                 :null}
               </div>
               { isUser ? <Button size='sm' onClick={()=> setButtonPopUp(true)}>Edit your profile</Button> :null }
-              { isUser ? <Button size='sm' onClick={()=> setTimeslotButtonPopUp(true)}>Choose available time</Button> :null }
+              
               </Container>
             </div>
           </div>

@@ -109,12 +109,11 @@ export class LandingPage extends Component {
             </div>)
       }
     }
-    const hostURL = "http://localhost:3000"
-    const artistProfile = hostURL + "/artistprofile/"
+    const artistProfile = "/artistprofile/" 
     const artistList = this.state.artists.map((artist) => 
         <div className="card" id="card" key={artist.userName}>
-          <a id="cardname" href={artistProfile+artist._id} style={{fontWeight: "bold", fontSize: "15px"}}> @{artist.userName} </a>
-          <p className='mb-3' id='styles' style={{fontSize: "14px"}}> {artist.comment} </p>
+          <a id="cardname" href={artistProfile+artist._id}> @{artist.userName} </a>
+          <p className='mb-3' id='stylename'> {artist.comment} </p>
           <Carousel showThumbs={false} id='carousel'>
               {imageList[artist.userName]}
           </Carousel>
@@ -128,11 +127,11 @@ export class LandingPage extends Component {
               <h4 className="mb-3"><a id='title'> Welcome to PickINK! Get started by finding the right Tattoo Artists for you. </a></h4>
             <Form className='form-horizontal'>
             <Form.Group className="col-3 mb-1 formField" >
-                  <Form.Text> Choose the place where you want the artists to be</Form.Text>
+                  <Form.Text className='labelnames'> Choose the place where you want the artists to be</Form.Text>
             </Form.Group>
               <div className='row mb-2'>
                 <Form.Group className='col-3' >                 
-                <Form.Label> Location: </Form.Label>
+                <Form.Label className='labelnames' > Location: </Form.Label>
                 <CountryDropdown
                         whitelist = {['CA', 'US']}
                         className='countrySelector'
@@ -150,29 +149,29 @@ export class LandingPage extends Component {
                 </Form.Group>
               </div>
                 <Form.Group className="col-3 mb-1 formField" >
-                  <Form.Text> Choose the time period you're looking to book</Form.Text>
+                  <Form.Text className='labelnames'> Choose the time period you're looking to book</Form.Text>
                 </Form.Group>
 
                 <div className = 'row mb-2'>
                   <Form.Group className="col-3 formField" >
-                      <Form.Label>Start:</Form.Label>
+                      <Form.Label className='labelnames'>Start:</Form.Label>
                       <Form.Control type="date" placeholder='Start Date' onChange={(val) => this.setState({start: val.target.value})}/>
                   </Form.Group>
 
                   <Form.Group className="col-3 formField" >
-                      <Form.Label>End:</Form.Label>
+                      <Form.Label className='labelnames'>End:</Form.Label>
                       <Form.Control type="date" placeholder='End Date' onChange={(val) => this.setState({end: val.target.value})}/>
                   </Form.Group>
                   
                   </div>
 
                   <Form.Group className="mb-1 formField" >
-                    <Form.Text> Choose the styles you're into</Form.Text>
+                    <Form.Text className='labelnames'> Choose the styles you're into</Form.Text>
                   </Form.Group>
 
                   <div className = 'row'>
                   <Form.Group className="col-4 mb-3 formField" >
-                      <Form.Label>Styles:</Form.Label>
+                      <Form.Label className='labelnames'>Styles:</Form.Label>
                       <Multiselect options={this.state.allStyles} displayValue="name"
                         onSelect={(val) => this.setState({styles: val})}
                         onRemove={(val) => this.setState({styles: val})}>
@@ -180,7 +179,7 @@ export class LandingPage extends Component {
                   </Form.Group>
                   </div>
               </Form>
-              <button className="mb-3 btn btn-primary" id="button-14" type="submit" onClick={this.handleSubmit}>Apply</button>
+              <button className="mb-3" id="applybutton" type="submit" onClick={this.handleSubmit}>APPLY</button>
             <div className='cardContainer'> 
                 {(this.state.artists.length > 0) ? artistList : text}
             </div>
