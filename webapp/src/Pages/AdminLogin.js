@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import '../assets/css/adminlogin.css'
 import PropTypes from 'prop-types';
-import {loginAdmin} from '../apiHook/admin.js'
+import {loginAdmin} from '../apiHook/admin.js';
+import Footer from "../components/Footer";
 
 
 export default function AdminLogin({setToken}) {
@@ -36,6 +37,9 @@ export default function AdminLogin({setToken}) {
           <button className="btn btn-secondary btn-block mb-4">Submit</button>
         </div>
       </form>
+      <div>
+          <Footer></Footer>
+      </div>
     </div>
   )
 }

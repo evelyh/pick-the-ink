@@ -23,10 +23,10 @@ import {
 import ArtistNavBar from '../components/ArtistNavBar'
 
 import {getImageById} from "../apiHook/image"
-import {getUser} from "../apiHook/profile"
-import Footer from "../components/Footer"
+import Footer from "../components/Footer";
 import {useParams} from "react-router-dom";
 import {getLoginStatus} from '../apiHook/loginSignUp'
+import {getStyleById, getUser, getUserFollowing, getUserFollower, followUser, unfollowUser} from "../apiHook/profile"
 
 // todo: update the homelocation and profile pic
 // todo: update current userID
@@ -41,45 +41,28 @@ function ArtistGallery() {
   const [values, setValues] = useState({
     userName: "",
     email: "",
-    following: 0,
-    followers: 0,
     followerIDs: [],
     followingIDs: [],
     homeLocation: "",
     profilePic: "",
     gallery:[],
     image: "../images/patrick.jpg",
+    comment:"",
+    isArtist: true,
     artistSub: undefined
   });
 
-  // const [dummy, setdummy] = useState(false);
 
   const [buttonPopUp, setButtonPopUp] = useState(false);
   const [buttonPopUpEdit, setButtonPopUpEdit] = useState(undefined);
-  // const [editShow, setEditShow] = useState(false);
   const [buttonPopUpDel, setButtonPopUpDel] = useState(undefined);
-  // const [delShow, setDelShow] = useState(false);
   const [buttonPopUpAdd, setButtonPopUpAdd] = useState(false);
-  // const [addShow, setAddShow] = useState(false);
 
   const [isUser, setIsUser] = useState(false);
   const [ifFollowed,setIfFollowed] = useState(false);
+  const [success,setSuccess] = useState(false);
 
   const [mounted, setMounted] = useState(false)
-
-  // const onDismissEdit = () => {
-  //   setEditShow(!editShow);
-  // }
-
-  // const onDismissDel = () => {
-  //   setDelShow(!delShow);
-  // }
-
-  // const onDismissAdd = () => {
-  //   setAddShow(!addShow);
-  // }
-
-
 
   if(!mounted){
     getLoginStatus().then(async userStatus=>{
@@ -127,6 +110,13 @@ function ArtistGallery() {
         console.log(json.gallery)
         setValues(json)
         setButtonPopUp(false);
+
+        if(json.followerIDs.includes(myID)){
+          setIfFollowed(true);
+        }else{
+          setIfFollowed(false);
+        }
+        console.log(values.followerIDs)
       })
     })
   }
@@ -175,13 +165,42 @@ function ArtistGallery() {
           }
           setValues(resp)
           setButtonPopUp(false);
+          if(resp.followerIDs.includes(myID)){
+            setIfFollowed(true);
+          }else{
+            setIfFollowed(false);
+          }
+          console.log(values.followerIDs)
         }).catch(error => {
           console.log(error);
         });
       })};
       a()
-  }, [buttonPopUp])
+  }, [buttonPopUp, success])
 
+  const [following, setFollowing] = useState();
+  useEffect(()=>{
+      getUserFollowing(id).then((json)=>{
+        setFollowing(json)
+      })     
+   },[success])
+
+  const [follower, setFollower] = useState();
+  useEffect(()=>{
+      getUserFollower(id).then((json)=>{
+        setFollower(json)
+      })
+      
+  },[success])
+
+  const addFollow = ()=>{
+    followUser(id, myID);
+    setIfFollowed(true);
+  }
+  const removeFollow = ()=>{
+    unfollowUser(id, myID);
+    setIfFollowed(false);
+  }
 
   const renderItem = (galleryPic, imgID) => {
 
@@ -227,7 +246,7 @@ function ArtistGallery() {
     return (
       <div>
         <div>
-          <Header loggedIn={true} isArtist={true}/>
+          <Header loggedIn={true} isArtist={true} userName={values.userName}/>
         </div>
         <div><ArtistNavBar></ArtistNavBar></div>
         {/* <Alert isOpen={delShow} color={"danger"} toggle={onDismissDel}>Deleted successfully</Alert>
@@ -255,30 +274,43 @@ function ArtistGallery() {
               {values.profilePic !== "" ?  <CardImg src={values.profilePic} id="profileCirclePic" alt='profile' />:
                  <CardImg src={profilepic} id="profileCirclePic" alt='profile' />  }  
                 {/* <CardImg src={profilePic} id="profileCirclePic" alt='profile' />   */}
-                <h5>{values.userName}</h5>
+                <h5>{values.userName}
+                  {!isUser? (
+                    ifFollowed?<Button id='followButton' onClick={removeFollow}>Unfollow</Button>
+                    :<Button id='followButton' onClick={addFollow}>Follow</Button>
+                  ) 
+                  :null}
+                </h5>
                 <CardText>{values.comment}</CardText>
-                <UncontrolledDropdown className="btn-group" id="profileDropdown">
+                <UncontrolledDropdown className="btn-group" id="followingDD">
                   <DropdownToggle tag="a"
                     data-toggle="dropdown">
-                    Following: {values.following}
+                    Following: {values.followingIDs.length}
                   </DropdownToggle>
-                  <DropdownMenu >
-                    <DropdownItem tag="a" href="/userprofile/">
+                  <DropdownMenu>
+                    {/* <DropdownItem tag="a" href="/userprofile/">
                       <img id="profileDropdownPic" src={patrick} alt='patrick' ></img>
                       patrick
-                    </DropdownItem>
+                    </DropdownItem> */}
+
+                    {following? following.map(element => (
+                      <DropdownItem tag="a" href={element["uLink"]} key={element["uLink"]}>
+                        <img id="profileDropdownPic" src={element["uPic"]? element["uPic"]:profilepic} alt={element["uName"]} ></img>
+                          {element["uName"]}
+                      </DropdownItem>)):null}
                   </DropdownMenu>
                 </UncontrolledDropdown>
                 <UncontrolledDropdown className="btn-group">
                   <DropdownToggle tag="a"
                     data-toggle="dropdown">
-                    Followers: {values.followers}
+                    Followers: {values.followerIDs.length}
                   </DropdownToggle>
                   <DropdownMenu >
-                    <DropdownItem tag="a" href="/userprofile/">
-                      <img id="profileDropdownPic" src={patrick} alt='patrick' ></img>
-                      patrick
-                    </DropdownItem>
+                  {follower? follower.map(element => (
+                    <DropdownItem tag="a" href={element["uLink"]} key={element["uLink"]}>
+                      <img id="profileDropdownPic" src={element["uPic"]? element["uPic"]:profilepic} alt={element["uName"]} ></img>
+                        {element["uName"]}
+                    </DropdownItem>)):null}
                   </DropdownMenu>
                 </UncontrolledDropdown>
               </CardBody>
@@ -288,16 +320,6 @@ function ArtistGallery() {
                 size='sm'
                 type="button"
                 onClick={()=> setButtonPopUp(true)}>Book an appointment</Button>}
-
-            {/* <Button
-                id="bt-pro"
-                size='sm'
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.location.href='http://localhost:3000/artistprofile';
-                  }}
-            > profile</Button> */}
               </Container>
             </div>
             <div className='col-6'>

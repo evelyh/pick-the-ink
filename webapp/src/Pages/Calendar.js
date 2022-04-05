@@ -5,6 +5,7 @@ import {getTimeslotsByUser} from "../apiHook/calender"
 import "../apiHook/calender"
 import { getLoginStatus } from 'apiHook/loginSignUp';
 import { getUser } from 'apiHook/profile';
+import Footer from "../components/Footer";
 
 export class Calendar extends Component {
   state = {
@@ -82,6 +83,9 @@ export class Calendar extends Component {
           </ResourcesDirective>
           <Inject services={[Day, Week, WorkWeek, Month, Agenda]} />
         </ScheduleComponent>
+        <div>
+          <Footer></Footer>
+        </div>
       </div>
     )
   }
