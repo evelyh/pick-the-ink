@@ -213,7 +213,7 @@ function ArtistGallery() {
 
     return(
       <div key={galleryPic.id} className="cardItem">
-      <Card style={{width: '20rem'}}>
+      <Card id="profilecard">
         <CardImg id="cardImg" className='galleryPics' top src={galleryPic.img} alt="..."/>
         <CardBody>
         <CardTitle className='cardTitle'>{galleryPic.title}</CardTitle>
@@ -324,6 +324,7 @@ function ArtistGallery() {
             </Card>
             {!isUser &&
                 <Button id="bt-book"
+                style={{backgroundColor: 'black', borderRadius: "7px"}}
                 size='sm'
                 type="button"
                 onClick={()=> setButtonPopUp(true)}>Book an appointment</Button>}
@@ -338,8 +339,8 @@ function ArtistGallery() {
                       renderItem={renderItem}
                       display={{
                         grid: true,
-                        minColumnWidth: "400px",
-                        gridGap: "120px"
+                        // minColumnWidth: "400px",
+                        // gridGap: "100px"
                       }}
                     />
                 </div>

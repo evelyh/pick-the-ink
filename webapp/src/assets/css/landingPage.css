@@ -32,15 +32,10 @@
   background-color: #f5f5f5;
   box-shadow: 0.2rem;
   padding: 0.75rem;
-  border-radius: "16px";
 }
 
 #card:hover {
   transform: none;
-}
-
-.label {
-  font-weight: "bold";
 }
 
 #cardname {

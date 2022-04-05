@@ -159,35 +159,35 @@ module.exports = function(app) {
     }
   })
 
-  //delete user by id
-  app.delete("/api/users/:id", async(req, res) => {
-    const id = req.params.id
+  // //delete user by id
+  // app.delete("/api/users/:id", async(req, res) => {
+  //   const id = req.params.id
 
-    // Validate id
-    if (!ObjectID.isValid(id)) {
-      res.status(404).send('Resource not found')
-      return;
-    }
+  //   // Validate id
+  //   if (!ObjectID.isValid(id)) {
+  //     res.status(404).send('Resource not found')
+  //     return;
+  //   }
 
-    // check mongoose connection established.
-    if (mongoose.connection.readyState != 1) {
-      log('Issue with mongoose connection')
-      res.status(500).send('Internal server error')
-      return;
-    }
+  //   // check mongoose connection established.
+  //   if (mongoose.connection.readyState != 1) {
+  //     log('Issue with mongoose connection')
+  //     res.status(500).send('Internal server error')
+  //     return;
+  //   }
 
-    try {
-      const user = await User.findByIdAndRemove(id, {new: true, useFindAndModify: false})
-      if (!user) {
-        res.status(404).send()
-      } else {
-        res.send({user})
-      }
-    } catch(error) {
-      log(error)
-      res.status(500).send()
-    }
-  })
+  //   try {
+  //     const user = await User.findByIdAndRemove(id, {new: true, useFindAndModify: false})
+  //     if (!user) {
+  //       res.status(404).send()
+  //     } else {
+  //       res.send({user})
+  //     }
+  //   } catch(error) {
+  //     log(error)
+  //     res.status(500).send()
+  //   }
+  // })
 
   ///////////////////
 

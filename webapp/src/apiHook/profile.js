@@ -80,6 +80,31 @@ async function getUserFollower(id) {
     return arr;
 }
 
+async function getLocationById(id) 
+{
+    const url = hostURL+"/api/locations/"+id;
+
+    const request = new Request(url, {
+        method: 'get',
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
+    });
+
+    return await fetch(request)
+    .then((res) => { 
+        if (res.status === 200) {
+            // return a promise that resolves with the JSON body
+           return res.json() 
+       } else {
+           return false;
+       }                
+    }).catch((error) => {
+        log(error)
+    })
+}
+
 async function postUser(data) {
     const id = data._id;
     delete data._id;
@@ -103,6 +128,8 @@ async function postUser(data) {
     data.favoriteStyles = favoriteStyles;
 
     const url = hostURL + '/api/users/' + id;
+    console.log("------------------");
+    console.log(data)
     console.log("------------------");
     console.log(JSON.stringify(data));
 
@@ -320,4 +347,4 @@ async function getStyleById(id) {
 
 
 
-export {getStyleById, getUser, getStyles, postUser, getUserFollowing, getUserFollower, followUser, unfollowUser}
+export {getStyleById, getUser, getStyles, postUser, getUserFollowing, getUserFollower, followUser, unfollowUser, getLocationById}
