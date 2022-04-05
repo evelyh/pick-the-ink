@@ -229,20 +229,22 @@ async function followUser(follow, follower) {
 async function unfollowUser(follow, follower) {
     
     const fUser = await getUser(follow);
-    console.log(fUser.followerIDs, "unfollowUser")
+    console.log(fUser, "follow")
+    console.log(fUser.followerIDs, "unfollowUser-before")
     fUser.followerIDs = fUser.followerIDs.filter(function(item) {
-        return item != follower
+        return item !== follower
     })
-    console.log(fUser.followerIDs, "unfollowUser")
+    console.log(fUser.followerIDs, "unfollowUser-after")
     const followurl = hostURL + '/api/users/' + follow;
 
-    
+
     const ferUser = await getUser(follower);
-    console.log(ferUser.followerIDs, "unfollowUser")
-    ferUser.followingIDs = ferUser.followerIDs.filter(function(item) {
-        return item != follow
+    console.log(ferUser, "follower")
+    console.log(ferUser.followingIDs, "curr-before")
+    ferUser.followingIDs = ferUser.followingIDs.filter(function(item) {
+        return item !== follow
     })
-    console.log(ferUser.followerIDs, "unfollowUser")
+    console.log(ferUser.followingIDs, "curr-after")
     console.log(ferUser.followingIDs)
     const followerurl = hostURL + '/api/users/' + follower;
 

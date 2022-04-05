@@ -54,6 +54,7 @@ function PopUpEditGallery(props) {
     const onCancel = (event) => {
         console.log(prev);
         event.preventDefault();
+        window.location.reload();
         props.setValues({...prev});
         props.setTrigger(undefined);
     }

@@ -6,18 +6,20 @@ import MomentUtils from '@date-io/moment';
 import {postTimeslot} from "../apiHook/calender"
 
 function PopUpTimeslotForm(props) {
-
-    async function handleSubmit(data){
-        data.preventDefault();
-        console.log(date.format("YYYY/MM/DD"), starttime.format('HH'), endtime.format('HH'));
-        // artistID, locationID, date, starttime, endtime
-        await postTimeslot(props.artistID, props.locationID,date.format('YYYY-MM-DD'), starttime.format('HH'), endtime.format('HH'));
-        props.setTrigger(false);
-    }
     const [date, setDate] = useState(new Date());
     const [starttime, setStarttime] = useState(new Date());
     const [endtime, setEndtime] = useState(new Date());
     const [ confirm, setConfirm ] = useState(false)
+
+    async function handleSubmit(data){
+      data.preventDefault();
+
+      console.log(date)
+      console.log(date.format("YYYY/MM/DD"), starttime.format('HH'), endtime.format('HH'));
+      // artistID, locationID, date, starttime, endtime
+      await postTimeslot(props.artistID, props.locationID, date.format('YYYY-MM-DD'), starttime.format('HH'), endtime.format('HH'));
+      props.setTrigger(false);
+  }
 
     if (props.trigger) {
     return (
