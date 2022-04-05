@@ -3,6 +3,111 @@ const { ObjectID } = require('mongodb')
 const { mongoose } = require('../db/mongoose');
 const { Booking } = require('../models/Booking')
 const { authenticateUser } = require('./authentication-helpers')
+const { User } = require("../models/User");
+const nodemailer = require("nodemailer");
+const host = "http://localhost:5000/managebooking";
+const sendingEmail = 'laapsaap.dev@gmail.com';
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        type: 'OAuth2',
+        user: 'pickink.mailing@gmail.com',
+        accessToken: 'ya29.A0ARrdaM8fqyVematSMH9w4Xe8v101qmdBA6FtGrcGfepouWBWoXvN5rWk9ewdzryRKts2R0hB8u0pl35_gnseShxfKx66IAyhGJ1r3wL2euSiClXyLbce9TUm8OjwOduye1hJPHwwRH9ySnxHD6xTDSX5ple3'
+    }
+});
+
+async function sendEmailConfirmation(requestBody, bookingId){
+    // get booking
+    const booking = await Booking.findById(bookingId).then(res => res);
+    const artist = await User.findById(booking.artistID).then(res => res);
+    const client = await User.findById(booking.customerID).then(res => res);
+
+    // duration updated
+    if (requestBody.duration){
+        // send email to client
+        const mailBodyToCustomer = {
+            from: sendingEmail,
+            to: client.email,
+            subject: "Your PickINK booking has been updated",
+            html: `<h3>Your selected artist ${artist.firstName} ${artist.lastName} has sent you an estimated duration of the session.</h3><p>The needed duration is: ${booking.duration}. <br/> Please visit <a href=${host}>Manage Booking</a> to see more details </p>`,
+        };
+        transporter.sendMail(mailBodyToCustomer, function(error, info){
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+    }
+
+    // booking confirmed
+    if ((requestBody.isConfirmed && requestBody.timeslots) || requestBody.timeslots){
+        // send email to artist
+        const mailBodyToArtist = {
+            from: sendingEmail,
+            to: artist.email,
+            subject: "PickINK Client booking has been confirmed",
+            html: `<h3>Your booking with client ${client.firstName} ${client.lastName} is confirmed.</h3><p>There was a time change with the booking, please visit <a href=${host}>Manage Booking</a> to see details </p>`,
+        };
+        transporter.sendMail(mailBodyToArtist, function(error, info){
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+
+        // send email to customer
+        const mailBodyToCustomer = {
+            from: sendingEmail,
+            to: client.email,
+            subject: "Your PickINK booking has been confirmed",
+            html: `<h3>Your booking with artist ${artist.firstName} ${artist.lastName} is confirmed.</h3><p>There was a time change with the booking, please visit <a href=${host}>Manage Booking</a> to see details </p>`,
+        };
+        transporter.sendMail(mailBodyToCustomer, function(error, info){
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+    }
+}
+
+async function sendEmailCancellation(artistId, clientId){
+    const artist = await User.findById(artistId).then(res => res);
+    const client = await User.findById(clientId).then(res => res);
+
+    // send email to artist
+    const mailBodyToArtist = {
+        from: sendingEmail,
+        to: artist.email,
+        subject: "PickINK client booking has been cancelled",
+        html: `<h3>Your booking with client ${client.firstName} ${client.lastName} is cancelled.</h3><p>If you did not initiate this, please contact your client before customer support if you have bookings set to cancellable.</p>`,
+    };
+    transporter.sendMail(mailBodyToArtist, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+
+    // send email to customer
+    const mailBodyToCustomer = {
+        from: sendingEmail,
+        to: client.email,
+        subject: "Your PickINK booking has been cancelled",
+        html: `<h3>Your booking with artist ${artist.firstName} ${artist.lastName} is cancelled.</h3><p>If you did not initiate this, please contact your artist.</p>`,
+    };
+    transporter.sendMail(mailBodyToCustomer, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+}
 
 module.exports = function(app) {
     function isMongoError(error) { // checks for first error returned by promise rejection if Mongo database suddently disconnects
@@ -164,7 +269,8 @@ module.exports = function(app) {
             const booking = await Booking.findOneAndUpdate({_id: id}, {$set: req.body}, {new: true, useFindAndModify: false})
             if (!booking) {
                 res.status(404).send('Resource not found')
-            } else {   
+            } else {
+                await sendEmailConfirmation(req.body, id);
                 res.send(booking)
             }
         } catch (error) {
@@ -195,10 +301,12 @@ module.exports = function(app) {
         } 
     
         try {
+            const beforeRemoveBooking = await Booking.findById(id).then(res => res);
             const booking = await Booking.findByIdAndRemove(id, {new: true, useFindAndModify: false})
             if (!booking) {
                 res.status(404).send()
-            } else {   
+            } else {
+                await sendEmailCancellation(beforeRemoveBooking.artistID, beforeRemoveBooking.customerID);
                 res.send({booking})
             }
         } catch(error) {
