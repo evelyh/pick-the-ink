@@ -48,7 +48,7 @@
     - Features on the pages:
       - Profile Card
         - The profile card on the left of the page showing the profile photo, bio, followers and followings
-        - A list of followers/followings will show when clicking the followers/followings on the card
+        - A dropdown list of followers/followings will show when clicking the followers/followings on the card
         - You can naviagte to the followers'/followings' profile pages by clicking the dropdown lists of the followers/followings
       - Edit your profile
         - Users can edit their own profile on this page by clicking the `Edit your profile` button and fill in the popup form
@@ -74,6 +74,8 @@
       - Delete image from my gallery(artist's gallery page)
         - Delete images from your gallery
         - By clicking the `delete` button in the popup, you are confirming the deletion, otherwise, the image will stay. 
+      - Post available timeslots
+        - Post artists' available timeslots, so that client can book the appointment based on the available timeslots.
   
     **Notes for Profile (Important!):** 
     - For each user, he/she can only edit their own profile page (and gallery page, for artists), and view limited profile info on other users' profile page. 
