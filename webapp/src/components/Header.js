@@ -19,6 +19,14 @@ export class Header extends Component {
   render() {
 
     const {loggedIn} = this.props;
+    console.log("Header")
+    console.log(this.props)
+
+    var isArtist;
+
+    if(this.props.isArtist !== undefined) {
+      isArtist = this.props.isArtist;
+    }
 
     return (
       <div className='header'>
@@ -40,7 +48,7 @@ export class Header extends Component {
                     {loggedIn ? <Nav.Link style={this.nav} href="/explore">Explore</Nav.Link> : <Nav.Link style={this.nav} href="/">Explore</Nav.Link>}
                     <Nav.Link style={this.nav} href="/managebooking">Bookings</Nav.Link>
                     <Nav.Link style={this.nav} href="/calendar">Calendar</Nav.Link>
-                    <Nav.Link style={this.nav} href="/userprofile">Profile</Nav.Link>
+                    {isArtist ? <Nav.Link style={this.nav} href="/artistprofile">Profile</Nav.Link> : <Nav.Link style={this.nav} href="/userprofile">Profile</Nav.Link>}
                 </Nav>
             </Navbar.Collapse>
             <Navbar.Collapse className="justify-content-end">

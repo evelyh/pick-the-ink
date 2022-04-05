@@ -9,10 +9,16 @@ import {
   } from "reactstrap";
 import { addImage, updateArtistsGallery } from 'apiHook/image';
 import { getUser } from 'apiHook/profile';
+import {useParams} from "react-router-dom";
+import {getLoginStatus} from '../apiHook/loginSignUp';
+
+const log = console.log
 
 export default function PopUpAddGallery(props){
 
     console.log("Adding");
+    let { id } = useParams();
+    let myID;
 
     const [newPic, setNewPic] = useState({title: " ", desc: " ", img: undefined})
 
@@ -29,19 +35,33 @@ export default function PopUpAddGallery(props){
         }
     }
 
-    const addNewPic = (newPic) => {
-        getUser(props.myID).then(json => 
-        {
-            var newArtWorks = json.result.artistSub.artworks.concat(newPic._id)
-            json.result.artistSub.artworks = newArtWorks
+    const addNewPic = async (newPic) => {
+        await getLoginStatus().then(async (userStatus)=>{
+            myID = userStatus.userId;
+            if(id == undefined){
+              id = myID;
+            }
+            // if(myID == id){
+            //   setIsUser(true);
+            // }
+            log("id: "+ id)
+            log("myID: "+ myID)
+            await getUser(id).then(json => 
+            {
+                log("addNewPic")
+                log(props.myID)
+                log(json)
+                var newArtWorks = json.artistSub.artworks.concat(newPic._id)
+                json.artistSub.artworks = newArtWorks
 
-            updateArtistsGallery(json.result).catch(error => {
+                updateArtistsGallery(json).catch(error => {
+                    console.log(error);
+                });
+            }).catch(error => {
                 console.log(error);
-            });
-        }).catch(error => {
-            console.log(error);
-        });
-        window.location.reload();
+                });
+        })
+        // window.location.reload();
     }
 
     const onSubmit=(e) => {
@@ -51,7 +71,7 @@ export default function PopUpAddGallery(props){
             console.log(error);
         });
         props.setTrigger(undefined);
-        props.setAlert(true);
+        // props.setAlert(true);
     }
 
     return (props.trigger) ? (
@@ -64,6 +84,7 @@ export default function PopUpAddGallery(props){
                         type="file"
                         placeholder="Enter title"
                         onChange={val => onChangeImg(val)}
+                        required
                         />
                     </FormGroup>
                     <FormGroup>
@@ -72,6 +93,7 @@ export default function PopUpAddGallery(props){
                         type="text"
                         placeholder="Enter title"
                         onChange={val => onChange(val.target.value,  "title")}
+                        required
                         />
                     </FormGroup>
                     <FormGroup>

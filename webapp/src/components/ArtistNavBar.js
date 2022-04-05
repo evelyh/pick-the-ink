@@ -44,7 +44,7 @@ function ArtistNavBar(props) {
                 <NavLink href="#pablo" 
                 onClick={e => {
                     e.preventDefault();
-                    window.location.href='http://localhost:3000/artistprofile';}}>
+                    window.location.href='http://localhost:5000/artistprofile';}}>
                   Profile <span className="sr-only">(current)</span>
                 </NavLink>
               </NavItem>
@@ -52,7 +52,7 @@ function ArtistNavBar(props) {
                 <NavLink href="#pablo"
                 onClick={
                     e => {e.preventDefault();
-                    window.location.href='http://localhost:3000/artistgallery';}}>
+                    window.location.href='http://localhost:5000/artistgallery';}}>
                   Gallery
                 </NavLink>
               </NavItem>

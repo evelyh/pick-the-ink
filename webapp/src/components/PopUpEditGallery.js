@@ -9,7 +9,7 @@ import {
 } from "reactstrap";
 import {getImageById, updateImageById} from "../apiHook/image"
 
-
+const log =  console.log
 
 function PopUpEditGallery(props) {
 
@@ -29,22 +29,24 @@ function PopUpEditGallery(props) {
     const onSubmit = async (event) => {
         event.preventDefault();
         const id = props.id
-        await getImageById(id).then(async (res) => {
+        await getImageById(id).then(async (res) => 
+        {
+            log("edit")
+            log(res)
             var flag = false
             if(updatedPic.desc !== undefined){
-                res.images.desc = updatedPic.desc
+                res.desc = updatedPic.desc
                 flag = true
             }
             if(updatedPic.title !== undefined){
-                res.images.title = updatedPic.title
+                res.title = updatedPic.title
                 flag = true
             }
             if(flag){
-                updateImageById(id, res.images).catch((error) => console.log(error))
+                updateImageById(id, res).catch((error) => console.log(error))
             }
         })
         // window.location.reload();
-        props.reload(true);
     }
 
     const onCancel = (event) => {
@@ -69,7 +71,7 @@ function PopUpEditGallery(props) {
                         <Label>Title</Label>
                         <Input
                         type="text"
-                        placeholder={props.title}
+                        defaultValue={props.title}
                         onChange={val => onChange(val.target.value, "title")}
                         />
                     </FormGroup>
@@ -79,7 +81,7 @@ function PopUpEditGallery(props) {
                         <textarea
                         className='textArea'
                         type="text"
-                        placeholder ={props.description}
+                        defaultValue ={props.description}
                         onChange={val => onChange(val.target.value, "desc")}
                         />
                     </FormGroup>
@@ -87,7 +89,7 @@ function PopUpEditGallery(props) {
                     onClick={(e)=>{
                         onSubmit(e);
                         props.setTrigger(undefined);
-                        props.setAlert(true);
+                        // props.setAlert(true);
                         props.reload(true);
                         }}>
                         Submit

@@ -5,7 +5,7 @@ import patrick from '../assets/img/patrick.jpg'
 import profilepic from '../assets/img/profilepic.jpg'
 import '../assets/css/userProfile.css'
 import PopUpArtistProfileForm from '../components/PopUpArtistProfileForm'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardBody, CardImg,CardText,
   DropdownToggle,
   DropdownMenu,
@@ -15,30 +15,97 @@ import { Card, CardBody, CardImg,CardText,
   Row} from 'reactstrap'
 import PopUpAppointmentForm from 'components/PopUpAppointmentForm'
 import ArtistNavBar from '../components/ArtistNavBar'
+import {useParams} from "react-router-dom";
+import {getStyleById, getUser, getUserFollowing, getUserFollower, followUser, unfollowUser} from "../apiHook/profile"
+import {login, getLoginStatus} from '../apiHook/loginSignUp'
+import Footer from "../components/Footer"
+
+const log = console.log()
 
 function ArtistProfile() {
 
+  let { id } = useParams();
+  let myid;
+
     // Should get this data from the server
     const [values, setValues] = useState({
-      firstName: "Sponge",
-      lastName: "Bob",
-      userName: "SpongeBob",
-      email: "spongebob@gmail.com",
-      birthday: "1999-12-13",
-      phoneNum : "123-456-7890",
-      style: [{name: 'Blackwork', id: 1},{name: 'Watercolor', id: 2}],
-      artStyle: [{name: 'Blackwork', id: 1},{name: 'Watercolor', id: 2}],
-      image: profilepic,
-      homeLocation: "Toronto",
+      profilePic: "",
+      firstName: "",
+      lastName: "",
+      userName: "",
+      email: "",
+      birthDate: "",
+      phoneNum : "",
+      favoriteStyles: [],
+      artStyles: [],
+      homeLocation: "",
       isArtist: true,
-      followers:1,
-      following:0,
-      comment:"hahahaha"
+      followingIDs:[],
+      followerIDs:[],
+      comment:""
     });
     const [buttonPopUp, setButtonPopUp] = useState(false);
     const [buttonPopUpBook, setButtonPopUpBook] = useState(false);
     const [success,setSuccess] = useState(false);
-    const [isUser] = useState(false);
+    const [isUser, setIsUser] = useState(false);
+    const [ifFollowed,setIfFollowed] = useState(false);
+
+
+    useEffect(()=>{
+      getLoginStatus().then(json=>{
+        console.log(json)
+        myid = json.userId;
+        if(id == undefined){
+          id = myid;
+        }
+        if(myid == id){
+          setIsUser(true);
+        }
+        getUser(id).then(json => 
+          {
+            let data = json;
+            const favoriteStyles = [];
+            document.getElementById("style").innerHTML = "";
+            
+            
+            for(const s_id in data.favoriteStyles){
+              getStyleById(data.favoriteStyles[s_id]).then((ele)=> 
+              {favoriteStyles[s_id] = ele;
+                const li = document.createElement("li");
+                li.innerText = ele.name;
+                document.getElementById("style").appendChild(li);
+              });
+            }
+            data.favoriteStyles = favoriteStyles
+            data.birthDate = data.birthDate.slice(0,10);
+
+            const artStyles = [];
+            for(const ms_id in data.artistSub.artStyles){
+              getStyleById(data.artistSub.artStyles[ms_id]).then((ele)=> 
+              {artStyles[ms_id] = ele;
+                const li = document.createElement("li");
+                li.innerText = ele.name;
+                document.getElementById("style").appendChild(li);
+              });
+            }
+            data.artStyles = artStyles;
+
+            if(data.artistSub.homeLocation !== undefined)
+            {
+              data.homeLocation = data.artistSub.homeLocation;
+            }
+  
+            setValues(data); 
+  
+            if(data.followerIDs.includes(myid)){
+              setIfFollowed(true);
+            }else{
+              setIfFollowed(false);
+            }
+            console.log(values.followerIDs)
+          });
+      })
+    }, [buttonPopUp, success])
 
     const onDismiss = ()=>{
       setSuccess(false);
@@ -47,7 +114,7 @@ function ArtistProfile() {
     return (
       <div>
         <div>
-          <Header loggedIn={true}/>
+          <Header loggedIn={true} isArtist={true}/>
         </div>
         <div><ArtistNavBar></ArtistNavBar></div>
         <PopUpArtistProfileForm info={values} setInfo = {setValues} success={success} setSuccess={setSuccess} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpArtistProfileForm>
@@ -64,7 +131,7 @@ function ArtistProfile() {
             <UncontrolledDropdown className="btn-group" id="profileDropdown">
              <DropdownToggle tag="a"
               data-toggle="dropdown">
-              Following: {values.following}
+              Following: {values.followingIDs.length}
               </DropdownToggle>
               <DropdownMenu >
               </DropdownMenu>
@@ -72,7 +139,7 @@ function ArtistProfile() {
             <UncontrolledDropdown className="btn-group">
              <DropdownToggle tag="a"
               data-toggle="dropdown">
-              Followers: {values.followers}
+              Followers: {values.followerIDs.length}
               </DropdownToggle>
               <DropdownMenu >
               <DropdownItem tag="a" href="/userprofile/gary" >
@@ -136,7 +203,7 @@ function ArtistProfile() {
                 {isUser ? <label className="col-sm-3 col-form-label col-form-label">Date of Birth:</label>:null}
                 {isUser ? 
                 <div className="col-sm-7">
-                  <label className="col-sm-6 col-form-label col-form-label">{values.birthday}</label>
+                  <label className="col-sm-6 col-form-label col-form-label">{values.birthDate}</label>
                 </div>
                 :null}
                 
@@ -149,16 +216,22 @@ function ArtistProfile() {
 
                 <label className="col-sm-3 col-form-label col-form-label">Favorite styles:</label>
                 <div className="col-sm-7">
-                  {values.style.map((_, index) => (
+                  {/* {values.favoriteStyles.map((_, index) => (
                     <li className="col-6 col-form-label col-form-label" key={index}>{values.style[index]["name"]}</li>
-                  ))}
+                  ))} */}
+                  {values.favoriteStyles ?
+                  <div id = "style" className="col-sm-7"> </div>
+                  :null}
                 </div>
 
                 <label className="col-sm-3 col-form-label col-form-label">My art styles:</label>
                 <div className="col-sm-7">
-                  {values.artStyle.map((_, index) => (
+                  {/* {values.artStyle.map((_, index) => (
                     <li className="col-6 col-form-label col-form-label" key={index}>{values.artStyle[index]["name"]}</li>
-                  ))}
+                  ))} */}
+                  {values.artStyles ?
+                  <div id = "style" className="col-sm-7"> </div>
+                  :null}
                 </div>
               </div>
               { isUser ? <Button size='sm' onClick={()=> setButtonPopUp(true)}>Edit your profile</Button> :null }
@@ -167,18 +240,7 @@ function ArtistProfile() {
           </div>
         </div>
         <div>
-        <footer className="footer footer-black footer-white">
-          <Container>
-            <Row>
-              <div className="credits ml-auto">
-              <span className="copyright">
-                © {new Date().getFullYear()}, made with{" "}
-                <i className="fa fa-heart heart" /> by Creative Team09
-              </span>
-              </div>
-            </Row>
-          </Container>
-        </footer>
+          <Footer></Footer>
         </div>
       </div>
       )

@@ -123,7 +123,7 @@ function UserProfile() {
       <div>
        
         <div>
-          <Header loggedIn={true}/>
+          <Header loggedIn={true} isArtist={false}/>
         </div>
         <PopUpProfileForm info={values} setInfo = {setValues} success={success} setSuccess={setSuccess} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpProfileForm>
         <div className="container">
@@ -137,7 +137,7 @@ function UserProfile() {
               {!isUser? (
                 ifFollowed?<Button id='followButton' onClick={removeFollow}>Unfollow</Button>
                 :<Button id='followButton' onClick={addFollow}>Follow</Button>
-              )
+              ) 
               :null}
               
               

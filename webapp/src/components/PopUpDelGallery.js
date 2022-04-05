@@ -3,27 +3,41 @@ import '../assets/css/artistsGallery.css';
 import { Button } from "reactstrap";
 import { getUser } from "../apiHook/profile";
 import { updateArtistsGallery, deleteImageById } from "../apiHook/image";
+import {useParams} from "react-router-dom";
+import {getLoginStatus} from '../apiHook/loginSignUp';
 
+const log = console.log
 
 export default function PopUpDelGallery(props){
 
+  let { currid } = useParams();
+  let myID;
+
     const deleteById = async (id) => {
-        console.log("MYID"+props.myID)
-        await getUser(props.myID).then(async (res) => {
+      await getLoginStatus().then(async (userStatus)=>{
+        myID = userStatus.userId;
+        if(currid == undefined){
+          currid = myID;
+        }
+        console.log("MYID"+myID)
+        log("id"+currid)
+        await getUser(currid).then(async (res) => {
+          log("delete")
+          log(res)
           var idx = -1;
-          console.log(res.result)
-          console.log(res.result.artistSub.artworks[1])
-          for (var i = 0; i < res.result.artistSub.artworks.length; i++)
+          console.log(res)
+          console.log(res.artistSub.artworks[1])
+          for (var i = 0; i < res.artistSub.artworks.length; i++)
           {
-            if(res.result.artistSub.artworks[i] === id)
+            if(res.artistSub.artworks[i] === id)
             {
               idx = i;
               break;
             }
           }
           if (idx !== -1){
-            res.result.artistSub.artworks.splice(idx, 1);
-            await updateArtistsGallery(res.result).catch(error => {
+            res.artistSub.artworks.splice(idx, 1);
+            await updateArtistsGallery(res).catch(error => {
               console.log(error);
             });
     
@@ -32,7 +46,8 @@ export default function PopUpDelGallery(props){
             });
           }
         });
-        window.location.reload();
+      })
+        // window.location.reload();
     }
 
     return (props.trigger !== undefined) ? (
