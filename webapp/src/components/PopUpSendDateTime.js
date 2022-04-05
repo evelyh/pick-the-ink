@@ -154,10 +154,11 @@ export class PopUpSendDateTime extends Component {
         timeslotsNeeded: 0,
         currDisplayDate: new Date(),
       })
+      await this.componentDidMount();
     }
   }
 
-  async componentDidUpdate() {
+  async componentDidMount() {
 
     // get artist availability
     const availability = await getArtistAvailability(this.props.artistId);
@@ -240,7 +241,7 @@ export class PopUpSendDateTime extends Component {
                  className={"icons nc-icon nc-minimal-left timeslot-prev"}
                  onClick={this.prevWeek}
               />
-              <span className={"timeslot-picker-head"}>Availability of artist</span>
+              <span className={"timeslot-picker-head"}>{isArtist ? "Availability" : "Availability of artist" }</span>
               <i title={"Next week"}
                  className={"icons nc-icon nc-minimal-right timeslot-next"}
                  onClick={this.nextWeek}

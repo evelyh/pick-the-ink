@@ -6,8 +6,9 @@ import BookingRow from "../components/BookingRow";
 import {uid} from "react-uid";
 import {Alert} from "reactstrap";
 import {Navigate} from "react-router-dom";
-import {cancelBooking, getBookings} from "../apiHook/manageBooking";
+import {cancelBooking, confirmBooking, getBookings, unbookTimeslots} from "../apiHook/manageBooking";
 import {getLoginStatus} from "../apiHook/loginSignUp";
+import Footer from "../components/Footer";
 
 export class ManageBookingConfirm extends Component {
 
@@ -17,7 +18,32 @@ export class ManageBookingConfirm extends Component {
     bookingCancelled: false,
     host: "http://localhost:5000",
     userId: "",
+    datetimeSent: false,
     loggedIn: true,
+  }
+
+  sendDateTime = async (timeslots, confirmedBooking) => {
+
+    if (confirmedBooking.isConfirmed) {
+      const timeslotsUnbooked = await unbookTimeslots(confirmedBooking.timeslots);
+      if (timeslotsUnbooked){
+        const bookingConfirmed = await confirmBooking(confirmedBooking.customerID, timeslots, confirmedBooking._id);
+        if (bookingConfirmed){
+          this.setState({
+            datetimeSent: true,
+          });
+          setTimeout(() => {
+            this.setState({
+              datetimeSent: false,
+            })
+          }, 2000);
+          await this.componentDidMount();
+          return true;
+        }
+      }
+    } else{
+      alert("Internal server error");
+    }
   }
 
   removeRow = async (confirmedBooking) => {
@@ -71,7 +97,6 @@ export class ManageBookingConfirm extends Component {
   }
 
   checkRedirection = () => {
-    console.log("inside checkRedirection: ", this.state.loggedIn)
     if (!this.state.loggedIn){
       return <Navigate to={"/"} />;
     }
@@ -103,6 +128,7 @@ export class ManageBookingConfirm extends Component {
               <th>{ this.state.isArtist ? "Customer" : "Artist"}</th>
               <th>Actions</th>
             </tr>
+            {this.state.confirmedBookings.length > 0 ? null : <tr><td colSpan={4} className={"no-pending-confirm"}> No confirmed bookings </td></tr>}
 
             { this.state.confirmedBookings.map((confirmedBooking) => {
               return(
@@ -111,6 +137,7 @@ export class ManageBookingConfirm extends Component {
                   confirmedBooking={confirmedBooking}
                   isArtist={this.state.isArtist}
                   removeRow={() => this.removeRow(confirmedBooking)}
+                  sendDateTime={(timeslots) => this.sendDateTime(timeslots, confirmedBooking)}
                 />
               )
             }) }
@@ -120,8 +147,12 @@ export class ManageBookingConfirm extends Component {
           <Alert color={"danger"} isOpen={this.state.bookingCancelled}>
             Booking cancelled!
           </Alert>
+          <Alert color={"success"} isOpen={this.state.datetimeSent}>
+            Booking time modified!
+          </Alert>
 
         </div>
+        <Footer/>
       </div>
     )
   }

@@ -53,9 +53,17 @@ async function updateBooking(bookingId, requestBody) {
 }
 
 // DELETE request to cancel booking
+// update timeslot so that it is not booked
 // return true if success, false otherwise
-async function cancelBooking(bookingId){
-  const url = host + "/api/bookings/" + bookingId;
+async function cancelBooking(booking){
+
+  // unbook timeslots
+  const unbooked = await unbookTimeslots(booking.timeslots);
+  if (!unbooked){
+    return false;
+  }
+
+  const url = host + "/api/bookings/" + booking._id;
   const request = new Request(url, {
     method: "DELETE",
     credentials: "same-origin",
@@ -94,7 +102,6 @@ async function getImageLink(imageId){
   return await fetch(request)
     .then(res => res.json())
     .then(json => {
-      console.log("fetching image", json.images.img)
       return json.images.img;
     })
     .catch((error) => {
@@ -120,7 +127,6 @@ async function getBookingTimeString(timeslots){
     await fetch(request)
       .then(res => res.json())
       .then(json => {
-        console.log("fetch timeslots json:", json)
         times.push(new Date(json.result.startTime));
       })
       .catch((error) => {
@@ -129,13 +135,11 @@ async function getBookingTimeString(timeslots){
   }
 
   // set start-time and end-time
-  console.log("before times:", times)
   times.sort((date1, date2) => date1 - date2);
   const bookingStart = times[0].toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: false});
   const bookingStartDateObj = new Date(times[0]);
   const bookingEndDateObj = new Date(times[times.length - 1].getTime());
   bookingEndDateObj.setHours(bookingEndDateObj.getHours() + 1);
-  console.log("end date:", bookingEndDateObj)
   const bookingEnd = bookingEndDateObj.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: false});
   return {
     bookingStartDateObj: bookingStartDateObj,
@@ -161,7 +165,6 @@ async function getUserInfo(mode, userId){
   return await fetch(request)
     .then(res => res.json())
     .then(json => {
-      console.log("fetch artist info: ", json)
       if (mode === "artist"){
         return {
           artistName: json.firstName + " " + json.lastName,

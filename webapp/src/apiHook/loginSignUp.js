@@ -16,7 +16,6 @@ async function getLoginStatus() {
   return await fetch(request)
     .then(res => res.json())
     .then(json => {
-      console.log(json)
       return {
         loggedIn: json.loggedIn,
         isArtist: json.isArtist,
@@ -77,7 +76,6 @@ async function signup(requestBody){
 
   return await fetch(request)
     .then((res) => {
-      console.log(res)
       if (res.ok) {
         return {
           success: true,

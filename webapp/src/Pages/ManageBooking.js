@@ -8,24 +8,14 @@ import {uid} from "react-uid";
 import {Navigate} from "react-router-dom";
 import {getLoginStatus} from "../apiHook/loginSignUp";
 import {cancelBooking, confirmBooking, getBookings, unbookTimeslots, updateBooking} from "../apiHook/manageBooking";
+import Footer from "../components/Footer";
 
 
 export class ManageBooking extends Component {
 
   state = {
-    isArtist: false,
-    genericError: false,
-    bookingConfirmed: false,
-    bookingCancelled: false,
-    durationSent: false,
-    datetimeSent: false,
-    pendingBookings: [],
-    host: "http://localhost:5000",
-    userId: "62465a409c96c2071046af8d",
-    loggedIn: true,
-    confirmedBooking: false,
-    // todo: uncomment after UI work
-    // isArtist: null,
+    // for UI work
+    // isArtist: false,
     // genericError: false,
     // bookingConfirmed: false,
     // bookingCancelled: false,
@@ -33,19 +23,28 @@ export class ManageBooking extends Component {
     // datetimeSent: false,
     // pendingBookings: [],
     // host: "http://localhost:5000",
-    // userId: "",
+    // userId: "62465a409c96c2071046af8d",
     // loggedIn: true,
     // confirmedBooking: false,
+    isArtist: null,
+    genericError: false,
+    bookingConfirmed: false,
+    bookingCancelled: false,
+    durationSent: false,
+    datetimeSent: false,
+    pendingBookings: [],
+    host: "http://localhost:5000",
+    userId: "",
+    loggedIn: true,
+    confirmedBooking: false,
   }
 
-  // todo: connect to backend
   sendDateTime = async (timeslots, pendingBooking) => {
     if (pendingBooking.isConfirmed) {
       const timeslotsUnbooked = await unbookTimeslots(timeslots);
       if (timeslotsUnbooked){
         const bookingConfirmed = await confirmBooking(pendingBooking.customerID, timeslots, pendingBooking._id);
         if (bookingConfirmed){
-          console.log("booking confirmed")
           const filteredBookings = this.state.pendingBookings.filter((booking) => {
             return booking !== pendingBooking;
           });
@@ -53,7 +52,7 @@ export class ManageBooking extends Component {
             datetimeSent: true,
             pendingBookings: filteredBookings,
           });
-          setTimeout((timeslots, pendingBooking) => {
+          setTimeout(() => {
             this.setState({
               datetimeSent: false,
             })
@@ -69,7 +68,7 @@ export class ManageBooking extends Component {
         this.setState({
           datetimeSent: true,
         });
-        setTimeout((timeslots, pendingBooking) => {
+        setTimeout(() => {
           this.setState({
             datetimeSent: false,
             confirmedBooking: true,
@@ -142,7 +141,7 @@ export class ManageBooking extends Component {
       }
     } else if (mode === "cancel") {
 
-      const canceled = await cancelBooking(pendingBooking._id);
+      const canceled = await cancelBooking(pendingBooking);
       if (canceled){
         this.setState({
           bookingCancelled: true,
@@ -168,9 +167,10 @@ export class ManageBooking extends Component {
   }
 
   async componentDidMount() {
-    // get login status // todo: uncomment after UI work
-    // const loginStats = await getLoginStatus();
-    // this.setState(loginStats);
+    // get login status
+    // comment for UI work
+    const loginStats = await getLoginStatus();
+    this.setState(loginStats);
 
     // get bookings for that user
     const requestBody = this.state.isArtist ? {
@@ -186,11 +186,9 @@ export class ManageBooking extends Component {
       pendingBookings: fetchedBookings,
     });
 
-    console.log("this.state in managebooking after fetch: ", this.state)
   }
 
   checkRedirection = () => {
-    console.log("inside checkRedirection: ", "logged in: ", this.state.loggedIn)
     if (!this.state.loggedIn){
         return <Navigate to={"/"} />;
     }
@@ -225,6 +223,8 @@ export class ManageBooking extends Component {
               <th>{ this.state.isArtist ? "Customer" : "Artist"}</th>
               <th>Actions</th>
             </tr>
+
+            {this.state.pendingBookings.length > 0 ? null : <tr><td colSpan={4} className={"no-pending-confirm"}> No Pending bookings </td></tr>}
 
             { this.state.pendingBookings.map((pendingBooking) => {
               return(
@@ -261,6 +261,7 @@ export class ManageBooking extends Component {
           </Alert>
 
         </div>
+        <Footer/>
       </div>
     )
   }

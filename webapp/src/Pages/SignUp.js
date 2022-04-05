@@ -7,6 +7,7 @@ import {addImage} from "../apiHook/image";
 import {getLoginStatus, signup} from "../apiHook/loginSignUp";
 // styles
 import "../assets/css/loginSignUp.css";
+import Footer from "../components/Footer";
 
 export class SignUp extends Component {
 
@@ -62,7 +63,6 @@ export class SignUp extends Component {
       let licenseId = "";
       let identificationId = "";
       if (this.state.artist === "on"){
-        console.log("inside if artist")
         // upload files to cloud
         await addImage({img: this.state.license}).then((json) => {
           licenseId = json._id;
@@ -92,7 +92,6 @@ export class SignUp extends Component {
       const signupStats = await signup(requestBody);
       if (signupStats.success){
         this.setState(signupStats);
-        console.log("after success post user")
         setTimeout(() => {
           this.setState({
             success: false,
@@ -101,7 +100,6 @@ export class SignUp extends Component {
         }, 3000);
       } else{
         this.setState(signupStats);
-        console.log("after failed post user",this.state);
         setTimeout(() => {
           this.setState({
             showFail: false,
@@ -281,7 +279,7 @@ export class SignUp extends Component {
         <Alert isOpen={this.state.success} color={"success"}>Sign up successful! Redirecting you to Login...</Alert>
 
 
-
+        <Footer/>
       </div>
     )
   }

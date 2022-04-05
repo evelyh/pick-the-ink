@@ -140,3 +140,7 @@
 .timeslot-next {
   float: right;
 }
+
+.no-pending-confirm {
+  font-size: x-large;
+}

@@ -25,6 +25,7 @@ export class BookingRow extends Component {
     customerName: null,
     customerEmail: null,
     customerPhone: null,
+    sentDuration: false,
   }
 
   sendDateTime = async (timeslots) => {
@@ -41,6 +42,7 @@ export class BookingRow extends Component {
   sendDuration = (length) => {
     this.setState({
       showSendDuration: !this.state.showSendDuration,
+      sentDuration: true,
     });
 
     this.props.sendDuration(length);
@@ -100,9 +102,9 @@ export class BookingRow extends Component {
     return (
       // <div>
       <tr>
-        <td><span className={"month"}>{this.state.bookingStartDateObj.toLocaleDateString([], {month: "short"})}</span><br/><span
-          className={"date"}>{this.state.bookingStartDateObj.getDate()}</span></td>
-        <td><span className={"cell-details"}>{this.state.bookingTimeString ? this.state.bookingTimeString : (isArtist && (!confirmedBooking.duration) ? "Pending duration" : "Pending")}</span></td>
+        <td><span className={"month"}>{this.state.bookingTimeString ? this.state.bookingStartDateObj.toLocaleDateString([], {month: "short"}) : null}</span><br/><span
+          className={"date"}>{this.state.bookingTimeString ? this.state.bookingStartDateObj.getDate() : null}</span></td>
+        <td><span className={"cell-details"}>{this.state.bookingTimeString ? this.state.bookingTimeString : (isArtist && ((!confirmedBooking.duration) && (!this.state.sentDuration)) ? "Pending duration" : "Pending")}</span></td>
         <td><span className={"cell-details"}>{isArtist ? this.state.customerName : this.state.artistName}</span></td>
         <td>
           <i title={"Booking Details"}
@@ -119,7 +121,7 @@ export class BookingRow extends Component {
                onClick={() => this.setState({showSendDuration: true})}
             /> : null
           }
-          {(!confirmedBooking.isConfirmed && !isArtist && confirmedBooking.duration !== null) ?
+          {(!confirmedBooking.isConfirmed && !isArtist && confirmedBooking.duration !== null) || (isArtist && confirmedBooking.isConfirmed) || (confirmedBooking.isModifiable) ?
             <i title={"Schedule Session"}
                className={"icons nc-icon nc-calendar-60"}
                onClick={() => this.setState({showSendDateTime: true})}

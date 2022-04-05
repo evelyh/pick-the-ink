@@ -7,6 +7,7 @@ import { withCookies } from "react-cookie";
 import {getLoginStatus, login} from "../apiHook/loginSignUp";
 // styles
 import "../assets/css/loginSignUp.css";
+import Footer from "../components/Footer";
 
 
 export class Login extends Component {
@@ -146,7 +147,7 @@ export class Login extends Component {
           </form>
 
         </div>
-
+        <Footer/>
 
       </div>
     )
