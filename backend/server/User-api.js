@@ -233,7 +233,8 @@ module.exports = function(app) {
       if (error){
         res.status(500).send(error);
       } else {
-        res.status(200).send("logout successful");
+        // res.status(200).send("logout successful");
+        res.redirect("/");
       }
     })
   })

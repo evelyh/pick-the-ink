@@ -27,8 +27,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LandingPage loggedIn={false} />} />
-        <Route path={"/explore"} element={<LandingPage loggedIn={true}/>} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path={"/explore"} element={<LandingPage />} />
         <Route path="/managebooking" element={<ManageBooking />}/>
         <Route path="/managebooking-confirm" element={<ManageBookingConfirm />}/>
         <Route path="/userprofile/:id" element={<UserProfile />} />

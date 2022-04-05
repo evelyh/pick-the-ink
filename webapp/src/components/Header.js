@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import { Navbar, Nav, Container} from 'react-bootstrap'
+import {getUser} from "../apiHook/profile";
 
 
 export class Header extends Component {
@@ -16,9 +17,14 @@ export class Header extends Component {
     fontSize:"18px",
     fontWeight: "normal",
   }
+
+  state = {
+    userName: null,
+  }
+
   render() {
 
-    const {loggedIn} = this.props;
+    const {loggedIn, userName} = this.props;
 
     return (
       <div className='header'>
@@ -45,7 +51,7 @@ export class Header extends Component {
             </Navbar.Collapse>
             <Navbar.Collapse className="justify-content-end">
               <Navbar.Text>
-                {loggedIn ? <span>Signed in as: <a href="/userprofile">PatrickYahhh</a></span> : <span><a href={"/login"}>Login</a> / <a href={"/signup"}>Sign Up</a> </span>}
+                {loggedIn ? <span>Signed in as: <a href="/userprofile">{userName}</a> / <a href={"/users/logout"}>Logout</a> </span> : <span><a href={"/login"}>Login</a> / <a href={"/signup"}>Sign Up</a> </span>}
               </Navbar.Text>
             </Navbar.Collapse>
             </Container>

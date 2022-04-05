@@ -10,6 +10,7 @@ import "../assets/css/landingPage.css";
 import {getAllStyles, getLocation, getTimeslots, getArtists} from "../apiHook/landing.js";
 import { getImageById } from '../apiHook/image.js';
 import { getLoginStatus } from '../apiHook/loginSignUp.js';
+import {getUser} from "../apiHook/profile";
 
 export class LandingPage extends Component {
 
@@ -21,7 +22,9 @@ export class LandingPage extends Component {
     styles: [],
     artists:[],
     allStyles: [],
-    imageObjList: []
+    imageObjList: [],
+    loggedIn: false,
+    userName: "",
   }
 
 
@@ -82,7 +85,11 @@ export class LandingPage extends Component {
         imgobjs[i].push(img)
       }
     }
-    this.setState({imageObjList: imgobjs});
+
+    const loggedIn = await getLoginStatus();
+    const user = await getUser(loggedIn.userId);
+
+    this.setState({imageObjList: imgobjs, userName: user.userName, loggedIn: loggedIn.loggedIn});
   }
 
   placeholderText(){
@@ -90,7 +97,6 @@ export class LandingPage extends Component {
   }
 
   render(){
-    const {loggedIn} = this.props;
     var imageList = {};
     var artlen = this.state.artists.length;
     if(this.state.imageObjList.length !== 0){
@@ -116,7 +122,7 @@ export class LandingPage extends Component {
 
     return (
       <div>
-        <div><Header loggedIn={loggedIn}/> </div>
+        <div><Header loggedIn={this.state.loggedIn} userName={this.state.userName}/> </div>
         <Container>
               <h4 className="mb-3"><a id='title'> Welcome to PickINK! Get started by finding the right Tattoo Artists for you. </a></h4>
             <Form className='form-horizontal'>
