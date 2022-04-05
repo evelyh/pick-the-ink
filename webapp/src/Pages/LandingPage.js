@@ -133,7 +133,7 @@ export class LandingPage extends Component {
                 <Form.Group className='col-3' >                 
                 <Form.Label className='labelnames' > Location: </Form.Label>
                 <CountryDropdown
-                        whitelist = {['CA', 'US']}
+                        whitelist = {['CA']}
                         className='countrySelector'
                         value={this.state.country}
                         onChange={(val) => this.setState({country: val})}></CountryDropdown> 
@@ -141,7 +141,6 @@ export class LandingPage extends Component {
                 <Form.Group className='col-5'>
                 <RegionDropdown
                       blankOptionLabel="Select Region"
-                      blacklist={{US: ["Armed Forces Americas", "Armed Forces Pacific", "Armed Forces Europe, Canada, Africa and Middle East"]}}
                       className='countrySelector'
                       country={this.state.country}
                       value={this.state.region}
