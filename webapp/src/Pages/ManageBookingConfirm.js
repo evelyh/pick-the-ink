@@ -14,6 +14,16 @@ import {getUser} from "../apiHook/profile";
 export class ManageBookingConfirm extends Component {
 
   state = {
+    // for UI work
+    // isArtist: true,
+    // confirmedBookings: [],
+    // bookingCancelled: false,
+    // host: "http://localhost:5000",
+    // userId: "6248b7726f60851a94d01010",
+    // userName: "file1",
+    // datetimeSent: false,
+    // loggedIn: true,
+    // for final
     isArtist: null,
     confirmedBookings: [],
     bookingCancelled: false,
@@ -42,6 +52,8 @@ export class ManageBookingConfirm extends Component {
           await this.componentDidMount();
           return true;
         }
+      } else{
+        alert("Internal server error cannot unbook timeslots")
       }
     } else{
       alert("Internal server error");
@@ -55,7 +67,7 @@ export class ManageBookingConfirm extends Component {
     });
 
     // DELETE request to cancel booking
-    const bookingCanceled = await cancelBooking(confirmedBooking._id);
+    const bookingCanceled = await cancelBooking(confirmedBooking);
     if (bookingCanceled){
       this.setState({
         bookingCancelled: true,

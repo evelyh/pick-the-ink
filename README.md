@@ -2,18 +2,30 @@
 
 ## Introduction
   - Website name: **PickInk**
-  - Description: a platform for tattoo artists and lovers
+  - Description: a community for tattoo artists and lovers
 
-## Steps to run the app
-  - Naviagte to directory: `\webapp\`
-  - Run `npm install` to install all the neccessary packages
-  - Run `npm start` to start the web app
+### *Roles and functionalities of Users*
+ - As a regular user, they can
+     - find artists by applying their favoured conditions (e.g. styles, locations, availablity)
+     - book appointment with artists
+     - modify their bookings
+     - follow a user (mostly artists as they regularly update new tattoo works)
+ - As a artist user, they have all regular user functionalities and can also
+     - upload their tattoo artworks
+     - provide their current working locations (as most artist regularly work as guest artists in different places)
+     - provide their specialized art styles
 
-## Pages
+## Website pages
+  - `https://`
+
+### *Explore* `/ & /explore`
+- Landing home page where allows users to browse artists and their selected work based on the filters including artists' locations, available dates, and styles they chose.
+- Among the results, you can go to the artists' profile pages by clicking their username. 
 
 ### *Sign Up* `/signup`
   - Sign up for the webapp
   - Click on the signup on the Navbar, and signup by filling the form
+  - For all users, a unique username and email are required. For artists, a piece of ID and their tattoo practice license is required.
 
 ### *Login* `/login`
   - Logging in to the webapp
@@ -29,34 +41,6 @@
     - password: `admin`  
 - The login paths for admin and regular user are not interchangable.
 
-### *Explore* `/explore`
-- Landing home page where allows users to browse artists and their selected work based on the filters including artists' locations, available dates, and styles they chose.
-- In the results of the filter, you can go to the artists' profile pages by clicking their username. 
-
-### *Manage Booking* `/managebooking`
-- Page that allows user to manage their booking.
-
-- For customers,
-  - view all booking requests (pending bookings)
-  - cancel a booking that is yet to be heard back from artist
-  - pick a time for the appointment after artist get back with the time needed for the specified tattoo
-  - view confirmed bookings
-  
-- For artists,
-  - view new booking requests
-  - send an estimated duration needed for the specified tattoo
-  - suggest an alternate time for an appointment
-  - confirm an appointment with the client after the client picked a time
-  - view confirmed bookings
-  - cancel bookings
-
-> Note: Default is the client's view. To redirect to the artist's view, go to the url `/artist-managebooking`. Clicking 
-> on the `Manage Booking` tab on the navigation bar will take you back to default view.
-
-### *Calendar* `/calendar`
-- Page where allow users to keep track of their available data and time.
-- Click on each appointments showing on the calendar to see details
-- Click the edit/delete button on the upper-right popup of each appoitment to edit/delete the appointment
 
 ### *Profile*  
   - For customers, `/userprofile`
@@ -95,17 +79,99 @@
     - For each user, he/she can only edit their own profile page (and gallery page, for artists), and view limited profile info on other users' profile page. 
     - Both customers and artists can book appoinments on and only on other artists
     - For each artist, he/she cannot book an appoinment on their own profile/gallery page. 
-    - The default logged in user is a customer, thus, all the pages are showing the views of that customer. To switch to the artists' view for testing the features, please follow the steps:
-      - Navigate to `\webapp\Pages\AritistProfile.js`
-      - Go to `Line 39`, change `const [isUser] = useState(true);` to `const [isUser] = useState(false);`
-      - Navigate to `\webapp\Pages\ArtistGallery.js`
-      - Go to `Line 45`, change `const [isUser] = useState(true);` to `const [isUser] = useState(false);`
-      - Go to the page `\artistprofile`, to check the artist's view of their own profile
-      - Go to the page `\artistgallery`, to check the artist's view of their own gallery
-    - Our web app does not have any database in this stage, the two images on the artist's gallery page is hard coded for now to show a better and expected appearance of a normal gallery. Thus, these two images will show everytime you reload the page. All the bugs regrading to the hard coded will be fixed when we implement the databases in the following weeks. 
 
+### *Manage Booking* `/managebooking`
+- Page that allows user to manage their booking.
 
+- For customers,
+  - view all booking requests (pending bookings)
+  - cancel a booking that is yet to be heard back from artist
+  - pick a time for the appointment after artist get back with the time needed for the specified tattoo
+  - view confirmed bookings
+  
+- For artists,
+  - view new booking requests
+  - send an estimated duration needed for the specified tattoo
+  - suggest an alternate time for an appointment
+  - confirm an appointment with the client after the client picked a time
+  - view confirmed bookings
+  - cancel bookings
 
+> Note: Default is the client's view. To redirect to the artist's view, go to the url `/artist-managebooking`. Clicking 
+> on the `Manage Booking` tab on the navigation bar will take you back to default view.
+
+### *Calendar* `/calendar`
+- Page where allow users to keep track of their available data and time.
+- Click on each appointments showing on the calendar to see details
+- Click the edit/delete button on the upper-right popup of each appoitment to edit/delete the appointment
+
+## Testing Instructions
+
+### Backend
+
+- Backend Host URL: `https://`
+
+- Admin model: (No other methods allowed to check, add, or modify the admin information. There is only one account.)
+    - `/admin/login`
+        - POST, Body: `{username, password}`
+            - To log in as an admin, with success return `{token: 'loggedIn'}`, otherwise `{token: null}`
+
+- User model: 
+    - `/api/users`
+        - GET
+            - With success return a list of all existign User objects
+        - POST, Body: `{userName, password, email, firstName, lastName, birthDate}`
+            - With success return newly created User object
+    - `/api/users/:id`
+        - GET
+            - With success return corresponding User object with this id
+        - PUT
+            - With success return corresponding modified User object with this id
+    - `/users/login`
+        - POST, Body: `{username, password}`
+        - GET
+            - shouldn't be done through Postman
+    - `/users/logout`
+        - GET
+            - shouldn't be done through Postman
+    -  `/api/artists`
+        - GET, Query parameters: (everything is optional) `?style={a list of Style object IDs}&location={a Location object ID}`
+            - With success return a corresponding list of User objects
+
+- Style model:
+    - `/api/styles`
+        - GET
+            - With success returns a list of all existign Style objects
+        - POST, Body: `{name}`
+            - With success return newly created Style object
+    - `/api/styles/:id`
+        - GET
+            - With success return corresponding Location object with this id
+
+- Location model:
+    - `/api/locations`
+        - GET, Query parameters: (optional as a whole) `?country={countryName}&region={regionName}`
+            - With success return a list of all existing Location objects or a Location object if there's query
+        - POST, Body: `{country, region}`
+            - With success return newly created Location object
+    - `/api/locations/:id`
+        - GET
+            - With success return corresponding Location object with this id
+
+- Timeslot model:
+    - `/api/timeslots`
+    - `/api/timeslots/:id`
+    - `/api/timeslot` 
+        - GET, Query parameters: (required) `?start={startTime}&end={endTime}`
+            - With success, return a list of Timeslot objects in the period
+- Image model:
+- Booking model:
+
+### Frontend
+- From root directory, navigate to `/webapp`, run  `npm i` and `npm run build` to build the React app
+- Move the generated folder `/build` in `/webapp` to `../backend`
+- Navigate to `../backend`, run `npm i` and `node server.js` to start the app by local server
+- This still connects to the Cloud Database we set up
 
 ## Reference
 - The UI template used to help us customize our page

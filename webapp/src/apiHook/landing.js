@@ -27,6 +27,7 @@ async function getAllStyles() {
 
 async function getLocation(data){
     const url = `${hostURL}/api/locations/?country=${data.country}&region=${data.region}`
+    console.log(url)
     const request = new Request(url, {
         method: 'get', 
         headers: {

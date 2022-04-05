@@ -162,11 +162,12 @@ export class PopUpSendDateTime extends Component {
 
     // get artist availability
     const availability = await getArtistAvailability(this.props.artistId);
+    const lengthOf = availability.availableLocations.length
     this.setState({
       artistLocations: availability.availableLocations,
       artistAvailabilityAtLocation: availability.availabilityAtLocations,
-      currentDisplayLocation: availability.availableLocations[0],
-      currDisplayDate: new Date(availability.availabilityAtLocations[availability.availableLocations[0]][0][0].startTime),
+      currentDisplayLocation: (lengthOf > 0 ? availability.availableLocations[0] : ""),
+      currDisplayDate: (lengthOf > 0 ? new Date(availability.availabilityAtLocations[availability.availableLocations[0]][0][0].startTime) : new Date()),
       timeslotsNeeded: this.props.durationNeeded,
     });
     console.log("fetched artist availability",this.state)

@@ -1,11 +1,11 @@
 const { mongoose } = require('../db/mongoose');
 const { Location } = require("../models/Location");
+const { ObjectID } = require('mongodb')
 
 module.exports = function (app){
-
   // Get location by name or find all
   app.get("/api/locations", async (req, res) => {
-
+    console.log(req.body)
     // check mongoose connection established
     if (mongoose.connection.readyState !== 1){
       console.log("Issue with mongoose connection");
@@ -31,21 +31,23 @@ module.exports = function (app){
 
   })
 
+  // get location by ID
+  app.get("/api/locations/:id",async(req, res) => {
+    console.log(req.params);
 
-  app.get("api/locations/:id",async(req, res) => {
+    const id = req.params.id;
+
+    if (!ObjectID.isValid(id)) {
+      res.status(404).send('Resource not found')
+      return;
+    }
+
     if (mongoose.connection.readyState !== 1){
       console.log("Issue with mongoose connection");
       res.status(500).send("Internal server error");
       return;
     }
-
-    const id = req.params.id;
     console.log(id)
-
-    if (!ObjectID.isValid(id)) {
-      res.status(404).send('Resource not found')
-      return;
-  }
 
     try{
       Location.findById(id).then(

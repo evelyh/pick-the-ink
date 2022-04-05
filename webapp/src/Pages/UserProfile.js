@@ -44,15 +44,27 @@ function UserProfile() {
     const [isUser, setIsUser] = useState(false);
     const [success,setSuccess] = useState(false);
     const [ifFollowed,setIfFollowed] = useState(false);
+    const [following, setFollowing] = useState();
+    const [follower, setFollower] = useState();
     useEffect(()=>{
       getLoginStatus().then(json=>{
         myid = json.userId;
         if(id == undefined){
           id = myid;
+
         }
         if(myid == id){
           setIsUser(true);
+
         }
+
+        getUserFollowing(id).then((res)=>{
+          setFollowing(res)
+        })
+
+        getUserFollower(id).then((res)=>{
+          setFollower(res)
+        }) 
         getUser(id).then(json => 
           {
             let data = json;
@@ -89,21 +101,21 @@ function UserProfile() {
     }, [buttonPopUp, success])
     
     
-    const [following, setFollowing] = useState();
-    useEffect(()=>{
-        getUserFollowing(id).then((json)=>{
-          setFollowing(json)
-        })
-        
-    },[success])
 
-    const [follower, setFollower] = useState();
-    useEffect(()=>{
-        getUserFollower(id).then((json)=>{
-          setFollower(json)
-        })
+    // useEffect(()=>{
+    //   if(id == undefined){
+    //     getUserFollower(myid).then((json)=>{
+    //       setFollower(json)
+    //       console.log(json, 1111111111111111)
+    //     })  
+    //   }else{
+    //     getUserFollower(id).then((json)=>{
+    //       setFollower(json)
+    //       console.log(json, 1111111111111111)
+    //     })  
+    //   }
         
-    },[success])
+    // },[buttonPopUp, success])
 
     const onDismiss = ()=>{
       setSuccess(false);
@@ -112,12 +124,21 @@ function UserProfile() {
 
 
     const addFollow = ()=>{
-      followUser(id, myid);
-      setIfFollowed(true);
+      getLoginStatus().then(json=>{
+        if(json.loggedIn){
+          console.log(id, json.userId, 2222222222);
+          followUser(id, json.userId);
+          setIfFollowed(true);
+        }
+      })
     }
     const removeFollow = ()=>{
-      unfollowUser(id, myid);
-      setIfFollowed(false);
+      getLoginStatus().then(json=>{
+        if(json.loggedIn){
+          unfollowUser(id, json.userId);
+          setIfFollowed(false);
+        }
+      })
     }
 
     const [timeslotButtonPopUp, setTimeslotButtonPopUp] = useState(false);
@@ -136,7 +157,7 @@ function UserProfile() {
             <Card id="profileCard" style={{width: '20rem'}}>
               <CardBody>  
                 {values.profilePic?  <CardImg src={values.profilePic} id="profileCirclePic" alt='profile' />  :
-                 <CardImg src={profilepic} id="profileCirclePic" alt='profile' />  }  
+                 <CardImg src={profilepic} id="profileCirclePic" alt='profile' />}  
               <h5>{values.userName} 
               {!isUser? (
                 ifFollowed?<Button id='followButton' onClick={removeFollow}>Unfollow</Button>
