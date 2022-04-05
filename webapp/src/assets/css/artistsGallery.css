@@ -3,24 +3,26 @@
   width: 150px;
 }
 
-#navbar-container{
+#navbar-container {
   margin-left: 0px;
 }
 
-#NavBar{
+#NavBar {
   position: relative;
   height: 50px;
 }
 
-#profile-but{
+#profile-but {
   margin-left: 0px;
-  left:5px;
+  left: 5px;
   color: black;
 }
 
-.nav-link { color: black }
+.nav-link {
+  color: black;
+}
 
-#gallery-but{
+#gallery-but {
   position: relative;
   margin-left: 30%;
 }
@@ -67,7 +69,7 @@
 }
 
 #popupEdit,
-#popupDel{
+#popupDel {
   position: absolute;
   z-index: 1000;
   height: 50%;
@@ -131,4 +133,8 @@
 
 #bt-pro {
   margin: 5px;
+}
+
+#profilecard:hover {
+  transform: none;
 }

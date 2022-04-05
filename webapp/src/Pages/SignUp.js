@@ -249,10 +249,9 @@ export class SignUp extends Component {
               />
               <br/>
               <span>
-                To ensure the safety of clients, we require all our artists to provide us with a piece of ID and license.<br/>
-                <em>Collected personal information will be deleted after we confirm you are legit, and only be used for the above stated purpose.</em><br/>
+                To ensure the safety of clients, we require all our artists to provide us with a piece of ID (e.g. Driver's License, Passport) and Tattoo Practice License.
               </span>
-              <Label for={"license"}>License: </Label>
+              <Label for={"license"}>Practice License: </Label>
               <Input type={"file"}
                      name={"license"}
                      id={"license"}
