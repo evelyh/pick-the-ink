@@ -72,3 +72,75 @@
   width: 100%;
   height: auto;
 }
+
+.timeslot-picker table,
+.timeslot-picker tr,
+.timeslot-picker td {
+  text-align: center;
+  vertical-align: top;
+  table-layout : fixed;
+}
+
+.timeslot-picker-header {
+  margin-bottom: 5px;
+}
+
+.timeslot-picker-timeslot {
+  margin-bottom: 3px;
+}
+
+.timeslot-picker-placeholder:hover {
+  cursor: pointer;
+}
+
+.timeslot-selected-table table,
+.timeslot-selected-table tr,
+.timeslot-selected-table td {
+  vertical-align: top;
+}
+
+.timeslot-selected-cell {
+  padding-left: 3px;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.timeslot-remove-button {
+  padding-top: 3px;
+  margin-top: 0;
+}
+
+.timeslot-picker-container {
+  text-align: center;
+}
+
+.timeslot-picker {
+  width: fit-content;
+  margin: 10px auto 0;
+}
+
+.timeslot-picker table,
+.timeslot-picker tr,
+.timeslot-picker td {
+  text-align: center;
+  horiz-align: center;
+  width: fit-content;
+  align-self: center;
+}
+
+.timeslot-picker-head {
+  text-align: center;
+  font-weight: bold;
+}
+
+.timeslot-prev {
+  float: left;
+}
+
+.timeslot-next {
+  float: right;
+}
+
+.no-pending-confirm {
+  font-size: x-large;
+}

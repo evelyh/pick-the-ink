@@ -1,14 +1,18 @@
+.login {
+    align-content: center;
+}
+
 .login-form-container {
-    display: block;
-    position: absolute;
+    display: inline-block;
+    position: relative;
     padding: 10px;
-    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 15px;
     box-shadow: 2px 2px 10px 5px #e5eff5;
     min-width: 33%;
-    max-width: 70%;
-    top: 50%;
+    max-width: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
 }
 
 .signup-form-container {
@@ -16,11 +20,13 @@
     position: relative;
     padding: 10px;
     margin-top: 15px;
+    margin-bottom: 15px;
     box-shadow: 2px 2px 10px 5px #e5eff5;
     min-width: 33%;
     max-width: 60%;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 1;
 }
 
 label {

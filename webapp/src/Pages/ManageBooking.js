@@ -7,12 +7,26 @@ import BookingRow from "../components/BookingRow";
 import {uid} from "react-uid";
 import {Navigate} from "react-router-dom";
 import {getLoginStatus} from "../apiHook/loginSignUp";
-import {cancelBooking, getBookings, updateBooking} from "../apiHook/manageBooking";
+import {cancelBooking, confirmBooking, getBookings, unbookTimeslots, updateBooking} from "../apiHook/manageBooking";
+import Footer from "../components/Footer";
+import {getUser} from "../apiHook/profile";
 
 
 export class ManageBooking extends Component {
 
   state = {
+    // for UI work
+    // isArtist: false,
+    // genericError: false,
+    // bookingConfirmed: false,
+    // bookingCancelled: false,
+    // durationSent: false,
+    // datetimeSent: false,
+    // pendingBookings: [],
+    // host: "http://localhost:5000",
+    // userId: "62465a409c96c2071046af8d",
+    // loggedIn: true,
+    // confirmedBooking: false,
     isArtist: null,
     genericError: false,
     bookingConfirmed: false,
@@ -22,22 +36,49 @@ export class ManageBooking extends Component {
     pendingBookings: [],
     host: "http://localhost:5000",
     userId: "",
+    userName: "",
     loggedIn: true,
+    confirmedBooking: false,
   }
-  // todo: change BookingRow implementation details
-  // todo: go through front-end jsx to change details for all front-end code
 
-  // todo: add calendar view to allow users to select timeslots
-  // todo: connect to backend
-  sendDateTime = () => {
-    this.setState({
-      datetimeSent: true,
-    });
-    setTimeout(() => {
-      this.setState({
-        datetimeSent: false,
-      })
-    }, 2000);
+  sendDateTime = async (timeslots, pendingBooking) => {
+    if (pendingBooking.isConfirmed) {
+      const timeslotsUnbooked = await unbookTimeslots(timeslots);
+      if (timeslotsUnbooked){
+        const bookingConfirmed = await confirmBooking(pendingBooking.customerID, timeslots, pendingBooking._id);
+        if (bookingConfirmed){
+          const filteredBookings = this.state.pendingBookings.filter((booking) => {
+            return booking !== pendingBooking;
+          });
+          this.setState({
+            datetimeSent: true,
+            pendingBookings: filteredBookings,
+          });
+          setTimeout(() => {
+            this.setState({
+              datetimeSent: false,
+            })
+          }, 2000);
+          return true;
+        }
+      }
+    }
+
+    if (!pendingBooking.isConfirmed){
+      const bookingConfirmed = await confirmBooking(pendingBooking.customerID, timeslots, pendingBooking._id);
+      if (bookingConfirmed){
+        this.setState({
+          datetimeSent: true,
+        });
+        setTimeout(() => {
+          this.setState({
+            datetimeSent: false,
+            confirmedBooking: true,
+          })
+        }, 2000);
+        return true;
+      }
+    }
   }
 
   sendDuration = async (length, pendingBooking) => {
@@ -102,7 +143,7 @@ export class ManageBooking extends Component {
       }
     } else if (mode === "cancel") {
 
-      const canceled = await cancelBooking(pendingBooking._id);
+      const canceled = await cancelBooking(pendingBooking);
       if (canceled){
         this.setState({
           bookingCancelled: true,
@@ -129,6 +170,7 @@ export class ManageBooking extends Component {
 
   async componentDidMount() {
     // get login status
+    // comment for UI work
     const loginStats = await getLoginStatus();
     this.setState(loginStats);
 
@@ -146,13 +188,20 @@ export class ManageBooking extends Component {
       pendingBookings: fetchedBookings,
     });
 
-    console.log("this.state in managebooking after fetch: ", this.state)
+    // get userName
+    const user = await getUser(this.state.userId);
+    this.setState({
+      userName: user.userName,
+    })
+
   }
 
   checkRedirection = () => {
-    console.log("inside checkRedirection: ", "logged in: ", this.state.loggedIn)
     if (!this.state.loggedIn){
         return <Navigate to={"/"} />;
+    }
+    if (this.state.confirmedBooking){
+      return <Navigate to={"/managebooking-confirm"}/>;
     }
   }
 
@@ -161,7 +210,7 @@ export class ManageBooking extends Component {
       <div>
         {this.checkRedirection()}
 
-        <Header loggedIn={true}/>
+        <Header loggedIn={this.state.loggedIn} userName={this.state.userName}/>
 
         <div className={"managebooking-body"}>
           <h1 className={"page-head"}>Manage Booking</h1>
@@ -183,6 +232,8 @@ export class ManageBooking extends Component {
               <th>Actions</th>
             </tr>
 
+            {this.state.pendingBookings.length > 0 ? null : <tr><td colSpan={4} className={"no-pending-confirm"}> No Pending bookings </td></tr>}
+
             { this.state.pendingBookings.map((pendingBooking) => {
               return(
                 <BookingRow
@@ -191,7 +242,7 @@ export class ManageBooking extends Component {
                   isArtist={this.state.isArtist}
                   removeRow={(mode) => this.removeRow(mode, pendingBooking)}
                   sendDuration={(length) => this.sendDuration(length, pendingBooking)}
-                  sendDateTime={() => this.sendDateTime()}
+                  sendDateTime={(timeslots) => this.sendDateTime(timeslots, pendingBooking)}
                 />
               )
             }) }
@@ -210,7 +261,7 @@ export class ManageBooking extends Component {
           </Alert>
 
           <Alert color={"success"} isOpen={this.state.datetimeSent}>
-            Date/time sent! Wait for confirmation...
+            Booking time set! The booking is now confirmed.
           </Alert>
 
           <Alert color={"danger"} isOpen={this.state.genericError}>
@@ -218,6 +269,7 @@ export class ManageBooking extends Component {
           </Alert>
 
         </div>
+        <Footer/>
       </div>
     )
   }

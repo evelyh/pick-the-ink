@@ -21,6 +21,7 @@ import {login, getLoginStatus} from '../apiHook/loginSignUp'
 import Footer from "../components/Footer"
 
 const log = console.log()
+import PopUpTimeslotForm from 'components/PopUpTimeslotForm';
 
 function ArtistProfile() {
 
@@ -107,6 +108,8 @@ function ArtistProfile() {
       })
     }, [buttonPopUp, success])
 
+    const [timeslotButtonPopUp, setTimeslotButtonPopUp] = useState(false);
+
     const onDismiss = ()=>{
       setSuccess(false);
     };
@@ -119,7 +122,9 @@ function ArtistProfile() {
         <div><ArtistNavBar></ArtistNavBar></div>
         <PopUpArtistProfileForm info={values} setInfo = {setValues} success={success} setSuccess={setSuccess} trigger={buttonPopUp} setTrigger={setButtonPopUp}>My Popup</PopUpArtistProfileForm>
         {isUser ? null : <PopUpAppointmentForm info={values} setInfo = {setValues} trigger={buttonPopUpBook} setTrigger={setButtonPopUpBook}>My Popup</PopUpAppointmentForm>}
-
+        
+        {isUser ?  <PopUpTimeslotForm trigger={timeslotButtonPopUp} setTrigger={setTimeslotButtonPopUp}>My Popup</PopUpTimeslotForm>:null}
+        
         <div className="container">
           <div className="row">
             <div className="col-3">
@@ -162,6 +167,8 @@ function ArtistProfile() {
                   window.location.href='http://localhost:3000/artistgallery';
                   }}
             > Gallery</Button> */}
+
+            { isUser ? <Button size='sm' onClick={()=> setTimeslotButtonPopUp(true)}>Post available time</Button> :null }
             </div>
             <div className="col-7">
             <Alert variant="success" show={success}>
@@ -235,6 +242,7 @@ function ArtistProfile() {
                 </div>
               </div>
               { isUser ? <Button size='sm' onClick={()=> setButtonPopUp(true)}>Edit your profile</Button> :null }
+              
               </Container>
             </div>
           </div>
