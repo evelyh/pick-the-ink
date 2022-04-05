@@ -103,4 +103,151 @@ async function getImageLink(imageId){
 
 }
 
-export { getBookings, updateBooking, cancelBooking, getImageLink }
+// extract date string from timeslot if exist
+async function getBookingTimeString(timeslots){
+  const times = [];
+
+  for (let i = 0; i < timeslots.length; i++) {
+    const url = host + "/api/timeslots/" + timeslots[i];
+    const request = new Request(url, {
+      method: "GET",
+      credentials: "same-origin",
+      headers: {
+        Accept: "*/*",
+      }
+    });
+
+    await fetch(request)
+      .then(res => res.json())
+      .then(json => {
+        console.log("fetch timeslots json:", json)
+        times.push(json.startTime);
+      })
+      .catch((error) => {
+        alert("cannot get time");
+      })
+  }
+
+  // set start-time and end-time
+  times.sort((date1, date2) => date1 - date2);
+  console.log("times:", times)
+  return {
+    bookingStartTime: times[0].toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"}),
+    bookingEndTime: times[times.length - 1].toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"}),
+    bookingTimeString: times[0].toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"}) + " - " + times[times.length - 1].toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"}),
+  };
+}
+
+// get user's name given Id
+// mode: "artist" or "customer"
+// if artist: return {artistName}
+// if customer: return {customerName, customerEmail, customerPhone}
+async function getUserInfo(mode, userId){
+  const url = host + "/api/users/" + userId;
+  const request = new Request(url, {
+    method: "GET",
+    credentials: "same-origin",
+    headers: {
+      Accept: "*/*",
+    }
+  });
+
+  return await fetch(request)
+    .then(res => res.json())
+    .then(json => {
+      console.log("fetch artist info: ", json)
+      if (mode === "artist"){
+        return {
+          artistName: json.firstName + " " + json.lastName,
+        }
+      } else if (mode === "customer"){
+        return {
+          customerName: json.firstName + " " + json.lastName,
+          customerEmail: json.email,
+          customerPhone: json.phoneNum,
+        }
+      }
+    })
+    .catch((error) => {
+      alert("Cannot get user name");
+    })
+
+}
+
+// get artist availability
+// return {
+// availableLocations: list of strings, available locations
+// availabilityAtLocations: {location: list of list, each inner list contain timeslots of the same day}
+// }
+async function getArtistAvailability(artistId){
+  // fetch timeslots wrt artistID and isBooked == false
+  const url = host + `/api/timeslots/?artistID=${artistId}&isBooked=false`;
+  const request = new Request(url, {
+    method: "GET",
+    credentials: "same-origin",
+    headers: {
+      Accept: "*/*",
+    }
+  });
+
+  const timeslotList =  await fetch(request)
+                                .then((res) => res.json())
+                                .then((json) => json.result)
+
+  // fetch for all locations in database
+  const locationUrl = host + "/api/locations";
+  const locationRequest = new Request(locationUrl, {
+    method: "GET",
+    credentials: "same-origin",
+    headers: {
+      Accept: "*/*",
+    }
+  });
+
+  const availableLocations = [];
+  const availabilityAtLocations = {};
+  const locationList = await fetch(locationRequest)
+                              .then((res) => res.json())
+  for (let i = 0; i < locationList.length; i++){
+    const filteredTimeslots = timeslotList.filter((timeslot) => {
+      return locationList[i]._id === timeslot.locationID;
+    });
+    if (filteredTimeslots.length > 0){
+      // sort by time
+      filteredTimeslots.sort(function (a, b){
+        return new Date(a.startTime) - new Date(b.startTime);
+      })
+
+      // filter such sorted according to days
+      const availabilityHere = [];
+      let j = 0;
+      while (j < filteredTimeslots.length){
+        const currDate = new Date(filteredTimeslots[j].startTime);
+        const filteredWithCurrDate = filteredTimeslots.filter((timeslot) => {
+          return new Date(timeslot.startTime).toDateString() === currDate.toDateString();
+        })
+        // disregard if earlier than tomorrow
+        if (currDate <= new Date()){
+          j += filteredWithCurrDate.length;
+        } else{
+          availabilityHere.push(filteredWithCurrDate);
+          j += filteredWithCurrDate.length;
+        }
+      }
+
+      availableLocations.push(locationList[i].region + ", " + locationList[i].country);
+      availabilityAtLocations[locationList[i].region + ", " + locationList[i].country] = availabilityHere;
+    }
+  }
+
+  return {"availableLocations": availableLocations, "availabilityAtLocations": availabilityAtLocations};
+
+}
+
+export { getBookings,
+         updateBooking,
+         cancelBooking,
+         getImageLink,
+         getBookingTimeString,
+         getUserInfo,
+         getArtistAvailability }

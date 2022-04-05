@@ -5,6 +5,7 @@ import PopUpCancelBooking from "./PopUpCancelBooking";
 import PopUpConfirmBooking from "./PopUpConfirmBooking";
 import PopUpSendDuration from "./PopUpSendDuration";
 import PopUpSendDateTime from "./PopUpSendDateTime";
+import {getArtistAvailability, getBookingTimeString, getUserInfo} from "../apiHook/manageBooking";
 
 export class BookingRow extends Component {
 
@@ -25,13 +26,17 @@ export class BookingRow extends Component {
     customerEmail: null,
     customerPhone: null,
   }
+  // todo: add await to fetch calling functions?
 
-  sendDateTime = () => {
-    this.setState({
-      showSendDateTime: !this.state.showSendDateTime,
-    });
-
-    this.props.sendDateTime();
+  // todo: only close popup when successfully send datetime
+  sendDateTime = async (timeslots) => {
+    const ok = await this.props.sendDateTime(timeslots);
+    if (ok){
+      this.setState({
+        showSendDateTime: !this.state.showSendDateTime,
+      });
+    }
+    return ok;
   }
 
   sendDuration = (length) => {
@@ -64,37 +69,8 @@ export class BookingRow extends Component {
     const timeslots = this.props.confirmedBooking.timeslots;
     if (timeslots.length > 0){
       console.log("about to fetch for times")
-      const times = [];
-
-      for (let i = 0; i < timeslots.length; i++) {
-        const url = this.state.host + "/api/timeslots/" + timeslots[i];
-        const request = new Request(url, {
-          method: "GET",
-          credentials: "same-origin",
-          headers: {
-            Accept: "*/*",
-          }
-        });
-
-        await fetch(request)
-          .then(res => res.json())
-          .then(json => {
-            console.log("fetch timeslots json:", json)
-            times.push(json.startTime);
-          })
-          .catch((error) => {
-            alert("cannot get time");
-          })
-      }
-
-      // set start-time and end-time
-      times.sort((date1, date2) => date1 - date2);
-      console.log("times:", times)
-      this.setState({
-        bookingStartTime: times[0].toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"}),
-        bookingEndTime: times[times.length - 1].toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"}),
-        bookingTimeString: times[0].toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"}) + " - " + times[times.length - 1].toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"}),
-      });
+      const timeStrings = await getBookingTimeString(timeslots);
+      this.setState(timeStrings);
     }
 
     // get artist name if customer, get customer name if artist
@@ -102,53 +78,16 @@ export class BookingRow extends Component {
     if (!this.props.isArtist){
       console.log("start fetching artist name, artistID: ", this.props.confirmedBooking.artistID)
       const artistId = this.props.confirmedBooking.artistID;
-      const url = this.state.host + "/api/users/" + artistId;
-      const request = new Request(url, {
-        method: "GET",
-        credentials: "same-origin",
-        headers: {
-          Accept: "*/*",
-        }
-      });
+      const artistName = await getUserInfo("artist", artistId);
+      console.log("after fetching artist, ", artistName);
+      this.setState(artistName);
 
-      await fetch(request)
-        .then(res => res.json())
-        .then(json => {
-          console.log("fetch artist info: ", json)
-          this.setState({
-            artistName: json.result.firstName + " " + json.result.lastName,
-          })
-        })
-        .catch((error) => {
-          alert("Cannot get artist");
-        })
     } else{
       console.log("inside else, starting fetch customer name: ", this.props.confirmedBooking.customerID)
       const customerId = this.props.confirmedBooking.customerID;
-      const url = this.state.host + "/api/users/" + customerId;
-      const request = new Request(url, {
-        method: "GET",
-        credentials: "same-origin",
-        headers: {
-          Accept: "*/*",
-        }
-      });
-
-      await fetch(request)
-        .then(res => res.json())
-        .then(json => {
-          console.log("fetch customer info: ", json)
-          this.setState({
-            customerName: json.result.firstName + " " + json.result.lastName,
-            customerEmail: json.result.email,
-            customerPhone: json.result.phoneNum,
-          })
-        })
-        .catch((error) => {
-          alert("Cannot get customer");
-        })
+      const customerInfo = await getUserInfo("customer", customerId);
+      this.setState(customerInfo);
     }
-
 
   }
 
@@ -244,6 +183,8 @@ export class BookingRow extends Component {
           setTrigger={() => this.setState({showSendDateTime: !this.state.showSendDateTime})}
           sendDateTime={this.sendDateTime}
           isArtist={isArtist}
+          artistId={confirmedBooking.artistID}
+          durationNeeded={confirmedBooking.duration}
         />
 
       </tr>

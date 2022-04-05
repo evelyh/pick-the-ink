@@ -13,7 +13,7 @@ import {cancelBooking, getBookings, updateBooking} from "../apiHook/manageBookin
 export class ManageBooking extends Component {
 
   state = {
-    isArtist: null,
+    isArtist: false,
     genericError: false,
     bookingConfirmed: false,
     bookingCancelled: false,
@@ -21,8 +21,19 @@ export class ManageBooking extends Component {
     datetimeSent: false,
     pendingBookings: [],
     host: "http://localhost:5000",
-    userId: "",
+    userId: "62465a409c96c2071046af8d",
     loggedIn: true,
+    // todo: uncomment after UI work
+    // isArtist: null,
+    // genericError: false,
+    // bookingConfirmed: false,
+    // bookingCancelled: false,
+    // durationSent: false,
+    // datetimeSent: false,
+    // pendingBookings: [],
+    // host: "http://localhost:5000",
+    // userId: "",
+    // loggedIn: true,
   }
   // todo: change BookingRow implementation details
   // todo: go through front-end jsx to change details for all front-end code
@@ -33,11 +44,12 @@ export class ManageBooking extends Component {
     this.setState({
       datetimeSent: true,
     });
-    setTimeout(() => {
+    setTimeout((timeslots, pendingBooking) => {
       this.setState({
         datetimeSent: false,
       })
     }, 2000);
+    return true;
   }
 
   sendDuration = async (length, pendingBooking) => {
@@ -128,9 +140,9 @@ export class ManageBooking extends Component {
   }
 
   async componentDidMount() {
-    // get login status
-    const loginStats = await getLoginStatus();
-    this.setState(loginStats);
+    // get login status // todo: uncomment after UI work
+    // const loginStats = await getLoginStatus();
+    // this.setState(loginStats);
 
     // get bookings for that user
     const requestBody = this.state.isArtist ? {
@@ -191,7 +203,7 @@ export class ManageBooking extends Component {
                   isArtist={this.state.isArtist}
                   removeRow={(mode) => this.removeRow(mode, pendingBooking)}
                   sendDuration={(length) => this.sendDuration(length, pendingBooking)}
-                  sendDateTime={() => this.sendDateTime()}
+                  sendDateTime={(timeslots) => this.sendDateTime(timeslots, pendingBooking)}
                 />
               )
             }) }

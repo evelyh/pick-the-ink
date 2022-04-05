@@ -53,7 +53,7 @@ export class PopUpBookingDetails extends Component {
           </h5>
         </div>
         <div className={"modal-body"}>
-          <h4>{(!isArtist) ? `Information sent to ${artistName}:` : "Client information:"}</h4> <br/>
+          <h4>{(!isArtist) ? `Info sent to ${artistName}:` : "Client information:"}</h4> <br/>
           {(isArtist) ? "Name: " + customerName : "" } {isArtist ? <br/> : null}
           {(isArtist) ? "Email: " + customerEmail : "" } {isArtist ? <br/> : null}
           {(isArtist && customerPhone) ? "Phone: " + customerPhone + <br/> : "" } {isArtist && customerPhone ? <br/> : null}

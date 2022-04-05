@@ -5,17 +5,17 @@ const Timeslot = mongoose.model("Timeslot", {
   artistID: {
     type: mongoose.SchemaTypes.ObjectId,
     required: true,
-    ref: "User", // todo: check to match schema name
+    ref: "User",
   },
   customerID:{
     type: mongoose.SchemaTypes.ObjectId,
-    required: true,
-    ref: "User", // todo: check to match schema name
+    required: false,
+    ref: "User",
   },
   locationID: {
     type: mongoose.SchemaTypes.ObjectId,
     required: true,
-    ref: "Location", // todo: check to match schema name
+    ref: "Location",
   },
   startTime: { // every timeslot has duration 1hr
     type: Date,
