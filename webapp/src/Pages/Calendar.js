@@ -9,6 +9,7 @@ import { getUser } from 'apiHook/profile';
 export class Calendar extends Component {
   state = {
     userId:'',
+    userName:'',
     isArtist:false,
     data:[]
   }
@@ -17,27 +18,32 @@ export class Calendar extends Component {
   }
   async componentDidMount(){
     let login = await getLoginStatus();
-    this.setState({userId:login.userId, isArtist:login.isArtist})
-
+    this.setState({userId:login.userId, isArtist:login.isArtist});
+    let userInfo = await getUser(login.userId);
+    this.setState({userName:userInfo.userName});
     let temp = this.state.data;
     if(login.isArtist){
       let result2 = await getTimeslotsByUser({artistID: login.userId, isBooked:true});
-    result2 = result2["result"];
-    for (const key in result2) {
+      console.log(result2, "result2")
+      result2 = result2["result"];
+      console.log(result2, "result2")
+      for (const key in result2) {
+        console.log(result2[key].startTime, "key")
+        let et = new Date(result2[key]["startTime"])
+        et = new Date(new Date(et).setHours(et.getHours() + 1))
+        console.log(result2[key]["customerID"], "customerID")
+        let customer = await getUser(result2[key]["customerID"])
+        customer = customer["userName"]
+        console.log(customer, "customer username")
+        const appointment = "Appointment with Customer: " + customer
+        temp.push(
+            {Id:result2[key]["_id"],
+            Subject:appointment,
+           StartTime: new Date(result2[key]["startTime"]), 
+           EndTime: et,
+           resourceID: 1
+          })
       
-    let et = new Date(result2[key]["startTime"])
-    et = new Date(new Date(et).setHours(et.getHours() + 1))
-    let customer = await getUser(result[key]["customerID"])
-    customer = customer["userName"]
-    const appointment = "Appointment with Customer: " + customer
-    temp.push(
-        {Id:result2[key]["_id"],
-        Subject:appointment,
-         StartTime: new Date(result2[key]["startTime"]), 
-         EndTime: et,
-         resourceID: 1
-        })
-    this.setState({data:temp})
     }
     }
     let result = await getTimeslotsByUser({customerID: login.userId, isBooked:true});
@@ -55,7 +61,8 @@ export class Calendar extends Component {
          StartTime: new Date(result[key]["startTime"]), 
          EndTime: et,
          resourceID: 2
-        })
+    })
+    this.setState({data:temp})
   }
 }
   render() {
@@ -66,7 +73,7 @@ export class Calendar extends Component {
     ]    
     return (
       <div>
-        <Header loggedIn={true}></Header>
+        <Header loggedIn={true} userName={this.state.userName} isArtist={this.state.isArtist}></Header>
         <ScheduleComponent selectedDate={new Date(2022, 3, 10)} 
         eventSettings={{ dataSource: this.state.data }}>
           <ResourcesDirective>

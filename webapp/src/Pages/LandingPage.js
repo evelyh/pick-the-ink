@@ -25,6 +25,7 @@ export class LandingPage extends Component {
     imageObjList: [],
     loggedIn: false,
     userName: "",
+    isArtist:false
   }
 
 
@@ -89,7 +90,7 @@ export class LandingPage extends Component {
     const loggedIn = await getLoginStatus();
     const user = await getUser(loggedIn.userId);
 
-    this.setState({imageObjList: imgobjs, userName: user.userName, loggedIn: loggedIn.loggedIn});
+    this.setState({imageObjList: imgobjs, userName: user.userName, loggedIn: loggedIn.loggedIn, isArtist:loggedIn.isArtist});
   }
 
   placeholderText(){
@@ -122,7 +123,7 @@ export class LandingPage extends Component {
 
     return (
       <div>
-        <div><Header loggedIn={this.state.loggedIn} userName={this.state.userName}/> </div>
+        <div><Header loggedIn={this.state.loggedIn} userName={this.state.userName} isArtist={this.state.isArtist}/> </div>
         <Container>
               <h4 className="mb-3"><a id='title'> Welcome to PickINK! Get started by finding the right Tattoo Artists for you. </a></h4>
             <Form className='form-horizontal'>

@@ -210,7 +210,7 @@ export class ManageBooking extends Component {
       <div>
         {this.checkRedirection()}
 
-        <Header loggedIn={this.state.loggedIn} userName={this.state.userName}/>
+        <Header loggedIn={this.state.loggedIn} userName={this.state.userName} isArtist={this.state.isArtist}/>
 
         <div className={"managebooking-body"}>
           <h1 className={"page-head"}>Manage Booking</h1>

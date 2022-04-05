@@ -30,6 +30,7 @@ function App() {
         <Route path="/userprofile/:id" element={<UserProfile />} />
         <Route path="/userprofile" element={<UserProfile />} />
         <Route path="/artistprofile" element={<ArtistProfile />} />
+        <Route path="/artistprofile/:id" element={<ArtistProfile />} />
         <Route path="/artistgallery" element={<ArtistGallery />}/>
         <Route path="/calendar" element={<Calendar />}/>
         <Route path="/login" element={<Login />} />

@@ -2,21 +2,9 @@ import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import { Navbar, Nav, Container} from 'react-bootstrap'
 import {getUser} from "../apiHook/profile";
-
+import  "../assets/css/header.css"
 
 export class Header extends Component {
-  brand={
-    color: "black",
-    fontSize: "22px",
-    textTransform: "none",
-  }
-  bar={
-    backgroundColor: "rgb(163, 232, 220)",
-  }
-  nav={
-    fontSize:"18px",
-    fontWeight: "normal",
-  }
 
   state = {
     userName: null,
@@ -36,30 +24,31 @@ export class Header extends Component {
 
     return (
       <div className='header'>
-          <Navbar bg="light">
+          <Navbar id='navbarStyle'>
             <Container>
               {
                 loggedIn ?
-                  <Navbar.Brand style={this.brand} href="/explore">
+                  <Navbar.Brand id='brand' href="/explore">
                     PickINK
                   </Navbar.Brand>
                   :
-                  <Navbar.Brand style={this.brand} href="/">
+                  <Navbar.Brand id='brand' href="/login">
                     PickINK
                   </Navbar.Brand>
               }
             <Navbar.Toggle/>
             <Navbar.Collapse>
                 <Nav>
-                    {loggedIn ? <Nav.Link style={this.nav} href="/explore">Explore</Nav.Link> : <Nav.Link style={this.nav} href="/">Explore</Nav.Link>}
-                    <Nav.Link style={this.nav} href="/managebooking">Bookings</Nav.Link>
-                    <Nav.Link style={this.nav} href="/calendar">Calendar</Nav.Link>
-                    {isArtist ? <Nav.Link style={this.nav} href="/artistprofile">Profile</Nav.Link> : <Nav.Link style={this.nav} href="/userprofile">Profile</Nav.Link>}
+                    {loggedIn ? <Nav.Link id="nav" href="/explore">Explore</Nav.Link> : <Nav.Link id="nav" href="/">Explore</Nav.Link>}
+                    {loggedIn ? <Nav.Link id="nav" href="/managebooking">Bookings</Nav.Link>: null}
+                    {loggedIn ? <Nav.Link id="nav" href="/calendar">Calendar</Nav.Link> : null}
+                    {(loggedIn & isArtist) ? <Nav.Link id="nav" href="/artistprofile">Profile</Nav.Link>:null}
+                    {(loggedIn & !isArtist) ? <Nav.Link id="nav" href="/userprofile">Profile</Nav.Link>:null}
                 </Nav>
             </Navbar.Collapse>
             <Navbar.Collapse className="justify-content-end">
-              <Navbar.Text>
-                {loggedIn ? <span>Signed in as: <a href="/userprofile">{userName}</a> / <a href={"/users/logout"}>Logout</a> </span> : <span><a href={"/login"}>Login</a> / <a href={"/signup"}>Sign Up</a> </span>}
+              <Navbar.Text id="nav">
+                {loggedIn ? <span id="nav">Signed in as: <a href="/userprofile" id="nav">{userName}</a> / <a href={"/users/logout"} id="nav">Logout</a> </span> : <span id="nav"><a href={"/login"} id="nav">Login</a> / <a href={"/signup"} id="nav">Sign Up</a> </span>}
               </Navbar.Text>
             </Navbar.Collapse>
             </Container>

@@ -1,0 +1,23 @@
+#navbarStyle {
+  background-color: rgb(0, 0, 0);
+  color: aliceblue;
+}
+
+#brand {
+  color: white;
+  font-size: x-large;
+  font-family: "Luminari";
+  text-transform: "none";
+  padding-right: 3%;
+}
+
+#bar {
+  color: white;
+  background-color: "rgb(163, 232, 220)";
+}
+
+#nav {
+  font-size: medium;
+  color: white;
+  font-weight: "normal";
+}
