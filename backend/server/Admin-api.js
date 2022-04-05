@@ -11,7 +11,7 @@ module.exports = function (app){
   app.post("/api/admin", async(req, res) =>{
     try{
       const admin = new Admin({
-        userName: req.body.username,
+        userName: req.body.userName,
         password: req.body.password
       })
       const result = await admin.save()
