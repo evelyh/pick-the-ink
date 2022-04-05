@@ -121,6 +121,7 @@ function ArtistGallery() {
     })
   }
 
+  const [username, setUsername] = useState("");
   useEffect(() => {
     setMounted(true)
     async function a()
@@ -129,9 +130,15 @@ function ArtistGallery() {
         myID = userStatus.userId;
         if(id == undefined){
           id = myID;
+          setUsername(this.values.userName)
         }
         if(myID == id){
           setIsUser(true);
+          setUsername(this.values.userName)
+        }else{
+          if(userStatus.loggedIn){
+            getUser(userStatus.userId).then((json)=>setUsername(json.userName))
+          }
         }
         await getUser(id).then(async json => 
         { 
@@ -246,7 +253,7 @@ function ArtistGallery() {
     return (
       <div>
         <div>
-          <Header loggedIn={true} isArtist={true} userName={values.userName}/>
+          <Header loggedIn={true} isArtist={true} userName = {username}/>
         </div>
         <div><ArtistNavBar></ArtistNavBar></div>
         {/* <Alert isOpen={delShow} color={"danger"} toggle={onDismissDel}>Deleted successfully</Alert>
