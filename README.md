@@ -231,6 +231,10 @@
 - Move the generated folder `/build` in `/webapp` to `../backend`
 - Navigate to `../backend`, run `npm i` and `node server.js` to start the app by local server
 - Now access the web app thru `localhost:5000/`
+- Note: To change the cloud database to a new empty local one
+    - Comment out line 3 and uncomment line 5 in `/backend/db/mongoose.js`
+    - In `/backend`, run `mkdir mongo-data` and `mongod --dbpath mongo-data`
+    - create a admin account by POST on `localhost:5000/api/admin` with request body `{"userName": "admin", "password": "admin", "token": "admin"}`
 
 ## Reference
 - The UI template used to help us customize our page
