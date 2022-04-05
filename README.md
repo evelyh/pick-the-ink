@@ -113,22 +113,22 @@
 
 - Admin model: (No other methods allowed to check, add, or modify the admin information. There is only one account.)
     - `/admin/login`
-        - POST, Body: {username, password}
-            - To log in as an admin, with success returns `{token: 'loggedIn'}`, otherwise `{token: null}`
+        - POST, Body: `{username, password}`
+            - To log in as an admin, with success return `{token: 'loggedIn'}`, otherwise `{token: null}`
 
 - User model: 
     - `/api/users`
         - GET
-            - With success returns a list of all existign User objects
-        - POST, Body: {userName, password, email, firstName, lastName, birthDate}
-            - With success returns newly created User object
+            - With success return a list of all existign User objects
+        - POST, Body: `{userName, password, email, firstName, lastName, birthDate}`
+            - With success return newly created User object
     - `/api/users/:id`
         - GET
             - With success return corresponding User object with this id
         - PUT
             - With success return corresponding modified User object with this id
     - `/users/login`
-        - POST, Body: {username, password} 
+        - POST, Body: `{username, password}`
         - GET
             - shouldn't be done through Postman
     - `/users/logout`
@@ -142,8 +142,8 @@
     - `/api/styles`
         - GET
             - With success returns a list of all existign Style objects
-        - POST, Body: {name}
-            - With success returns newly created Style object
+        - POST, Body: `{name}`
+            - With success return newly created Style object
     - `/api/styles/:id`
         - GET
             - With success return corresponding Location object with this id
@@ -152,16 +152,26 @@
     - `/api/locations`
         - GET, Query parameters: (optional as a whole) `?country={countryName}&region={regionName}`
             - With success return a list of all existing Location objects or a Location object if there's query
-        - POST, Body: {country, region}
-            - With success returns newly created Location object
+        - POST, Body: `{country, region}`
+            - With success return newly created Location object
     - `/api/locations/:id`
         - GET
             - With success return corresponding Location object with this id
 
+- Timeslot model:
+    - `/api/timeslots`
+    - `/api/timeslots/:id`
+    - `/api/timeslot` 
+        - GET, Query parameters: (required) `?start={startTime}&end={endTime}`
+            - With success, return a list of Timeslot objects in the period
+- Image model:
+- Booking model:
+
 ### Frontend
-- From root directory, navigate to `/backend`, run `npm i` and `node server.js` to start the local server
-- Navigate to `../webapp`, run  `npm i` and `npm start` to start the React app
-- This still connects to the Cloud DB we set up
+- From root directory, navigate to `/webapp`, run  `npm i` and `npm run build` to build the React app
+- Move the generated folder `/build` in `/webapp` to `../backend`
+- Navigate to `../backend`, run `npm i` and `node server.js` to start the app by local server
+- This still connects to the Cloud Database we set up
 
 ## Reference
 - The UI template used to help us customize our page
