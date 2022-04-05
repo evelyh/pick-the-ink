@@ -30,7 +30,7 @@
 ### *Login* `/login`
   - Logging in to the webapp
   - Fill in the username and passwords to login
-  - Sample Credential:
+  - Sample Credentials:
       - username: `user`
       - password: `user`
 
@@ -88,20 +88,18 @@
 - For customers,
   - view all booking requests (pending bookings)
   - cancel a booking that is yet to be heard back from artist
+  - cancel a booking that has cancellation allowed by artist
   - pick a time for the appointment after artist get back with the time needed for the specified tattoo
+  - alternate time for an appointment that the artist has indicated it to be modifiable.
   - view confirmed bookings
   
 - For artists,
-  - view new booking requests
+  - view new booking requests (pending bookings)
   - send an estimated duration needed for the specified tattoo
-  - suggest an alternate time for an appointment
-  - confirm an appointment with the client after the client picked a time
+  - modify the time for a confirmed booking
   - view confirmed bookings
   - cancel bookings
-
-> Note: Default is the client's view. To redirect to the artist's view, go to the url `/artist-managebooking`. Clicking 
-> on the `Manage Booking` tab on the navigation bar will take you back to default view.
-
+  
 ### *Calendar* `/calendar`
 - Page where allow users to keep track of their available data and time.
 - Click on each appointments showing on the calendar to see details
@@ -143,7 +141,7 @@
 - **Style model**:
     - `/api/styles`
         - GET
-            - With success returns a list of all existign Style objects
+            - With success returns a list of all existing Style objects
         - POST, Body: `{name}`
             - With success return newly created Style object
     - `/api/styles/:id`
@@ -212,8 +210,11 @@
       - With success return the booking with id
     - PATCH
       - With success return the updated booking with id
+      - Sends an email to client once artist submit an estimated duration for appointment
+      - Sends an email to both client and artist notifying them of time changes or confirmation of booking 
     - DELETE
       - With success return the deleted booking with id
+      - Sends an email to both the client and artist to notify the cancellation
   - `/api/get-bookings`
     - POST 
       - THIS IS A GET, BUT EASIER TO MAKE IT TO WORK BY CHANGING TO POST THAN REWRITING AS QUERY
@@ -230,6 +231,10 @@
 - Move the generated folder `/build` in `/webapp` to `../backend`
 - Navigate to `../backend`, run `npm i` and `node server.js` to start the app by local server
 - Now access the web app thru `localhost:5000/`
+- Note: To change the cloud database to a new empty local one
+    - Comment out line 3 and uncomment line 5 in `/backend/db/mongoose.js`
+    - In `/backend`, run `mkdir mongo-data` and `mongod --dbpath mongo-data`
+    - create a admin account by POST on `localhost:5000/api/admin` with request body `{"userName": "admin", "password": "admin", "token": "admin"}`
 
 ## Reference
 - The UI template used to help us customize our page

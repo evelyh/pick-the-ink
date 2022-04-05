@@ -100,22 +100,6 @@ function UserProfile() {
       
     }, [buttonPopUp, success])
     
-    
-
-    // useEffect(()=>{
-    //   if(id == undefined){
-    //     getUserFollower(myid).then((json)=>{
-    //       setFollower(json)
-    //       console.log(json, 1111111111111111)
-    //     })  
-    //   }else{
-    //     getUserFollower(id).then((json)=>{
-    //       setFollower(json)
-    //       console.log(json, 1111111111111111)
-    //     })  
-    //   }
-        
-    // },[buttonPopUp, success])
 
     const onDismiss = ()=>{
       setSuccess(false);
