@@ -35,7 +35,11 @@ module.exports = function(app) {
           // artStyles: req.body.artistSub.artStyles,
           // artworks: req.body.artistSub.artworks,
           license: req.body.artistSub.license,
-          physicalID: req.body.artistSub.physicalID
+          physicalID: req.body.artistSub.physicalID,
+          homeLocation: undefined
+        }
+        if(req.body.artistSub.homeLocation !== undefined){
+          user.artistSub.homeLocation = req.body.artistSub.homeLocation
         }
       }else{
         user.artistSub = null;

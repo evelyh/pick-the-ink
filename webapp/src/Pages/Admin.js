@@ -100,6 +100,9 @@ function Admin () {
       </table>
     </div>
         </Container>
+        <div>
+          <Footer></Footer>
+        </div>
       </div>
 
     )

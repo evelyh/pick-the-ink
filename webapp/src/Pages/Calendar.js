@@ -82,6 +82,9 @@ export class Calendar extends Component {
           </ResourcesDirective>
           <Inject services={[Day, Week, WorkWeek, Month, Agenda]} />
         </ScheduleComponent>
+        <div>
+          <Footer></Footer>
+        </div>
       </div>
     )
   }

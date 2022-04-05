@@ -36,6 +36,9 @@ export default function AdminLogin({setToken}) {
           <button className="btn btn-secondary btn-block mb-4">Submit</button>
         </div>
       </form>
+      <div>
+          <Footer></Footer>
+      </div>
     </div>
   )
 }
