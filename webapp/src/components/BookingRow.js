@@ -19,19 +19,18 @@ export class BookingRow extends Component {
     bookingMonth: null,
     bookingDate: null,
     bookingTimeString: null,
-    bookingStartTime: null,
-    bookingEndTime: null,
+    bookingStartDateObj: new Date(),
+    bookingEndDateObj: new Date(),
     artistName: null,
     customerName: null,
     customerEmail: null,
     customerPhone: null,
   }
-  // todo: add await to fetch calling functions?
 
-  // todo: only close popup when successfully send datetime
   sendDateTime = async (timeslots) => {
     const ok = await this.props.sendDateTime(timeslots);
     if (ok){
+      console.log("indide bookingrow, disabling popup")
       this.setState({
         showSendDateTime: !this.state.showSendDateTime,
       });
@@ -70,6 +69,7 @@ export class BookingRow extends Component {
     if (timeslots.length > 0){
       console.log("about to fetch for times")
       const timeStrings = await getBookingTimeString(timeslots);
+      console.log("timestrings:", timeStrings)
       this.setState(timeStrings);
     }
 
@@ -100,8 +100,8 @@ export class BookingRow extends Component {
     return (
       // <div>
       <tr>
-        <td><span className={"month"}>{this.state.bookingMonth}</span><br/><span
-          className={"date"}>{this.state.bookingDate}</span></td>
+        <td><span className={"month"}>{this.state.bookingStartDateObj.toLocaleDateString([], {month: "short"})}</span><br/><span
+          className={"date"}>{this.state.bookingStartDateObj.getDate()}</span></td>
         <td><span className={"cell-details"}>{this.state.bookingTimeString ? this.state.bookingTimeString : (isArtist && (!confirmedBooking.duration) ? "Pending duration" : "Pending")}</span></td>
         <td><span className={"cell-details"}>{isArtist ? this.state.customerName : this.state.artistName}</span></td>
         <td>

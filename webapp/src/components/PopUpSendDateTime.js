@@ -147,6 +147,7 @@ export class PopUpSendDateTime extends Component {
 
     const ok = await this.props.sendDateTime(this.state.timeslots);
     if (ok){
+      console.log("inside senddatrtime, setting state")
       this.setState({
         timeslots: [],
         selectedTimeStrings: [],
@@ -156,7 +157,7 @@ export class PopUpSendDateTime extends Component {
     }
   }
 
-  async componentDidMount() {
+  async componentDidUpdate() {
 
     // get artist availability
     const availability = await getArtistAvailability(this.props.artistId);

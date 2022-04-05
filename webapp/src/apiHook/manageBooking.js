@@ -121,7 +121,7 @@ async function getBookingTimeString(timeslots){
       .then(res => res.json())
       .then(json => {
         console.log("fetch timeslots json:", json)
-        times.push(json.startTime);
+        times.push(new Date(json.result.startTime));
       })
       .catch((error) => {
         alert("cannot get time");
@@ -129,12 +129,18 @@ async function getBookingTimeString(timeslots){
   }
 
   // set start-time and end-time
+  console.log("before times:", times)
   times.sort((date1, date2) => date1 - date2);
-  console.log("times:", times)
+  const bookingStart = times[0].toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: false});
+  const bookingStartDateObj = new Date(times[0]);
+  const bookingEndDateObj = new Date(times[times.length - 1].getTime());
+  bookingEndDateObj.setHours(bookingEndDateObj.getHours() + 1);
+  console.log("end date:", bookingEndDateObj)
+  const bookingEnd = bookingEndDateObj.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: false});
   return {
-    bookingStartTime: times[0].toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"}),
-    bookingEndTime: times[times.length - 1].toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"}),
-    bookingTimeString: times[0].toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"}) + " - " + times[times.length - 1].toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"}),
+    bookingStartDateObj: bookingStartDateObj,
+    bookingEndDateObj: bookingEndDateObj,
+    bookingTimeString: bookingStart + " - " + bookingEnd,
   };
 }
 
@@ -176,7 +182,7 @@ async function getUserInfo(mode, userId){
 
 // get artist availability
 // return {
-// availableLocations: list of strings, available locations
+// availableLocations: list of strings, available locations, sorted alphabetically
 // availabilityAtLocations: {location: list of list, each inner list contain timeslots of the same day}
 // }
 async function getArtistAvailability(artistId){
@@ -235,13 +241,107 @@ async function getArtistAvailability(artistId){
         }
       }
 
-      availableLocations.push(locationList[i].region + ", " + locationList[i].country);
-      availabilityAtLocations[locationList[i].region + ", " + locationList[i].country] = availabilityHere;
+      availableLocations.push(locationList[i].country + ", " + locationList[i].region);
+      availabilityAtLocations[locationList[i].country + ", " + locationList[i].region] = availabilityHere;
     }
   }
 
+  availableLocations.sort();
   return {"availableLocations": availableLocations, "availabilityAtLocations": availabilityAtLocations};
 
+}
+
+// confirm a booking by setting a time for booking (populate Booking.timeslots)
+async function confirmBooking(customerId, timeslots, bookingId){
+
+  try{
+    // update timeslots
+    for (let i = 0; i < timeslots.length; i++){
+      const url = host + "/api/timeslots/" + timeslots[i];
+      const requestBody = {
+        isBooked: true,
+        customerID: customerId,
+      };
+      const request = new Request(url, {
+        method: "PATCH",
+        credentials: "same-origin",
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+      await fetch(request)
+        .then(res => {
+          if (!res.ok) {
+            throw new Error("patch timeslot not ok")
+          }
+        })
+    }
+  } catch (e){
+    console.log(e);
+    return false;
+  }
+
+
+  // update booking
+  const url = host + "/api/bookings/" + bookingId;
+  const requestBody = {
+    timeslots: timeslots,
+    isConfirmed: true,
+  };
+  const request = new Request(url, {
+    method: "PATCH",
+    credentials: "same-origin",
+    headers: {
+      Accept: "*/*",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestBody),
+  });
+  return await fetch(request)
+    .then(res => {
+      return res.ok;
+    })
+    .catch((error) => {
+      console.log(error);
+      return false;
+    })
+
+}
+
+// used when modifying booking
+// unbook original timeslots in booking
+async function unbookTimeslots(timeslots){
+  try{
+    // update timeslots
+    for (let i = 0; i < timeslots.length; i++){
+      const url = host + "/api/timeslots/" + timeslots[i];
+      const requestBody = {
+        isBooked: false,
+        customerID: null,
+      };
+      const request = new Request(url, {
+        method: "PATCH",
+        credentials: "same-origin",
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+      await fetch(request)
+        .then(res => {
+          if (!res.ok) {
+            throw new Error("patch timeslot not ok")
+          }
+        })
+    }
+    return true;
+  } catch (e){
+    console.log(e);
+    return false;
+  }
 }
 
 export { getBookings,
@@ -250,4 +350,7 @@ export { getBookings,
          getImageLink,
          getBookingTimeString,
          getUserInfo,
-         getArtistAvailability }
+         getArtistAvailability,
+         unbookTimeslots,
+         confirmBooking
+       }
