@@ -24,6 +24,7 @@ import ArtistNavBar from '../components/ArtistNavBar'
 
 import {getImageById} from "../apiHook/image"
 import {getUser} from "../apiHook/profile"
+import Footer from "../components/Footer"
 
 // todo: update the homelocation and profile pic
 // todo: update current userID
@@ -277,7 +278,8 @@ function ArtistGallery() {
           </div>
         </div>
         <div>
-        <footer className="footer footer-black footer-white">
+          <Footer></Footer>
+        {/* <footer className="footer footer-black footer-white">
           <Container>
             <Row>
               <div className="credits ml-auto">
@@ -288,7 +290,7 @@ function ArtistGallery() {
               </div>
             </Row>
           </Container>
-        </footer>
+        </footer> */}
         </div>
       </div>
     )

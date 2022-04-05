@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Header } from '../components/Header.js'
-import { Footer } from '../components/Footer.js'
+import Footer from '../components/Footer.js'
 import { Container, Form } from 'react-bootstrap'
 import { Multiselect } from 'multiselect-react-dropdown';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
@@ -24,7 +24,6 @@ export class LandingPage extends Component {
     imageObjList: []
   }
 
-  country = ["Canada", "United States"]
 
   handleSubmit = async (event) =>{
       event.preventDefault();
@@ -67,7 +66,7 @@ export class LandingPage extends Component {
       
   }
 
-  componentWillMount = async() =>{
+  async componentDidMount(){
     var allStyles = await getAllStyles();
     var artists = await getArtists({});
     this.setState({allStyles: allStyles, artists: artists})
@@ -84,7 +83,10 @@ export class LandingPage extends Component {
       }
     }
     this.setState({imageObjList: imgobjs});
+  }
 
+  placeholderText(){
+    return <div> <p> Sorry, there is no artist found for now.</p> </div>
   }
 
   render(){
@@ -96,7 +98,7 @@ export class LandingPage extends Component {
         var list = (this.state.imageObjList)[i]
         imageList[(this.state.artists[i]).userName] = list.map((image) =>
             <div key={image.images.img}>
-              <img src={image.images.img} title={image.images.title} alt={image.images.desc}/>
+              <img id='img' src={image.images.img} title={image.images.title} alt={image.images.desc}/>
             </div>)
       }
     }
@@ -104,12 +106,13 @@ export class LandingPage extends Component {
     const artistProfile = hostURL + "/artistprofile/"
     const artistList = this.state.artists.map((artist) => 
         <div className="card" id="card" key={artist.userName}>
-          <a id="cardname" style={{fontWeight: "bold", fontSize: "15px"}} href={artistProfile+artist._id}> @{artist.userName} </a>
-          <p className='mb-3 styles'style={{fontSize: "14px"}} > {artist.comment} </p>
-          <Carousel id='carousel'>
+          <a id="cardname" href={artistProfile+artist._id} style={{fontWeight: "bold", fontSize: "15px"}}> @{artist.userName} </a>
+          <p className='mb-3' id='styles' style={{fontSize: "14px"}}> {artist.comment} </p>
+          <Carousel showThumbs={false} id='carousel'>
               {imageList[artist.userName]}
           </Carousel>
         </div>)
+    const text = this.placeholderText();
 
     return (
       <div>
@@ -172,7 +175,7 @@ export class LandingPage extends Component {
               </Form>
               <button className="mb-3 btn btn-primary" id="button-14" type="submit" onClick={this.handleSubmit}>Apply</button>
             <div className='cardContainer'> 
-                {artistList}
+                {(this.state.artists.length > 0) ? artistList : text}
             </div>
 
             <div> <Footer/> </div>

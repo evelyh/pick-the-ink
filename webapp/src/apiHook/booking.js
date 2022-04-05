@@ -1,4 +1,5 @@
 import {addImage} from './image.js'
+import { getLoginStatus } from './loginSignUp.js';
 const log = console.log
 log('Loaded front-end javascript.')
 
@@ -58,14 +59,17 @@ async function getBookingsByID(id) {
 
 // await addBooking() when call. Need to call this function in an async function. Return status code. 
 // 200 on success, 400 on unsuccess
-async function addBooking(form) {
+async function addBooking(form, artistID) {
     // the URL for the request
     const url = hostURL + '/api/bookings';
     // The data we are going to send in our request
-
+    const customer = await getLoginStatus();
+    let cus = customer.userId;
     let data = {
-        artistID: "62476f27a025c967d7d132fa",
-        customerID: "624769ffa025c967d7d132a0",
+        // artistID: "62476f27a025c967d7d132fa",
+        // customerID: "624769ffa025c967d7d132a0",
+        artistID: artistID,
+        customerID: cus,
         isCancellable: true,
         isModifiable: true,
         choice: form.choice,

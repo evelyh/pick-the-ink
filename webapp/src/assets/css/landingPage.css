@@ -10,23 +10,27 @@
 }
 
 .cardContainer {
+  min-height: 5rem;
   display: grid;
-  justify-content: center;
-  padding: 20px;
+  justify-content: left;
   border-radius: 12px;
-  width: 85vw;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 18rem));
-  background-color: rgb(212, 225, 224);
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, 19.5rem);
 }
 
 #title {
   font-weight: bold;
 }
 
-.card {
+#card {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 200ms ease-in;
+  background-color: rgb(229, 235, 235);
   box-shadow: 0.2rem;
-  margin-right: 25px;
-  padding: 10px;
+  padding: 0.75rem;
   border-radius: "16px";
 }
 
@@ -34,21 +38,21 @@
   transform: none;
 }
 
-#carousel {
-  width: 360px;
-  position: center;
-  border-radius: 16px;
-}
-
 .label {
   font-weight: "bold";
 }
 
 #cardname {
-  font-size: "18px";
+  font-size: "15px";
   font-weight: "bold";
 }
 
-.styles {
-  font-size: "16px";
+#styles {
+  font-size: "14px";
+}
+
+#img {
+  width: 18rem;
+  height: 20rem;
+  object-fit: cover;
 }

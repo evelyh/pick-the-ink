@@ -24,11 +24,46 @@ async function getTimeslotsById(id) {
             // return a promise that resolves with the JSON body
            return res.json() 
        } else {
-            alert('Could not get Bookings by ID')
+            console.log('Could not get timeslots')
        }                
     }).catch((error) => {
         log(error)
     })
+}
+
+async function postTimeslot(artistID,locationID, date, start, end) {
+    // the URL for the request
+    const url = hostURL + "/api/timeslots";
+
+     console.log(date, start, end)
+     if(start>end){
+         return "start time must before end time";
+     }
+     for(let i = start; i<=end; i++){
+         console.log(date+" " + i)
+        const str = date+" 0" + i + ":00:00";
+        const newDate = new Date(str);
+        const request = new Request(url, {
+            method: 'post',
+            body: JSON.stringify({"startTime":newDate, artistID:artistID, "locationID":locationID}),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+        });
+        await fetch(request)
+        .then((res) => { 
+            if (res.status === 200) {
+                // return a promise that resolves with the JSON body
+                console.log('timeslot succesfully added')
+           } else {
+                console.log('Could not post timeslot')
+           }                
+        }).catch((error) => {
+            log(error)
+        })
+     }
+    
 }
 
 // get all timeslots of user including booked and non-booked timeslots
@@ -61,7 +96,7 @@ async function getTimeslotsByUser(data) {
             // return a promise that resolves with the JSON body
            return res.json() 
        } else {
-            alert('Could not get Bookings by ID')
+            console.log('Could not get timeslots')
        }                
     }).catch((error) => {
         log(error)
@@ -69,4 +104,4 @@ async function getTimeslotsByUser(data) {
 }
 
 
-export {getTimeslotsByUser, getTimeslotsById, getBookings}
+export {getTimeslotsByUser, getTimeslotsById, getBookings, postTimeslot}
