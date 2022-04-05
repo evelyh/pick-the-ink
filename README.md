@@ -111,12 +111,12 @@
 
 - Backend Host URL: `https://`
 
-- Admin model: (No other methods allowed to check, add, or modify the admin information. There is only one account.)
+- **Admin model**: (No other methods allowed to check, add, or modify the admin information. There is only one account.)
     - `/admin/login`
         - POST, Body: `{username, password}`
             - To log in as an admin, with success return `{token: 'loggedIn'}`, otherwise `{token: null}`
 
-- User model: 
+- **User model**: 
     - `/api/users`
         - GET
             - With success return a list of all existign User objects
@@ -138,7 +138,7 @@
         - GET, Query parameters: (everything is optional) `?style={a list of Style object IDs}&location={a Location object ID}`
             - With success return a corresponding list of User objects
 
-- Style model:
+- **Style model**:
     - `/api/styles`
         - GET
             - With success returns a list of all existign Style objects
@@ -148,7 +148,7 @@
         - GET
             - With success return corresponding Location object with this id
 
-- Location model:
+- **Location model**:
     - `/api/locations`
         - GET, Query parameters: (optional as a whole) `?country={countryName}&region={regionName}`
             - With success return a list of all existing Location objects or a Location object if there's query
@@ -158,14 +158,70 @@
         - GET
             - With success return corresponding Location object with this id
 
-- Timeslot model:
+- **Timeslot model**:
     - `/api/timeslots`
     - `/api/timeslots/:id`
     - `/api/timeslot` 
         - GET, Query parameters: (required) `?start={startTime}&end={endTime}`
             - With success, return a list of Timeslot objects in the period
-- Image model:
-- Booking model:
+- **Image Model**:
+  - Structure:
+    - _id/imageID(required): the id of the image
+    - img(required): the link of the img at cloudinry
+    - title(optional): the title of the image
+    - desc(optional): the description of the image
+    
+  - `/api/images/`
+    - POST, Body: {img: file, title: String, desc: String}
+      - With success return the image info of the posted image
+    - GET
+      - With success return all the images stores in the database
+  - `/api/images/:imageId`
+    - GET 
+      - With success return the image info with `imageID`
+    - DELETE
+      - With success return the deleted image info with `imageID`
+    - PUT, Body: {title: String, desc: String}
+      - With success return the updated image info with `imageID`
+
+- **Booking Model**:
+  - Structure:
+    - customerID (required): id of the customer who books the appointment
+    - artistID (required): id of the artist who is booked
+    - timeslots (required): the timeslots of the appointment
+    - isCancellable (required): if the appointment is cancellable
+    - isModifiable (required): if the appointment is modifiable
+    - choice (required): description of the customer desired tattoo
+    - flashLink (optional): image of the customer desired tattoo
+    - customerIdea (optional)
+    - size (required): the size of the customer desired tattoo
+    - placement (required): desired placement of the tattoo
+    - otherLink (optional): screenshot of the 
+    - concerns (optional): the cutomer's concerns
+    - duration (required): the expected duration of making the tattoo
+    - isConfirmed (required): whether the appointment is confirmed, the default value is False
+  - `/api/bookings`
+    - POST, Body:{all required the info for booking}
+      - With success return the info of the new booking
+  - `/api/bookings/:id`
+    - POST, Body:{all required the info for booking}
+      - With success return the booking info with id
+    - GET
+      - With success return the booking with id
+    - PATCH
+      - With success return the updated booking with id
+    - DELETE
+      - With success return the deleted booking with id
+  - `/api/get-bookings`
+    - POST 
+      - THIS IS A GET, BUT EASIER TO MAKE IT TO WORK BY CHANGING TO POST THAN REWRITING AS QUERY
+      - get all / get by artistID / get by customerID / get by isConfirmed
+      - if do not have req.body, get all
+      - req.body.artistID, get all bookings of that artist
+      - req.body.customerID, get all bookings of that customer
+      - req.body.artistID AND req.body.isConfirmed, get all bookings for confirmed/ (not confirmed) artist's bookings
+      - req.body.customerID AND req.body.isConfirmed, get all bookings for confirmed/ (not confirmed) customer's bookings
+      - With sucess return the desired body
 
 ### Frontend
 - From root directory, navigate to `/webapp`, run  `npm i` and `npm run build` to build the React app
