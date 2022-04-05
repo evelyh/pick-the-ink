@@ -157,7 +157,7 @@ function UserProfile() {
             <Card id="profileCard" style={{width: '20rem'}}>
               <CardBody>  
                 {values.profilePic?  <CardImg src={values.profilePic} id="profileCirclePic" alt='profile' />  :
-                 <CardImg src={profilepic} id="profileCirclePic" alt='profile' />  }  
+                 <CardImg src={profilepic} id="profileCirclePic" alt='profile' />}  
               <h5>{values.userName} 
               {!isUser? (
                 ifFollowed?<Button id='followButton' onClick={removeFollow}>Unfollow</Button>
