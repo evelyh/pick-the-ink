@@ -9,6 +9,7 @@ import {Navigate} from "react-router-dom";
 import {cancelBooking, confirmBooking, getBookings, unbookTimeslots} from "../apiHook/manageBooking";
 import {getLoginStatus} from "../apiHook/loginSignUp";
 import Footer from "../components/Footer";
+import {getUser} from "../apiHook/profile";
 
 export class ManageBookingConfirm extends Component {
 
@@ -18,6 +19,7 @@ export class ManageBookingConfirm extends Component {
     bookingCancelled: false,
     host: "http://localhost:5000",
     userId: "",
+    userName: "",
     datetimeSent: false,
     loggedIn: true,
   }
@@ -94,6 +96,12 @@ export class ManageBookingConfirm extends Component {
       confirmedBookings: fetchedBookings,
     });
 
+    // get userName
+    const user = await getUser(this.state.userId);
+    this.setState({
+      userName: user.userName,
+    });
+
   }
 
   checkRedirection = () => {
@@ -107,7 +115,7 @@ export class ManageBookingConfirm extends Component {
     return (
       <div>
         {this.checkRedirection()}
-        <Header loggedIn={true}/>
+        <Header loggedIn={this.state.loggedIn} userName={this.state.userName}/>
 
         <div className={"managebooking-body"}>
           <h1 className={"page-head"}>Manage Booking</h1>

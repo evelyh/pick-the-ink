@@ -14,12 +14,8 @@ import Login from './Pages/Login'
 import ManageBooking from './Pages/ManageBooking'
 import SignUp from './Pages/SignUp'
 import UserProfile from './Pages/UserProfile'
-import UserProfileKrab from './Pages/UserProfileKrab'
-import UserProfileGary from './Pages/UserProfileGary'
 import Calendar from 'Pages/Calendar';
 import ManageBookingConfirm from "./Pages/ManageBookingConfirm";
-import ManageBookingClient from "./Pages/ManageBookingClient";
-import ManageBookingClientConfirm from "./Pages/ManageBookingClientConfirm";
 import Admin from 'Pages/Admin';
 
 

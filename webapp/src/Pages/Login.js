@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Header from "../components/Header";
 import NavTabTwo from "../components/NavTabTwo";
-import { Navigate } from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import {Alert, Button, Input, Label} from "reactstrap";
 import { withCookies } from "react-cookie";
 import {getLoginStatus, login} from "../apiHook/loginSignUp";
@@ -94,7 +94,7 @@ export class Login extends Component {
 
   render() {
     return (
-      <div>
+      <div className={"login"}>
         {this.checkRedirection()}
 
         <Header loggedIn={false}/>
