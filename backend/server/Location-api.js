@@ -16,7 +16,7 @@ module.exports = function (app){
     // get locations
     try{
       var location;
-      if(Object.keys(req.query).length != 0){
+      if(Object.keys(req.query).length == 2){
         let country = req.query.country;
         let region = req.query.region;
         location = await Location.findOne({country: country, region: region}, function(err,obj) { } );

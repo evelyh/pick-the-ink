@@ -82,7 +82,7 @@ module.exports = function(app) {
     })
 
     //get timeslots by start and end time
-    app.get('/api/timeslotArtist', async(req, res) => {
+    app.get('/api/timeslot', async(req, res) => {
         let start = req.query.start
         let end = req.query.end
 

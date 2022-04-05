@@ -47,36 +47,36 @@ async function getLocation(data){
 }
 
 
-async function getStyles(data){
-    var url = hostURL + '/api/style/'
-    if(data.name){
-        url += '?name=' + data.style
-    }
-    if(data.id){
-        url += '?id=' + data.id
-    }
-    const request = new Request(url, {
-        method: 'get', 
-        headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json'
-        },
-    });
-    return await fetch(request).then((res) => { 
-        if (res.status === 200) {
-            // return a promise that resolves with the JSON body
-            return res.json() 
-        }else{
-            alert('Could not get styles')
-        }                
-    }).catch((error) => {
-        console.log(error)
-    })
-}
+// async function getStyles(data){
+//     var url = hostURL + '/api/style/'
+//     if(data.name){
+//         url += '?name=' + data.style
+//     }
+//     if(data.id){
+//         url += '?id=' + data.id
+//     }
+//     const request = new Request(url, {
+//         method: 'get', 
+//         headers: {
+//             'Accept': 'application/json, text/plain, */*',
+//             'Content-Type': 'application/json'
+//         },
+//     });
+//     return await fetch(request).then((res) => { 
+//         if (res.status === 200) {
+//             // return a promise that resolves with the JSON body
+//             return res.json() 
+//         }else{
+//             alert('Could not get styles')
+//         }                
+//     }).catch((error) => {
+//         console.log(error)
+//     })
+// }
 
 
 async function getTimeslots(data){
-    const url = `${hostURL}/api/timeslotArtist/?start=${data.start}&end=${data.end}`
+    const url = `${hostURL}/api/timeslot/?start=${data.start}&end=${data.end}`
     console.log(url)
     const request = new Request(url, {
         method: 'get', 
@@ -138,4 +138,4 @@ async function getArtists(data){
     })
 }
 
-export {getAllStyles, getLocation, getStyles, getTimeslots, getArtists}
+export {getAllStyles, getLocation, getTimeslots, getArtists}
