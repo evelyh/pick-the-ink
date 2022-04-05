@@ -14,6 +14,7 @@ import { Card, CardBody, CardImg,CardText,
 import {getStyleById, getUser, getUserFollowing, getUserFollower, followUser, unfollowUser} from "../apiHook/profile"
 import {login, getLoginStatus} from '../apiHook/loginSignUp'
 import PopUpTimeslotForm from 'components/PopUpTimeslotForm';
+import Footer from 'components/Footer';
 
 
 function UserProfile() {
