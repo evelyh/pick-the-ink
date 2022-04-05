@@ -59,6 +59,8 @@ function ArtistProfile() {
     const [isUser, setIsUser] = useState(false);
     const [ifFollowed,setIfFollowed] = useState(false);
     const [username, setUsername] = useState("");
+    const [following, setFollowing] = useState();
+    const [follower, setFollower] = useState();
 
 
     useEffect(()=>{
@@ -77,6 +79,15 @@ function ArtistProfile() {
             getUser(json.userId).then((json)=>setUsername(json.userName))
           }
         }
+
+        getUserFollowing(id).then((res)=>{
+          setFollowing(res)
+        })
+
+        getUserFollower(id).then((res)=>{
+          setFollower(res)
+        }) 
+
         getUser(id).then(async json => 
           {
             let data = json;
@@ -136,21 +147,19 @@ function ArtistProfile() {
       setSuccess(false);
     };
 
-    const [following, setFollowing] = useState();
-    useEffect(()=>{
-        getUserFollowing(id).then((json)=>{
-          setFollowing(json)
-        })
+    // useEffect(()=>{
+    //     getUserFollowing(id).then((json)=>{
+    //       setFollowing(json)
+    //     })
         
-    },[success])
+    // },[success])
 
-    const [follower, setFollower] = useState();
-    useEffect(()=>{
-        getUserFollower(id).then((json)=>{
-          setFollower(json)
-        })
+    // useEffect(()=>{
+    //     getUserFollower(id).then((json)=>{
+    //       setFollower(json)
+    //     })
         
-    },[success])
+    // },[success])
 
     const addFollow = ()=>{
       followUser(id, myid);
@@ -222,6 +231,7 @@ function ArtistProfile() {
                  </DropdownItem>)):null}
               </DropdownMenu>
             </UncontrolledDropdown>
+            <span> </span>
             <UncontrolledDropdown className="btn-group">
              <DropdownToggle tag="a"
               data-toggle="dropdown">
@@ -239,7 +249,6 @@ function ArtistProfile() {
                   </DropdownItem>)):null}
               </DropdownMenu>
             </UncontrolledDropdown>
-
             </CardBody>
             </Card>
             
