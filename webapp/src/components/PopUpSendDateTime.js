@@ -74,7 +74,7 @@ export class PopUpSendDateTime extends Component {
   }
 
   displayChoices = (offset) => {
-    const currTimeslotList = this.state.artistAvailabilityAtLocation[this.state.currentDisplayLocation];
+    const currTimeslotList = (this.state.artistAvailabilityAtLocation[this.state.currentDisplayLocation] ? this.state.artistAvailabilityAtLocation[this.state.currentDisplayLocation] : []);
     console.log("this.state", this.state)
 
     const thisDate = new Date(this.state.currDisplayDate.getTime());
