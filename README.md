@@ -172,7 +172,6 @@
 - Move the generated folder `/build` in `/webapp` to `../backend`
 - Navigate to `../backend`, run `npm i` and `node server.js` to start the app by local server
 - Now access the web app thru `localhost:5000/`
-- This still connects to the Cloud Database we set up
 
 ## Reference
 - The UI template used to help us customize our page
