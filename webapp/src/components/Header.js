@@ -3,16 +3,27 @@ import 'bootstrap/dist/css/bootstrap.css'
 import { Navbar, Nav, Container} from 'react-bootstrap'
 import {getUser} from "../apiHook/profile";
 import  "../assets/css/header.css"
+import { getLoginStatus } from 'apiHook/loginSignUp';
 
 export class Header extends Component {
 
   state = {
     userName: null,
   }
-
+  async componentWillMount(){
+    const result = getLoginStatus();
+    if(result.loggedIn == false){
+      this.setState({"userName" : ""});
+    }else{
+      const user = getUser(result.userId);
+      this.setState({"userName": user.userName});
+      console.log(this.state.userName, "this.state.userName");
+    }
+  }
   render() {
 
-    const {loggedIn, userName} = this.props;
+    const loggedIn= this.props.loggedIn;
+    const Username= this.props.userName;
     console.log("Header")
     console.log(this.props)
 
@@ -48,7 +59,7 @@ export class Header extends Component {
             </Navbar.Collapse>
             <Navbar.Collapse className="justify-content-end">
               <Navbar.Text id="nav">
-                {loggedIn ? <span id="nav">Signed in as: <a href="/userprofile" id="nav">{userName}</a> / <a href={"/users/logout"} id="nav">Logout</a> </span> : <span id="nav"><a href={"/login"} id="nav">Login</a> / <a href={"/signup"} id="nav">Sign Up</a> </span>}
+                {loggedIn ? <span id="nav">Signed in as: <a href="/userprofile" id="nav">{Username}</a> / <a href={"/users/logout"} id="nav">Logout</a> </span> : <span id="nav"><a href={"/login"} id="nav">Login</a> / <a href={"/signup"} id="nav">Sign Up</a> </span>}
               </Navbar.Text>
             </Navbar.Collapse>
             </Container>

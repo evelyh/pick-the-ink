@@ -52,6 +52,7 @@ function ArtistProfile() {
     const [success,setSuccess] = useState(false);
     const [isUser, setIsUser] = useState(false);
     const [ifFollowed,setIfFollowed] = useState(false);
+    const [username, setUsername] = useState("");
 
 
     useEffect(()=>{
@@ -60,9 +61,15 @@ function ArtistProfile() {
         myid = json.userId;
         if(id == undefined){
           id = myid;
+          setUsername(this.values.userName)
         }
         if(myid == id){
           setIsUser(true);
+          setUsername(this.values.userName)
+        }else{
+          if(json.loggedIn){
+            getUser(json.userId).then((json)=>setUsername(json.userName))
+          }
         }
         getUser(id).then(json => 
           {
@@ -147,7 +154,7 @@ function ArtistProfile() {
     return (
       <div>
         <div>
-          <Header loggedIn={true} isArtist={true} userName={values.userName}/>
+          <Header loggedIn={true} isArtist={true} userName = {username}/>
         </div>
         <div><ArtistNavBar></ArtistNavBar></div>
         <PopUpArtistProfileForm 
@@ -164,6 +171,7 @@ function ArtistProfile() {
         {isUser ? null : <PopUpAppointmentForm 
                             info={values} 
                             setInfo = {setValues} 
+                            artistId={id}
                             trigger={buttonPopUpBook} 
                             setTrigger={setButtonPopUpBook}>My Popup
                           </PopUpAppointmentForm>}

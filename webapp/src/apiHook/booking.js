@@ -1,4 +1,4 @@
-import {addImage} from './image.js'
+import {addImageUserProfile} from './image.js'
 import { getLoginStatus } from './loginSignUp.js';
 const log = console.log
 log('Loaded front-end javascript.')
@@ -66,8 +66,6 @@ async function addBooking(form, artistID) {
     const customer = await getLoginStatus();
     let cus = customer.userId;
     let data = {
-        // artistID: "62476f27a025c967d7d132fa",
-        // customerID: "624769ffa025c967d7d132a0",
         artistID: artistID,
         customerID: cus,
         isCancellable: true,
@@ -81,10 +79,10 @@ async function addBooking(form, artistID) {
 
     // need to call addImage and get back the id of the image added
     if(form.flashLink != undefined){
-        await addImage(form.flashLink).then(json => data.flashLink = json["_id"]);
+        await addImageUserProfile(form.flashLink).then(json => data.flashLink = json["_id"]);
     }
     if(form.otherLink != undefined){
-        await addImage(form.otherLink).then(json => data.otherLink = json["_id"]);
+        await addImageUserProfile(form.otherLink).then(json => data.otherLink = json["_id"]);
     }
     
     
