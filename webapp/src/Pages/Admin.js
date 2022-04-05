@@ -4,7 +4,8 @@ import { Container } from 'react-bootstrap'
 import AdminLogin from './AdminLogin.js'
 import {getAllUsers, getUserLicense, getUserPhyID, verifyArtist} from '../apiHook/admin.js'
 import useToken from '../components/UseToken.js'
-import { getImageById } from 'apiHook/image'
+import { getImageById } from 'apiHook/image';
+import Footer from "../components/Footer";
 
 function Admin () {
   const [data, setData] = useState([]);
