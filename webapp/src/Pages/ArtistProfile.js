@@ -157,6 +157,8 @@ function ArtistProfile() {
     const removeFollow = ()=>{
       getLoginStatus().then(json=>{
         if(json.loggedIn){
+          log("id"+id)
+          log("userId"+json.userId)
           unfollowUser(id, json.userId);
           setIfFollowed(false);
         }
@@ -190,7 +192,7 @@ function ArtistProfile() {
         
         {isUser && values.homeLocation ?  <PopUpTimeslotForm
                       artistID={values._id}
-                      locationID={values.homeLocation}
+                      locationID={values.artistSub.homeLocation}
                       trigger={timeslotButtonPopUp} 
                       setTrigger={setTimeslotButtonPopUp}>My Popup
                    </PopUpTimeslotForm>:null}

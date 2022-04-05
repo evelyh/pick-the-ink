@@ -78,6 +78,14 @@ function ArtistGallery() {
       log("fid: "+id)
       log("fmyID: "+myID)
 
+      getUserFollowing(id).then((res)=>{
+        setFollowing(res)
+      })
+
+      getUserFollower(id).then((res)=>{
+        setFollower(res)
+      }) 
+
       await getUser(id).then(async (json) => 
       { 
         // json.homeLocation = "";
