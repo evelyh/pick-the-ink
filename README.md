@@ -3,6 +3,7 @@
 ## Introduction
   - Website name: **PickInk**
   - Description: a community for tattoo artists and lovers
+  - Link: https://pickink.herokuapp.com
 
 ### *Roles and functionalities of Users*
  - As a regular user, they can
@@ -114,7 +115,7 @@
 
 ### Backend
 
-- Backend Host URL: `https://www.pickink.herokuapp.com`
+- Backend Host URL: `https://pickink.herokuapp.com`
 
 - **Admin model**: (No other methods allowed to check, add, or modify the admin information. There is only one account.)
     - `/admin/login`
