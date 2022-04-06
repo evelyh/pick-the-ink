@@ -50,6 +50,7 @@
         - The profile card on the left of the page showing the profile photo, bio, followers and followings
         - A dropdown list of followers/followings will show when clicking the followers/followings on the card
         - You can naviagte to the followers'/followings' profile pages by clicking the dropdown lists of the followers/followings
+        - Follow and unfollow other users (both customers and artists) by clicking the follow and unfollow button on others' profile pages
       - Edit your profile
         - Users can edit their own profile on this page by clicking the `Edit your profile` button and fill in the popup form
         - The editProfile form will update the change if users click on `comfirm`, otherwise, all the info will stay as previous
@@ -76,6 +77,7 @@
         - By clicking the `delete` button in the popup, you are confirming the deletion, otherwise, the image will stay. 
       - Post available timeslots
         - Post artists' available timeslots, so that client can book the appointment based on the available timeslots.
+        - The `post available timeslots` button will only show, when the artist set a valid home location. Since this is for updating the avaailable timeslots for clients to book appoinmtment, a valid home location is needed. 
   
     **Notes for Profile (Important!):** 
     - For each user, he/she can only edit their own profile page (and gallery page, for artists), and view limited profile info on other users' profile page. 
@@ -166,10 +168,10 @@
             - With success, return a list of Timeslot objects in the period
 - **Image Model**:
   - Structure:
-    - _id/imageID(required): the id of the image
-    - img(required): the link of the img at cloudinry
-    - title(optional): the title of the image
-    - desc(optional): the description of the image
+    - `_id/imageID` (required): the id of the image
+    - `img` (required): the link of the img at cloudinry
+    - `title` (optional): the title of the image
+    - `desc` (optional): the description of the image
     
   - `/api/images/`
     - POST, Body: {img: file, title: String, desc: String}
@@ -186,29 +188,29 @@
 
 - **Booking Model**:
   - Structure:
-    - customerID (required): id of the customer who books the appointment
-    - artistID (required): id of the artist who is booked
-    - timeslots (required): the timeslots of the appointment
-    - isCancellable (required): if the appointment is cancellable
-    - isModifiable (required): if the appointment is modifiable
-    - choice (required): description of the customer desired tattoo
-    - flashLink (optional): image of the customer desired tattoo
-    - customerIdea (optional)
-    - size (required): the size of the customer desired tattoo
-    - placement (required): desired placement of the tattoo
-    - otherLink (optional): screenshot of the 
-    - concerns (optional): the cutomer's concerns
-    - duration (required): the expected duration of making the tattoo
+    - `customerID` (required): id of the customer who books the appointment
+    - `artistID` (required): id of the artist who is booked
+    - `timeslots` (required): the timeslots of the appointment
+    - `isCancellable` (required): if the appointment is cancellable
+    - `isModifiable` (required): if the appointment is modifiable
+    - `choice` (required): flash/custom design 
+    - `flashLink` (optional): an image of the flash design, if customers choose the flash design
+    - `customerIdea` (optional): a description of cutomers' ideas, if they choose the customer design
+    - `size` (required): the size of the customer desired tattoo
+    - `placement` (required): desired placement of the tattoo
+    - `otherLink` (optional): any reference photos, drawings, sketches, screenshots, etc. that will help to explain your ideas
+    - concerns (optional): cutomers' concerns about (allergies, accommodations, peronal concerns, etc.)
+    - duration (required): the expected duration of making the tattoo (provided by artists)
     - isConfirmed (required): whether the appointment is confirmed, the default value is False
   - `/api/bookings`
-    - POST, Body:{all required the info for booking}
+    - POST, Body: {all required the info for booking}
       - With success return the info of the new booking
   - `/api/bookings/:id`
-    - POST, Body:{all required the info for booking}
+    - POST, Body: {all required the info for booking}
       - With success return the booking info with id
     - GET
       - With success return the booking with id
-    - PATCH
+    - PATCH, Body: {all required the info for booking}
       - With success return the updated booking with id
       - Sends an email to client once artist submit an estimated duration for appointment
       - Sends an email to both client and artist notifying them of time changes or confirmation of booking 
@@ -216,7 +218,7 @@
       - With success return the deleted booking with id
       - Sends an email to both the client and artist to notify the cancellation
   - `/api/get-bookings`
-    - POST 
+    - POST, Body: as below
       - THIS IS A GET, BUT EASIER TO MAKE IT TO WORK BY CHANGING TO POST THAN REWRITING AS QUERY
       - get all / get by artistID / get by customerID / get by isConfirmed
       - if do not have req.body, get all
@@ -224,7 +226,7 @@
       - req.body.customerID, get all bookings of that customer
       - req.body.artistID AND req.body.isConfirmed, get all bookings for confirmed/ (not confirmed) artist's bookings
       - req.body.customerID AND req.body.isConfirmed, get all bookings for confirmed/ (not confirmed) customer's bookings
-      - With sucess return the desired body
+      - With sucess return the desired booking(s) satisfy all the above conditions
 
 ### Frontend
 - From root directory, navigate to `/webapp`, run  `npm i` and `npm run build` to build the React app
