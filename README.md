@@ -164,11 +164,24 @@
             - With success return corresponding Location object with this id
 
 - **Timeslot model**:
-    - `/api/timeslots`
-    - `/api/timeslots/:id`
-    - `/api/timeslot` 
-        - GET, Query parameters: (required) `?start={startTime}&end={endTime}`
-            - With success, return a list of Timeslot objects in the period
+   - Structure:
+    - `artistID` (required): artist ID realted to the timeslot
+    - `customerID` (required): the cutomer who books this timeslot
+    - `locationID` (optional): the location ID of the timeslot
+    - `startTims` (required): the starttime of the timeslot
+    - `isBooked` (required): if the timeslot is booked, defaul value is False
+  - `/api/timeslots`
+    - POST, Body: {all the required fields}
+      - Create a new timeslot, with success return the info of the new timeslot
+    - GET, Query parameters: (required) `?start={startTime}&end={endTime}`
+          - With success, return a list of Timeslot objects in the period
+  - `/api/timeslots/:id`
+    - GET
+      - With success return the info of the timeslot with id
+    - PATCH, Body: {all required and updated fields}
+      - With success return the info of the updated timeslot with id
+    - DELETE
+      - With success return the info of the delted timeslot with id
 - **Image Model**:
   - Structure:
     - `_id/imageID` (required): the id of the image
