@@ -6,22 +6,22 @@
 
 ### *Roles and functionalities of Users*
  - As a regular user, they can
-     - find artists by applying their favoured conditions (e.g. styles, locations, availablity)
-     - book appointment with artists
+     - find artists by applying their favoured conditions (e.g. styles, locations, availability)
+     - book appointments with artists
      - modify their bookings
      - follow a user (mostly artists as they regularly update new tattoo works)
-     - Edit their profile, including profile picture, favorate tattoo styles, phone number, email, username.... etc.
- - As a artist user, they have all regular user functionalities and can also
-     - upload their tattoo artworks, edit the artworks they have post
-     - customize their availability for users to book appointment on  
-     - provide their current working locations (as most artist regularly work as guest artists in different places)
+     - Edit their profile, including profile picture, favourite tattoo styles, phone number, email, username, etc.
+ - As an artist user, they have all regular user functionalities and can also
+     - upload their tattoo artworks, edit the artworks they have posted
+     - customize their availability for users to book an appointment on  
+     - provide their current working locations (as most artists regularly work as guest artists in different places)
      - provide their specialized art styles
 
 ## Website pages
   - `https://www.pickink.herokuapp.com`
 
 ### *Explore* `/ & /explore`
-- Landing home page where allows users to browse artists and their selected work based on the filters including artists' locations, available dates, and styles they chose.
+- Landing home page that allows users to browse artists and their selected work based on the filters including artists' locations, available dates, and styles they chose.
 - Among the results, you can go to the artists' profile pages by clicking their username. 
 
 ### *Sign Up* `/signup`
@@ -82,9 +82,9 @@
         - The `post available timeslots` button will only show when the artist set a valid home location. Since this is for updating the available timeslots for clients to book appointments, a valid home location is needed. 
   
     **Notes for Profile (Important!):** 
-    - For each user, he/she can only edit their own profile page (and gallery page, for artists), and view limited profile info on other users' profile page for security reasons ( to protect other's personal informations). 
-    - Both customers and artists can book appoinments on and only on other artists
-    - For each artist, he/she cannot book an appoinment with themselves on their own profile/gallery page. 
+    - For each user, he/she can only edit their profile page (and gallery page, for artists), and view limited profile info on other users' profile pages for security reasons ( to protect others' personal information).
+    - Both customers and artists can book appointments on and only with other artists
+    - For each artist, he/she cannot book an appointment with themselves on their profile/gallery page.
 
 ### *Manage Booking* `/managebooking`
 - Page that allows user to manage their booking.
