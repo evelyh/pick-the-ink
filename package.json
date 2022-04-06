@@ -1,0 +1,12 @@
+{
+  "name": "pickink",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "cd webapp; npm install; npm run build; cd ../backend; npm install; rm -rf build; mv ../webapp/build .; node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "team09",
+  "license": "ISC",
+  "dependencies": {}
+}
