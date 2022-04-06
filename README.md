@@ -10,8 +10,10 @@
      - book appointment with artists
      - modify their bookings
      - follow a user (mostly artists as they regularly update new tattoo works)
+     - Edit their profile, including profile picture, favorate tattoo styles, phone number, email, username.... etc.
  - As a artist user, they have all regular user functionalities and can also
-     - upload their tattoo artworks
+     - upload their tattoo artworks, edit the artworks they have post
+     - customize their availability for users to book appointment on  
      - provide their current working locations (as most artist regularly work as guest artists in different places)
      - provide their specialized art styles
 
@@ -80,9 +82,9 @@
         - The `post available timeslots` button will only show, when the artist set a valid home location. Since this is for updating the avaailable timeslots for clients to book appoinmtment, a valid home location is needed. 
   
     **Notes for Profile (Important!):** 
-    - For each user, he/she can only edit their own profile page (and gallery page, for artists), and view limited profile info on other users' profile page. 
+    - For each user, he/she can only edit their own profile page (and gallery page, for artists), and view limited profile info on other users' profile page for security reasons ( to protect other's personal informations). 
     - Both customers and artists can book appoinments on and only on other artists
-    - For each artist, he/she cannot book an appoinment on their own profile/gallery page. 
+    - For each artist, he/she cannot book an appoinment with themselves on their own profile/gallery page. 
 
 ### *Manage Booking* `/managebooking`
 - Page that allows user to manage their booking.
@@ -103,9 +105,10 @@
   - cancel bookings
   
 ### *Calendar* `/calendar`
-- Page where allow users to keep track of their available data and time.
+- Page to visualize the comfirmed booking appointments in a calender view
 - Click on each appointments showing on the calendar to see details
-- Click the edit/delete button on the upper-right popup of each appoitment to edit/delete the appointment
+- For regular users, they can see the confirmed bookings with artists on the calendar.
+- For artists, they can see the confirmed bookings with their customers, as well as the bookings with other artists. (the two type of bookings are shown in different colors)
 
 ## Testing Instructions
 
