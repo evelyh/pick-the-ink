@@ -79,7 +79,7 @@
         - By clicking the `delete` button in the popup, you are confirming the deletion, otherwise, the image will stay. 
       - Post available timeslots
         - Post artists' available timeslots, so that clients can book the appointment based on the available timeslots.
-        - The `post available timeslots` button will only show when the artist set a valid home location. Since this is for updating the available timeslots for clients to book appointment, a valid home location is needed. 
+        - The `post available timeslots` button will only show when the artist set a valid home location. Since this is for updating the available timeslots for clients to book appointments, a valid home location is needed. 
   
     **Notes for Profile (Important!):** 
     - For each user, he/she can only edit their own profile page (and gallery page, for artists), and view limited profile info on other users' profile page for security reasons ( to protect other's personal informations). 
@@ -166,10 +166,10 @@
 - **Timeslot model**:
    - Structure:
     - `artistID` (required): artist ID realted to the timeslot
-    - `customerID` (required): the cutomer who books this timeslot
+    - `customerID` (required): the customer who books this timeslot
     - `locationID` (optional): the location ID of the timeslot
     - `startTims` (required): the starttime of the timeslot
-    - `isBooked` (required): if the timeslot is booked, defaul value is False
+    - `isBooked` (required): if the timeslot is booked, the default value is False
   - `/api/timeslots`
     - POST, Body: {all the required fields}
       - Create a new timeslot, with success return the info of the new timeslot
@@ -177,15 +177,15 @@
           - With success, return a list of Timeslot objects in the period
   - `/api/timeslots/:id`
     - GET
-      - With success return the info of the timeslot with id
+      - With success return the info of the timeslot with the id
     - PATCH, Body: {all required and updated fields}
-      - With success return the info of the updated timeslot with id
+      - With success return the info of the updated timeslot with the id
     - DELETE
-      - With success return the info of the delted timeslot with id
+      - With success return the info of the deleted timeslot with the id
 - **Image Model**:
   - Structure:
     - `_id/imageID` (required): the id of the image
-    - `img` (required): the link of the img at cloudinry
+    - `img` (required): the link of the image at Cloudinary
     - `title` (optional): the title of the image
     - `desc` (optional): the description of the image
     
@@ -193,7 +193,7 @@
     - POST, Body: {img: file, title: String, desc: String}
       - With success return the image info of the posted image
     - GET
-      - With success return all the images stores in the database
+      - With success return all the images stored in the database
   - `/api/images/:imageId`
     - GET 
       - With success return the image info with `imageID`
@@ -211,7 +211,7 @@
     - `isModifiable` (required): if the appointment is modifiable
     - `choice` (required): flash/custom design 
     - `flashLink` (optional): an image of the flash design, if customers choose the flash design
-    - `customerIdea` (optional): a description of cutomers' ideas, if they choose the customer design
+    - `customerIdea` (optional): a description of customers' ideas, if they choose the customer design
     - `size` (required): the size of the customer desired tattoo
     - `placement` (required): desired placement of the tattoo
     - `otherLink` (optional): any reference photos, drawings, sketches, screenshots, etc. that will help to explain your ideas
@@ -228,7 +228,7 @@
       - With success return the booking with id
     - PATCH, Body: {all required the info for booking}
       - With success return the updated booking with id
-      - Sends an email to client once artist submit an estimated duration for appointment
+      - Sends an email to the client once the artist submits an estimated duration for the appointment
       - Sends an email to both client and artist notifying them of time changes or confirmation of booking 
     - DELETE
       - With success return the deleted booking with id
@@ -242,7 +242,7 @@
       - req.body.customerID, get all bookings of that customer
       - req.body.artistID AND req.body.isConfirmed, get all bookings for confirmed/ (not confirmed) artist's bookings
       - req.body.customerID AND req.body.isConfirmed, get all bookings for confirmed/ (not confirmed) customer's bookings
-      - With sucess return the desired booking(s) satisfy all the above conditions
+      - With success return the desired booking(s) to satisfy all the above conditions
 
 ### Frontend
 - From root directory, navigate to `/webapp`, run  `npm i` and `npm run build` to build the React app
