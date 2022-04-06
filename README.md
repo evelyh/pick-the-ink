@@ -199,9 +199,9 @@
     - `size` (required): the size of the customer desired tattoo
     - `placement` (required): desired placement of the tattoo
     - `otherLink` (optional): any reference photos, drawings, sketches, screenshots, etc. that will help to explain your ideas
-    - concerns (optional): cutomers' concerns about (allergies, accommodations, peronal concerns, etc.)
-    - duration (required): the expected duration of making the tattoo (provided by artists)
-    - isConfirmed (required): whether the appointment is confirmed, the default value is False
+    - `concerns` (optional): cutomers' concerns about (allergies, accommodations, peronal concerns, etc.)
+    - `duration` (required): the expected duration of making the tattoo (provided by artists)
+    - `isConfirmed` (required): whether the appointment is confirmed, the default value is False
   - `/api/bookings`
     - POST, Body: {all required the info for booking}
       - With success return the info of the new booking
