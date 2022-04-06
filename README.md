@@ -49,19 +49,19 @@
     - Regular profile pages containing basic info, i.e. username, full name, contact info, favourite styles, etc.. 
     - Features on the pages:
       - Profile Card
-        - The profile card on the left of the page showing the profile photo, bio, followers and followings
+        - The profile card on the left of the page shows the profile photo, bio, followers and followings
         - A dropdown list of followers/followings will show when clicking the followers/followings on the card
-        - You can naviagte to the followers'/followings' profile pages by clicking the dropdown lists of the followers/followings
+        - You can navigate to the followers'/followings' profile pages by clicking the dropdown lists of the followers/followings
         - Follow and unfollow other users (both customers and artists) by clicking the follow and unfollow button on others' profile pages
       - Edit your profile
-        - Users can edit their own profile on this page by clicking the `Edit your profile` button and fill in the popup form
-        - The editProfile form will update the change if users click on `comfirm`, otherwise, all the info will stay as previous
+        - Users can edit their profiles on this page by clicking the `Edit your profile` button and filling in the popup form
+        - The edit profile form will update the change if users click on `confirm`, otherwise, all the info will stay as previous
       
   - For artists, `/artistprofile` and `/artistgallery`
-    - Artists' profile pages which contains all the basic info in regular profile pages and also some additional info for artists, i.e. home location, artists' styles.
-    - Users' views:
-      - Book an appoitment (artist's profile page)
-        - Book an appoitment by filling up the popup form.
+    -  Artists' profile pages contain all the basic info in regular profile pages and also some additional info for artists, i.e. home location, and artists' styles.
+    -  Users' views:
+      - Book an appointment (artist's profile page)
+        - Book an appointment by filling up the popup form.
       - Gallery (artist's profile page)
         - Navigate to the artist's gallery
     - Artists' views:
@@ -69,17 +69,17 @@
         - Similar to the edit profile for customer
       - Gallery (artist's profile page)
         - Navigate to the artist's gallery
-      - Edit the my gallery (artist's gallery page)
+      - Edit my gallery (artist's gallery page)
         - Edit the titles and descriptions of any image showing on the page by filling up the popup form
         - When click the `confirm` button on the popup form, the info of the image will change; when click on the `cancel`, info will stay as previous
-      - Add image to my gallery (artist's gallery page)
-        - Add new image to the gallery, by uploading the your own image and filling the popup form.
-      - Delete image from my gallery(artist's gallery page)
+      - Add images to my gallery (artist's gallery page)
+        - Add a new image to the gallery, by uploading your image and filling out the popup form.
+      - Delete images from my gallery(artist's gallery page)
         - Delete images from your gallery
         - By clicking the `delete` button in the popup, you are confirming the deletion, otherwise, the image will stay. 
       - Post available timeslots
-        - Post artists' available timeslots, so that client can book the appointment based on the available timeslots.
-        - The `post available timeslots` button will only show, when the artist set a valid home location. Since this is for updating the avaailable timeslots for clients to book appoinmtment, a valid home location is needed. 
+        - Post artists' available timeslots, so that clients can book the appointment based on the available timeslots.
+        - The `post available timeslots` button will only show when the artist set a valid home location. Since this is for updating the available timeslots for clients to book appointment, a valid home location is needed. 
   
     **Notes for Profile (Important!):** 
     - For each user, he/she can only edit their own profile page (and gallery page, for artists), and view limited profile info on other users' profile page for security reasons ( to protect other's personal informations). 
